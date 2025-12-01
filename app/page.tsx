@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
@@ -12,7 +13,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Bell, CalendarClock, BarChart3 } from "lucide-react";
+import { Bell, CalendarClock, BarChart3, FileDownIcon } from "lucide-react";
 
 // Theme colors for later expansion
 const theme = {
@@ -47,15 +48,23 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-slate-100">
       <div className="mx-auto max-w-6xl py-8 px-4 space-y-6">
+        <div className="fixed top-4 left-4 z-50">
+  <Image
+    src="/gsla-transp-logo.png"
+    alt="GSLA Logo"
+    width={150}
+    height={150}
+  />
+</div>
 
         {/* Header */}
         <header className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-slate-900">
-              GSLA NEW SDU Dashboard
+              Main Administrator Dashboard
             </h1>
             <p className="text-sm text-slate-600">
-              Overview of participation, facilities, and coach development.
+              Overview of ...
             </p>
           </div>
 
@@ -64,9 +73,15 @@ export default function DashboardPage() {
               <Bell className="w-4 h-4" />
               Alerts
             </Button>
+            
             <Button className="flex items-center gap-2">
               <CalendarClock className="w-4 h-4" />
               New Course
+            </Button>
+
+            <Button className="flex items-center gap-2">
+              <FileDownIcon className="w-4 h-4" />
+              Export
             </Button>
           </div>
         </header>
@@ -95,7 +110,35 @@ export default function DashboardPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Coach Renewals (Summary)</CardTitle>
+              <CardTitle>Courses Renewals (Summary)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {coachRenewals.map((item) => (
+                <div key={item.name} className="flex items-center justify-between">
+                  <span className="text-sm text-slate-700">{item.name}</span>
+                  <Badge variant="secondary">{item.due} due soon</Badge>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Forms Due (Summary)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {coachRenewals.map((item) => (
+                <div key={item.name} className="flex items-center justify-between">
+                  <span className="text-sm text-slate-700">{item.name}</span>
+                  <Badge variant="secondary">{item.due} due soon</Badge>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle> Renewals (Summary)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {coachRenewals.map((item) => (
