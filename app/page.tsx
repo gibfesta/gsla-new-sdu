@@ -27,20 +27,77 @@ const theme = {
   soft: "#e2e8f0",
 };
 
-// Sample data
+// Sample data - This needs to change and data needs to be picked up from a source... I dont know where or how.
 const sportsData = [
-  { sport: "Football", participants: 1250 },
-  { sport: "Padel", participants: 640 },
-  { sport: "Tennis", participants: 520 },
+  [
+  { sport: "Athletics", participants: 0 },
   { sport: "Basketball", participants: 410 },
   { sport: "Swimming", participants: 780 },
+  { sport: "Aquafit", participants: 0 },
+  { sport: "Badminton", participants: 0 },
+  { sport: "Billiards & Snooker", participants: 0 },
+  { sport: "Boxing", participants: 0 },
+  { sport: "Brazilian Jiu Jitsu", participants: 0 },
+  { sport: "Canoeing / Kayaking", participants: 0 },
+  { sport: "Climbing", participants: 0 },
+  { sport: "Cricket", participants: 0 },
+  { sport: "Cycling", participants: 0 },
+  { sport: "Darts", participants: 0 },
+  { sport: "Esports / Video Gaming", participants: 0 },
+  { sport: "Sea Angling", participants: 0 },
+  { sport: "Fencing", participants: 0 },
+  { sport: "Football", participants: 1250 },
+  { sport: "Golf", participants: 0 },
   { sport: "Hockey", participants: 260 },
+  { sport: "Inline Skating", participants: 0 },
+  { sport: "Island Games (multi-sport)", participants: 0 },
+  { sport: "Jet Ski", participants: 0 },
+  { sport: "Ju-Jitsu", participants: 0 },
+  { sport: "Judo", participants: 0 },
+  { sport: "Karate", participants: 0 },
+  { sport: "Kickboxing", participants: 0 },
+  { sport: "Mixed Martial Arts (MMA)", participants: 0 },
+  { sport: "Model Flying", participants: 0 },
+  { sport: "Netball", participants: 0 },
+  { sport: "Padel", participants: 640 },
+  { sport: "Parasports", participants: 0 },
+  { sport: "Petanque", participants: 0 },
+  { sport: "Pool", participants: 0 },
+  { sport: "Rhythmic Gymnastics", participants: 0 },
+  { sport: "Rugby", participants: 0 },
+  { sport: "Shooting – Clay Target", participants: 0 },
+  { sport: "Shooting – Pistol", participants: 0 },
+  { sport: "Shooting – Target Rifle", participants: 0 },
+  { sport: "Squash", participants: 0 },
+  { sport: "Sub-Aqua / Diving", participants: 0 },
+  { sport: "Table Tennis", participants: 0 },
+  { sport: "Tabletop Gaming", participants: 0 },
+  { sport: "Taekwondo", participants: 0 },
+  { sport: "Tennis", participants: 520 },
+  { sport: "Tenpin Bowling", participants: 0 },
+  { sport: "Triathlon", participants: 0 },
+  { sport: "Volleyball", participants: 0 },
+  { sport: "Off-Road 4×4", participants: 0 },
+  { sport: "Physical Activity (Older Adults)", participants: 0 }
+]
 ];
 
-const coachRenewals = [
+const FormsDue = [
+  { name: "Form A", due: 18 },
+  { name: "Form B", due: 11 },
+  { name: "Form C", due: 5 },
+];
+
+const UpComingCourses = [
+  { name: "Surfing Level 3", due: 1 },
+  { name: "Snowboarding", due: 12 },
+  { name: "First Aid", due: 90},
+];
+
+const Renewals = [
   { name: "First Aid", due: 18 },
   { name: "Safeguarding", due: 11 },
-  { name: "NPLQ", due: 5 },
+  { name: "Vetting", due: 5 },
 ];
 
 // The main homepage component
@@ -92,7 +149,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                Participants by Sport
+                Participants by Sport 
                 <BarChart3 className="w-4 h-4" />
               </CardTitle>
             </CardHeader>
@@ -110,10 +167,10 @@ export default function DashboardPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Courses Renewals (Summary)</CardTitle>
+              <CardTitle> Upcoming Courses (Summary)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {coachRenewals.map((item) => (
+              {UpComingCourses.map((item) => (
                 <div key={item.name} className="flex items-center justify-between">
                   <span className="text-sm text-slate-700">{item.name}</span>
                   <Badge variant="secondary">{item.due} due soon</Badge>
@@ -127,7 +184,7 @@ export default function DashboardPage() {
               <CardTitle>Forms Due (Summary)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {coachRenewals.map((item) => (
+              {FormsDue.map((item) => (
                 <div key={item.name} className="flex items-center justify-between">
                   <span className="text-sm text-slate-700">{item.name}</span>
                   <Badge variant="secondary">{item.due} due soon</Badge>
@@ -141,7 +198,7 @@ export default function DashboardPage() {
               <CardTitle> Renewals (Summary)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {coachRenewals.map((item) => (
+              {Renewals.map((item) => (
                 <div key={item.name} className="flex items-center justify-between">
                   <span className="text-sm text-slate-700">{item.name}</span>
                   <Badge variant="secondary">{item.due} due soon</Badge>
