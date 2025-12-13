@@ -1,23 +1,7 @@
-import * as React from "react";
-
-type BadgeProps = React.HTMLAttributes<HTMLSpanElement> & {
-  variant?: "default" | "secondary";
-};
-
-export function Badge({
-  variant = "default",
-  className = "",
-  ...props
-}: BadgeProps) {
-  const base =
-    "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium";
-
-  const variantClass =
-    variant === "secondary"
-      ? "bg-slate-100 text-slate-800"
-      : "bg-slate-900 text-white";
-
+export function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className={`${base} ${variantClass} ${className}`} {...props} />
+    <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+      {children}
+    </span>
   );
 }
