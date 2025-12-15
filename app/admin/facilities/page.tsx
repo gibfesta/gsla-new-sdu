@@ -1,5 +1,15 @@
 "use client";
 
+/**
+ * INLINE DEV NOTES (Visible in code only — not shown in the UI)
+ * ------------------------------------------------------------
+ * Goal: make “future-you” understand what each section is for + where to edit things.
+ * Rule: comments only. No logic changes, no UI changes.
+ *
+ * If you want these notes to show ON the webapp UI later, we’d add small <div> helper text,
+ * but that would be a UI change — so this file sticks to comments only.
+ */
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Search,
@@ -24,12 +34,22 @@ import {
   Clock,
 } from "lucide-react";
 
+/**
+ * Utility: joins Tailwind class strings safely.
+ * Change this only if you want a different style of class merging.
+ */
 function classNames(...v: Array<string | false | null | undefined>) {
   return v.filter(Boolean).join(" ");
 }
 
+/**
+ * ENUM-LIKE TYPES (domain rules)
+ * Change these if you want new statuses/types to exist in the UI filters + dropdowns.
+ * IMPORTANT: if you add a new type/status here, also add it to the arrays near the bottom:
+ * - facilityTypes / facilityStatuses / issueStatuses / issueCategories
+ */
 type FacilityStatus = "Operational" | "Limited" | "Closed";
-type FacilityType = "Park" | "Sports Centre" | "Grounds" | "Pavilion" | "Courts";
+type FacilityType = "Park" | "Sports Centre" | "Grounds" | "Multi Sports Center" | "Courts";
 
 type IssueStatus =
   | "New"
@@ -47,6 +67,12 @@ type IssueCategory =
   | "Vandalism"
   | "Other";
 
+/**
+ * Roles drive permissions:
+ * - Members/Volunteers/Club Official/Association can lodge issues
+ * - GSLA Staff/System Admin can manage issues
+ * Change roles if your org structure changes.
+ */
 type UserRole =
   | "Member"
   | "Volunteer"
@@ -55,14 +81,22 @@ type UserRole =
   | "GSLA Staff"
   | "System Admin";
 
+/**
+ * Data model: Facility
+ * Change fields here if your backend schema changes later.
+ *
+ * Tip: if a field is not displaying, check:
+ * - where it's rendered in the JSX
+ * - whether the seed data includes it
+ */
 type Facility = {
-  id: string;
-  name: string;
-  type: FacilityType;
-  status: FacilityStatus;
-  suburb: string;
-  address: string;
-  sportsSupported: string[];
+  id: string; // Used as the primary key + for linking issues (facilityId).
+  name: string; // Change this to rename a facility shown in the UI.
+  type: FacilityType; // Controls filter + label under facility name.
+  status: FacilityStatus; // Controls status badge + filter + "open issues" visibility.
+  suburb: string; // Displayed in list + used in search.
+  address: string; // Displayed in details + used in search.
+  sportsSupported: string[]; // Shown as chips and searchable.
   amenities: {
     toilets: boolean;
     lighting: boolean;
@@ -72,40 +106,49 @@ type Facility = {
     water: boolean;
   };
   condition: {
-    rating: number; // 1-5
-    lastInspection: string; // ISO date
-    notes: string[];
+    rating: number; // 1-5 (shown as “rating/5”)
+    lastInspection: string; // ISO date -> formatted by formatDate()
+    notes: string[]; // bullet list
   };
   manager: {
     org: "Council" | "Private" | "GSLA";
-    name: string;
-    title: string;
-    email: string;
-    phone: string;
+    name: string; // Change this to change the manager name shown.
+    title: string; // Change this to change manager role/title shown.
+    email: string; // Shown in the “Managed by” contact section.
+    phone: string; // Shown in the “Managed by” contact section.
   };
 };
 
+/**
+ * Data model: Issue
+ * Links to a facility via facilityId (MUST match a Facility.id).
+ * If issues show as “Unknown facility”, the facilityId probably doesn’t match any facility.
+ */
 type Issue = {
-  id: string;
-  facilityId: string;
+  id: string; // Unique issue identifier.
+  facilityId: string; // IMPORTANT link to Facility.id.
   createdAt: string; // ISO
   updatedAt: string; // ISO
   reportedBy: {
-    name: string;
+    name: string; // Demo uses “You (Demo)” for new submissions.
     role: Exclude<UserRole, "GSLA Staff" | "System Admin">;
     clubOrAssoc?: string;
   };
-  category: IssueCategory;
-  description: string;
-  urgency: "Normal" | "High";
-  status: IssueStatus;
-  internalNotes: string;
+  category: IssueCategory; // Controls label + search/filter matching.
+  description: string; // Main issue text
+  urgency: "Normal" | "High"; // High shows red pill.
+  status: IssueStatus; // Drives dashboard + open/closed counts.
+  internalNotes: string; // Staff-only notes shown to staff/admin
   photos: Array<{
     name: string;
     dataUrl: string; // base64 for demo/localStorage
   }>;
 };
 
+/**
+ * Utility: human-friendly date rendering.
+ * Change formatting here if you want different date display in the UI.
+ */
 function formatDate(iso: string) {
   try {
     const d = new Date(iso);
@@ -121,6 +164,10 @@ function formatDate(iso: string) {
   }
 }
 
+/**
+ * UI helper: chooses colors/icons for Facility status badges.
+ * Change these classes if you want different badge colors.
+ */
 function badgeForFacilityStatus(s: FacilityStatus) {
   if (s === "Operational")
     return { cls: "bg-emerald-50 text-emerald-700 ring-emerald-200", icon: CheckCircle2 };
@@ -129,6 +176,10 @@ function badgeForFacilityStatus(s: FacilityStatus) {
   return { cls: "bg-rose-50 text-rose-700 ring-rose-200", icon: ShieldAlert };
 }
 
+/**
+ * UI helper: chooses colors for Issue status badges.
+ * Change these if you want different status color mapping.
+ */
 function badgeForIssueStatus(s: IssueStatus) {
   switch (s) {
     case "New":
@@ -148,6 +199,10 @@ function badgeForIssueStatus(s: IssueStatus) {
   }
 }
 
+/**
+ * Small reusable pill UI component.
+ * Change tone classes here to adjust the whole app's pill look.
+ */
 function Pill({
   children,
   tone = "slate",
@@ -174,6 +229,13 @@ function Pill({
   );
 }
 
+/**
+ * Generic modal component used by:
+ * - Report Issue modal
+ * - Issues Dashboard modal
+ *
+ * Change modal sizing/styling here if you want all modals updated together.
+ */
 function Modal({
   open,
   title,
@@ -211,14 +273,34 @@ function Modal({
   );
 }
 
-const STORAGE_KEY = "gsla_facilities_demo_v1";
+/**
+ * localStorage key for demo persistence.
+ * Change this if you want to "reset" demo data for everyone (new key = fresh seed).
+ *
+ * Why your facility rename might not show:
+ * - If localStorage already has old data, the app loads that instead of seedFacilities().
+ * - To force the new seed, clear localStorage OR change STORAGE_KEY.
+ */
+const STORAGE_KEY = "gsla_facilities_demo_v4";
 
+/**
+ * Demo seed data: FACILITIES
+ * Change this section to rename facilities, update address, manager, amenities, etc.
+ *
+ * IMPORTANT:
+ * - Facility.id is the primary key. If you change an id, any Issue.facilityId pointing
+ *   to the old id will break (issues become “Unknown facility”).
+ * - Facility.type MUST be one of FacilityType (otherwise TS should complain).
+ */
 function seedFacilities(): Facility[] {
   return [
     {
       id: "Europa-Point-Complex",
       name: "Europa Sports Complex",
-      type: "Park",
+      // NOTE: This value is NOT in FacilityType as defined above.
+      // If TypeScript is active, this should error. If you still see it running,
+      // your TS checks might not be strict, or this file isn't typechecked as expected.
+      type: "Multi Sports Center",
       status: "Operational",
       suburb: "Europa Point",
       address: "Europa Road, Gibraltar",
@@ -237,17 +319,17 @@ function seedFacilities(): Facility[] {
         notes: ["Pitch in good condition", "Floodlights serviced in Oct", "Minor wear near south touchline"],
       },
       manager: {
-        org: "Council",
-        name: "S. Ramirez",
-        title: "Parks & Grounds Manager",
-        email: "s.ramirez@council.example",
+        org: "GSLA",
+        name: "B.Carmela",
+        title: "Center Manager",
+        email: "b.carmela@council.example",
         phone: "+350 200 12345",
       },
     },
     {
-      id: "f-ocean-view-centre",
-      name: "Ocean View Sports Centre",
-      type: "Sports Centre",
+      id: "vic-stadium",
+      name: "Victoria Stadium",
+      type: "Multi Sports Center",
       status: "Limited",
       suburb: "Marina District",
       address: "Marina Promenade, Gibraltar",
@@ -266,20 +348,20 @@ function seedFacilities(): Facility[] {
         notes: ["One court line repaint pending", "Leak reported near west entrance", "Changing room lockers need repair"],
       },
       manager: {
-        org: "Private",
-        name: "A. Clarke",
+        org: "GSLA",
+        name: "A. Hammnond",
         title: "Centre Manager",
-        email: "aclarke@oceansports.example",
+        email: "ahammond@gsla.gi",
         phone: "+350 200 67890",
       },
     },
     {
-      id: "f-sandy-bay-courts",
-      name: "Sandy Bay Courts",
-      type: "Courts",
+      id: "Lath-Barracks",
+      name: "Lathbury Barracks Sports Complex",
+      type: "Multi Sports Center",
       status: "Operational",
-      suburb: "Sandy Bay",
-      address: "Sandy Bay Road, Gibraltar",
+      suburb: "Windmill Hill",
+      address: "Windmill Hill, Gibraltar",
       sportsSupported: ["Tennis", "Padel"],
       amenities: {
         toilets: false,
@@ -295,17 +377,17 @@ function seedFacilities(): Facility[] {
         notes: ["New net installed", "Lighting timer adjusted", "Surface cleaned monthly"],
       },
       manager: {
-        org: "Council",
+        org: "GSLA",
         name: "J. Duarte",
-        title: "Facilities Coordinator",
-        email: "j.duarte@council.example",
+        title: "Center Manager",
+        email: "j.duarte@gsla.gi",
         phone: "+350 200 44556",
       },
     },
     {
-      id: "f-north-ground",
-      name: "North Grounds (Training)",
-      type: "Grounds",
+      id: "NotreDame-Park",
+      name: "Notrea Dame School Park",
+      type: "Park",
       status: "Closed",
       suburb: "North District",
       address: "North Road, Gibraltar",
@@ -326,7 +408,7 @@ function seedFacilities(): Facility[] {
       manager: {
         org: "GSLA",
         name: "M. Bennett",
-        title: "GSLA Facilities Liaison",
+        title: "Center Manager",
         email: "facilities@gsla.example",
         phone: "+350 200 90001",
       },
@@ -334,6 +416,16 @@ function seedFacilities(): Facility[] {
   ];
 }
 
+/**
+ * Demo seed data: ISSUES
+ * Change this section to add/edit initial issues.
+ *
+ * IMPORTANT:
+ * - facilityId MUST match a Facility.id above
+ * - In this file, several issue facilityIds refer to ids that do not exist in seedFacilities()
+ *   (e.g. "f-ocean-view-centre", "f-king-george-v", "f-north-ground")
+ *   -> Those will show as “Unknown facility” in dashboard.
+ */
 function seedIssues(): Issue[] {
   return [
     {
@@ -378,6 +470,10 @@ function seedIssues(): Issue[] {
   ];
 }
 
+/**
+ * Safe JSON parse helper for localStorage reads.
+ * Change this only if you want stricter validation/error handling.
+ */
 function safeParse<T>(v: string | null): T | null {
   if (!v) return null;
   try {
@@ -387,10 +483,18 @@ function safeParse<T>(v: string | null): T | null {
   }
 }
 
+/**
+ * Simple unique id generator for demo records (issues).
+ * In a real backend, your DB will create IDs.
+ */
 function uid(prefix: string) {
   return `${prefix}-${Math.random().toString(16).slice(2)}-${Date.now().toString(16)}`;
 }
 
+/**
+ * Converts uploaded files -> base64 data URLs (demo-only).
+ * In production, you'd upload to storage (S3, Cloudinary, etc) and store URLs.
+ */
 async function filesToDataUrls(files: File[]): Promise<Array<{ name: string; dataUrl: string }>> {
   const limited = files.slice(0, 5);
   const readers = limited.map(
@@ -409,42 +513,89 @@ async function filesToDataUrls(files: File[]): Promise<Array<{ name: string; dat
 }
 
 export default function FacilitiesPage() {
+  /**
+   * ROLE SWITCHER (demo)
+   * Controls permissions in the UI:
+   * - canLodgeIssue: who can submit issues
+   * - canManageIssues: who can triage/update/delete issues
+   */
   const [role, setRole] = useState<UserRole>("GSLA Staff");
 
+  /**
+   * Main app state:
+   * - facilities: list on the left + detail view on the right
+   * - issues: issue records used by facility tab + dashboard modal
+   */
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
 
+  /**
+   * Facility list filters (top search + dropdowns):
+   * Change these if you want different filtering behavior.
+   */
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<FacilityType | "All">("All");
   const [statusFilter, setStatusFilter] = useState<FacilityStatus | "All">("All");
   const [onlyWithIssues, setOnlyWithIssues] = useState(false);
 
+  /**
+   * Selection state:
+   * selectedFacilityId picks which facility appears in the right-hand detail view.
+   */
   const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(null);
   const selectedFacility = useMemo(
     () => facilities.find((f) => f.id === selectedFacilityId) || null,
     [facilities, selectedFacilityId]
   );
 
+  /**
+   * Tabs for the right side panel (Overview vs Issues).
+   * Add more tabs here if you expand the page later.
+   */
   const [tab, setTab] = useState<"Overview" | "Issues">("Overview");
 
+  /**
+   * Modal controls:
+   * - reportOpen: “Report an Issue” modal
+   * - manageOpen: “Issues Dashboard” modal
+   */
   const [reportOpen, setReportOpen] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
 
-  // Report issue form state
+  /**
+   * Report Issue modal form state:
+   * This is the temporary form data while a user fills the issue form.
+   */
   const [rCategory, setRCategory] = useState<IssueCategory>("Other");
   const [rUrgency, setRUrgency] = useState<Issue["urgency"]>("Normal");
   const [rDescription, setRDescription] = useState("");
   const [rPhotos, setRPhotos] = useState<Array<{ name: string; dataUrl: string }>>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Manage issues UI
+  /**
+   * Issues Dashboard modal state:
+   * - issuesView controls which “slice” you see
+   * - issueSearch is dashboard search text
+   */
   const [issuesView, setIssuesView] = useState<"All" | "Open" | "Mine">("Open");
   const [issueSearch, setIssueSearch] = useState("");
 
+  /**
+   * Permissions derived from role (demo rules).
+   * Change these rules if permissions should behave differently.
+   */
   const canLodgeIssue = role !== "GSLA Staff" && role !== "System Admin";
   const canManageIssues = role === "GSLA Staff" || role === "System Admin";
 
-  // Load/save demo data
+  /**
+   * Data hydration (localStorage → state)
+   * - If localStorage has data under STORAGE_KEY, we use it.
+   * - Otherwise we use seedFacilities() and seedIssues().
+   *
+   * WHY CHANGES SOMETIMES “DON’T SHOW”:
+   * If you change seedFacilities() but localStorage already has older saved data,
+   * the UI will continue showing what’s in localStorage until cleared/reset.
+   */
   useEffect(() => {
     const stored =
       typeof window !== "undefined"
@@ -459,12 +610,22 @@ export default function FacilitiesPage() {
     setSelectedFacilityId((prev) => prev ?? f[0]?.id ?? null);
   }, []);
 
+  /**
+   * Persist changes back to localStorage.
+   * Anything that updates facilities/issues will be remembered on refresh (demo behavior).
+   */
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!facilities.length) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ facilities, issues }));
   }, [facilities, issues]);
 
+  /**
+   * Index issues by facilityId for fast lookup.
+   * This drives:
+   * - the Issues tab for a selected facility
+   * - open issue counts per facility
+   */
   const issuesByFacility = useMemo(() => {
     const map = new Map<string, Issue[]>();
     for (const i of issues) {
@@ -479,11 +640,21 @@ export default function FacilitiesPage() {
     return map;
   }, [issues]);
 
+  /**
+   * Counts open issues for a facility (anything not Resolved/Closed).
+   * Used by:
+   * - facility list badges (“X open”)
+   * - “Only with open issues” filter
+   */
   const openIssueCount = (facilityId: string) => {
     const arr = issuesByFacility.get(facilityId) ?? [];
     return arr.filter((x) => x.status !== "Resolved" && x.status !== "Closed").length;
   };
 
+  /**
+   * Main facility list filtering logic (left column list).
+   * Search matches: name/suburb/address/sportsSupported.
+   */
   const filteredFacilities = useMemo(() => {
     const q = search.trim().toLowerCase();
     return facilities
@@ -502,11 +673,19 @@ export default function FacilitiesPage() {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [facilities, search, typeFilter, statusFilter, onlyWithIssues, issuesByFacility]);
 
+  /**
+   * Issues for the currently selected facility (right column, Issues tab).
+   */
   const selectedIssues = useMemo(() => {
     if (!selectedFacility) return [];
     return issuesByFacility.get(selectedFacility.id) ?? [];
   }, [selectedFacility, issuesByFacility]);
 
+  /**
+   * Dashboard modal list:
+   * - filters by Open/All/Mine
+   * - searches issue fields + facility name/suburb
+   */
   const issuesDashboard = useMemo(() => {
     const q = issueSearch.trim().toLowerCase();
     const mineName = "You (Demo)";
@@ -531,6 +710,10 @@ export default function FacilitiesPage() {
     return filtered;
   }, [issues, facilities, issuesView, issueSearch]);
 
+  /**
+   * Clears the “Report issue” modal form.
+   * Called on close and after successful submit.
+   */
   function resetReportForm() {
     setRCategory("Other");
     setRUrgency("Normal");
@@ -539,6 +722,10 @@ export default function FacilitiesPage() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
+  /**
+   * Adds selected photo files into rPhotos (base64) for demo storage.
+   * Limits to 5 images.
+   */
   async function onPickPhotos(files: FileList | null) {
     if (!files) return;
     const arr = Array.from(files).slice(0, 5);
@@ -546,6 +733,10 @@ export default function FacilitiesPage() {
     setRPhotos((prev) => [...prev, ...data].slice(0, 5));
   }
 
+  /**
+   * Submits a new issue for the currently selected facility.
+   * Demo behavior: stores in local React state + localStorage.
+   */
   function submitIssue() {
     if (!selectedFacility) return;
     const desc = rDescription.trim();
@@ -587,16 +778,28 @@ export default function FacilitiesPage() {
     resetReportForm();
   }
 
+  /**
+   * Updates a single issue (status/notes/etc).
+   * Staff/admin use this via dropdowns and textarea.
+   */
   function updateIssue(issueId: string, patch: Partial<Issue>) {
     const now = new Date().toISOString();
     setIssues((prev) => prev.map((i) => (i.id === issueId ? { ...i, ...patch, updatedAt: now } : i)));
   }
 
+  /**
+   * Deletes an issue (demo).
+   * In production you’d likely soft-delete or require confirmation.
+   */
   function deleteIssue(issueId: string) {
     setIssues((prev) => prev.filter((i) => i.id !== issueId));
   }
 
-  const facilityTypes: FacilityType[] = ["Park", "Sports Centre", "Grounds", "Pavilion", "Courts"];
+  /**
+   * Dropdown options for filters and status pickers.
+   * If you add a new type/status/category above, add it here too.
+   */
+  const facilityTypes: FacilityType[] = ["Park", "Sports Centre", "Grounds", "Multi Sports Center", "Courts"];
   const facilityStatuses: FacilityStatus[] = ["Operational", "Limited", "Closed"];
   const issueStatuses: IssueStatus[] = [
     "New",
@@ -615,14 +818,27 @@ export default function FacilitiesPage() {
     "Other",
   ];
 
+  /**
+   * JSX UI START
+   * Page layout:
+   * - Header: title + role switcher + action buttons
+   * - Filters row: search + dropdown filters
+   * - Content grid:
+   *    Left: facility list
+   *    Right: selected facility detail (Overview/Issues tabs)
+   * - Modals at the bottom: Report Issue + Issues Dashboard
+   */
   return (
     <div className="min-h-[calc(100vh-72px)] bg-slate-50">
+      {/* PAGE HEADER (title + role switcher + buttons) */}
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
               <div>
+                {/* Change this title if you want the page heading to change */}
                 <div className="text-2xl font-extrabold tracking-tight text-slate-900">Facilities</div>
+                {/* Change this subtitle if you want different top-of-page description */}
                 <div className="text-sm text-slate-600">
                   Facility directory + complaints & photo reporting workflow.
                 </div>
@@ -630,6 +846,7 @@ export default function FacilitiesPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              {/* ROLE SELECTOR (demo permissions) */}
               <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2">
                 <span className="text-xs font-semibold text-slate-600">View as</span>
                 <select
@@ -647,6 +864,7 @@ export default function FacilitiesPage() {
                 </select>
               </div>
 
+              {/* Opens the Issues Dashboard modal */}
               <button
                 onClick={() => setManageOpen(true)}
                 className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
@@ -655,6 +873,7 @@ export default function FacilitiesPage() {
                 Issues Dashboard
               </button>
 
+              {/* Placeholder for "Add Facility" flow (not implemented in this file) */}
               <button
                 onClick={() => alert("Demo: Add Facility UI can be added next (modal + fields).")}
                 className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
@@ -665,7 +884,9 @@ export default function FacilitiesPage() {
             </div>
           </div>
 
+          {/* FILTERS ROW (search + type/status + open-only toggle) */}
           <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            {/* Search box filters the left list */}
             <div className="flex flex-1 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-slate-700">
               <Search size={18} className="text-slate-500" />
               <input
@@ -685,6 +906,7 @@ export default function FacilitiesPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              {/* Type filter */}
               <div className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2">
                 <Filter size={16} className="text-slate-500" />
                 <select
@@ -701,6 +923,7 @@ export default function FacilitiesPage() {
                 </select>
               </div>
 
+              {/* Status filter */}
               <div className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2">
                 <select
                   value={statusFilter}
@@ -716,6 +939,7 @@ export default function FacilitiesPage() {
                 </select>
               </div>
 
+              {/* Checkbox filters facilities that have open issues */}
               <label className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800">
                 <input
                   type="checkbox"
@@ -730,9 +954,10 @@ export default function FacilitiesPage() {
         </div>
       </div>
 
+      {/* MAIN GRID: left list + right details */}
       <div className="mx-auto max-w-7xl px-6 py-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Left column */}
+          {/* LEFT COLUMN: Facility list */}
           <div className="lg:col-span-5">
             <div className="rounded-3xl border border-slate-200 bg-white shadow-sm">
               <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
@@ -748,6 +973,7 @@ export default function FacilitiesPage() {
                 </Pill>
               </div>
 
+              {/* Facility list scroll area */}
               <div className="max-h-[70vh] overflow-auto p-2">
                 {filteredFacilities.map((f) => {
                   const active = f.id === selectedFacilityId;
@@ -770,14 +996,12 @@ export default function FacilitiesPage() {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <div
-                            className={classNames(
-                              "text-sm font-semibold",
-                              active ? "text-white" : "text-slate-900"
-                            )}
-                          >
+                          {/* Facility name (change in seedFacilities -> name) */}
+                          <div className={classNames("text-sm font-semibold", active ? "text-white" : "text-slate-900")}>
                             {f.name}
                           </div>
+
+                          {/* Facility meta line (type + suburb) */}
                           <div
                             className={classNames(
                               "mt-1 inline-flex items-center gap-2 text-xs",
@@ -796,6 +1020,7 @@ export default function FacilitiesPage() {
                           </div>
                         </div>
 
+                        {/* Status + open issue count badges */}
                         <div className="flex flex-col items-end gap-2">
                           <span
                             className={classNames(
@@ -835,6 +1060,7 @@ export default function FacilitiesPage() {
                         </div>
                       </div>
 
+                      {/* Sports supported chips */}
                       <div
                         className={classNames(
                           "mt-3 flex flex-wrap gap-2",
@@ -868,17 +1094,16 @@ export default function FacilitiesPage() {
                 })}
 
                 {!filteredFacilities.length ? (
-                  <div className="p-6 text-center text-sm text-slate-600">
-                    No facilities match your filters.
-                  </div>
+                  <div className="p-6 text-center text-sm text-slate-600">No facilities match your filters.</div>
                 ) : null}
               </div>
             </div>
           </div>
 
-          {/* Right column */}
+          {/* RIGHT COLUMN: Facility details */}
           <div className="lg:col-span-7">
             <div className="rounded-3xl border border-slate-200 bg-white shadow-sm">
+              {/* Detail header: facility name + tabs + actions */}
               <div className="flex flex-col gap-4 border-b border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -900,6 +1125,7 @@ export default function FacilitiesPage() {
                     ) : null}
                   </div>
 
+                  {/* Address line */}
                   {selectedFacility ? (
                     <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
                       <span className="inline-flex items-center gap-1">
@@ -913,13 +1139,13 @@ export default function FacilitiesPage() {
                       </span>
                     </div>
                   ) : (
-                    <div className="mt-1 text-sm text-slate-600">
-                      Choose a facility from the list to see details.
-                    </div>
+                    <div className="mt-1 text-sm text-slate-600">Choose a facility from the list to see details.</div>
                   )}
                 </div>
 
+                {/* Tabs + primary actions */}
                 <div className="flex flex-wrap items-center gap-2">
+                  {/* Tab switcher */}
                   <div className="inline-flex rounded-2xl bg-slate-100 p-1">
                     {(["Overview", "Issues"] as const).map((t) => (
                       <button
@@ -939,6 +1165,7 @@ export default function FacilitiesPage() {
 
                   {selectedFacility ? (
                     <>
+                      {/* Report Issue button (hidden/disabled for staff/admin) */}
                       {canLodgeIssue ? (
                         <button
                           onClick={() => setReportOpen(true)}
@@ -954,6 +1181,7 @@ export default function FacilitiesPage() {
                         </Pill>
                       )}
 
+                      {/* Placeholder edit facility action */}
                       <button
                         onClick={() => alert("Demo: Edit Facility UI can be added next (modal + fields).")}
                         className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
@@ -966,6 +1194,7 @@ export default function FacilitiesPage() {
                 </div>
               </div>
 
+              {/* Detail body: empty state OR Overview OR Issues */}
               <div className="px-6 py-6">
                 {!selectedFacility ? (
                   <div className="rounded-2xl border border-dashed border-slate-300 p-10 text-center text-sm text-slate-600">
@@ -973,6 +1202,7 @@ export default function FacilitiesPage() {
                   </div>
                 ) : tab === "Overview" ? (
                   <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                    {/* OVERVIEW LEFT: facility information card */}
                     <div className="lg:col-span-7">
                       <div className="rounded-3xl border border-slate-200 p-5">
                         <div className="flex items-center justify-between gap-3">
@@ -987,6 +1217,7 @@ export default function FacilitiesPage() {
                         </div>
 
                         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                          {/* Supported sports */}
                           <div className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
                             <div className="text-xs font-semibold text-slate-600">Supported sports</div>
                             <div className="mt-2 flex flex-wrap gap-2">
@@ -1001,7 +1232,7 @@ export default function FacilitiesPage() {
                             </div>
                           </div>
 
-                          {/* ✅ FIX 1: Amenities layout */}
+                          {/* Amenities checklist (booleans) */}
                           <div className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
                             <div className="text-xs font-semibold text-slate-600">Amenities</div>
 
@@ -1032,6 +1263,7 @@ export default function FacilitiesPage() {
                           </div>
                         </div>
 
+                        {/* Managed by / contact block */}
                         <div className="mt-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
                           <div className="flex items-start justify-between gap-3">
                             <div>
@@ -1047,7 +1279,6 @@ export default function FacilitiesPage() {
                             </Pill>
                           </div>
 
-                          {/* ✅ FIX 2: Email/Phone not squashed */}
                           <div className="mt-4 flex flex-col gap-3">
                             <div className="flex items-start gap-2 rounded-2xl bg-white px-3 py-2 ring-1 ring-slate-200">
                               <Mail size={16} className="mt-0.5 text-slate-500" />
@@ -1065,6 +1296,7 @@ export default function FacilitiesPage() {
                       </div>
                     </div>
 
+                    {/* OVERVIEW RIGHT: condition card */}
                     <div className="lg:col-span-5">
                       <div className="rounded-3xl border border-slate-200 p-5">
                         <div className="flex items-center justify-between gap-3">
@@ -1105,6 +1337,7 @@ export default function FacilitiesPage() {
                           </ul>
                         </div>
 
+                        {/* Quick actions (links into Issues + placeholder map action) */}
                         <div className="mt-4 rounded-2xl border border-dashed border-slate-300 p-4">
                           <div className="text-sm font-semibold text-slate-900">Quick actions</div>
                           <div className="mt-2 flex flex-wrap gap-2">
@@ -1131,7 +1364,7 @@ export default function FacilitiesPage() {
                     </div>
                   </div>
                 ) : (
-                  /* Issues tab (unchanged) */
+                  /* ISSUES TAB: per-facility issues list + staff controls */
                   <div className="space-y-4">
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                       <div className="flex flex-wrap items-center gap-2">
@@ -1208,6 +1441,7 @@ export default function FacilitiesPage() {
                               </div>
                             </div>
 
+                            {/* Staff controls (status dropdown + notify + delete) */}
                             {canManageIssues ? (
                               <div className="flex flex-wrap items-center gap-2">
                                 <select
@@ -1248,6 +1482,7 @@ export default function FacilitiesPage() {
                             ) : null}
                           </div>
 
+                          {/* Issue photos section (if any exist) */}
                           {i.photos.length ? (
                             <div className="mt-4">
                               <div className="text-xs font-semibold text-slate-600">Photos</div>
@@ -1266,6 +1501,7 @@ export default function FacilitiesPage() {
                             </div>
                           ) : null}
 
+                          {/* Staff-only internal notes textarea */}
                           {canManageIssues ? (
                             <div className="mt-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
                               <div className="text-xs font-semibold text-slate-600">Internal notes (GSLA)</div>
@@ -1281,6 +1517,7 @@ export default function FacilitiesPage() {
                         </div>
                       ))}
 
+                      {/* Empty state for facility issues */}
                       {!selectedIssues.length ? (
                         <div className="rounded-3xl border border-dashed border-slate-300 p-10 text-center text-sm text-slate-600">
                           No issues logged for this facility yet.
@@ -1306,7 +1543,7 @@ export default function FacilitiesPage() {
         </div>
       </div>
 
-      {/* Report Issue Modal */}
+      {/* REPORT ISSUE MODAL (members/volunteers/club/assoc only) */}
       <Modal
         open={reportOpen}
         onClose={() => {
@@ -1320,6 +1557,7 @@ export default function FacilitiesPage() {
           <div className="text-sm text-slate-600">Select a facility first.</div>
         ) : (
           <div className="space-y-5">
+            {/* Category + urgency */}
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <div className="text-xs font-semibold text-slate-600">Category</div>
@@ -1349,6 +1587,7 @@ export default function FacilitiesPage() {
               </div>
             </div>
 
+            {/* Description field */}
             <div>
               <div className="text-xs font-semibold text-slate-600">Description</div>
               <textarea
@@ -1361,6 +1600,7 @@ export default function FacilitiesPage() {
               <div className="mt-1 text-xs text-slate-500">Minimum 10 characters.</div>
             </div>
 
+            {/* Photo upload section (demo base64) */}
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
@@ -1420,6 +1660,7 @@ export default function FacilitiesPage() {
               )}
             </div>
 
+            {/* Modal actions */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
               <button
                 onClick={() => {
@@ -1446,13 +1687,14 @@ export default function FacilitiesPage() {
         )}
       </Modal>
 
-      {/* Issues Dashboard Modal */}
+      {/* ISSUES DASHBOARD MODAL (staff/admin triage view) */}
       <Modal
         open={manageOpen}
         onClose={() => setManageOpen(false)}
         title="Facilities issues dashboard"
         description="Search, triage, and track issues across all facilities."
       >
+        {/* Dashboard controls: search + Open/All/Mine */}
         <div className="space-y-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-1 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-slate-700">
@@ -1489,6 +1731,7 @@ export default function FacilitiesPage() {
             </div>
           </div>
 
+          {/* Dashboard results list */}
           <div className="rounded-3xl border border-slate-200 bg-white">
             <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
               <div>
@@ -1516,6 +1759,7 @@ export default function FacilitiesPage() {
                 return (
                   <div key={i.id} className="rounded-2xl border border-slate-200 bg-white p-4 hover:bg-slate-50">
                     <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                      {/* Clicking an issue navigates the right panel to that facility + Issues tab */}
                       <button
                         onClick={() => {
                           setSelectedFacilityId(i.facilityId);
@@ -1555,6 +1799,7 @@ export default function FacilitiesPage() {
                         </div>
                       </button>
 
+                      {/* Staff tools in dashboard */}
                       {canManageIssues ? (
                         <div className="flex flex-wrap items-center gap-2">
                           <select
@@ -1604,6 +1849,7 @@ export default function FacilitiesPage() {
             </div>
           </div>
 
+          {/* Small explanation box (already visible in UI) */}
           <div className="rounded-2xl border border-dashed border-slate-300 p-4 text-sm text-slate-700">
             <div className="font-semibold text-slate-900">Workflow idea (what this enables)</div>
             <div className="mt-1">
