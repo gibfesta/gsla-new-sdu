@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/Card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function ImportExportPage() {
   return (

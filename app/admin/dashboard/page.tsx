@@ -1,20 +1,20 @@
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/Card";
+import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Info, ClipboardList, Settings, ArrowLeftRight, Bell } from "lucide-react";
 
 const tiles = [
   {
-    title: "Stats",
+    title: "Statistics",
     desc: "View analytics and participation trends",
-    href: "/stats",
+    href: "/admin/statistics",
     icon: BarChart3,
     tint: "bg-[#0C2F57]/10",
     iconColor: "text-[#0C2F57]",
   },
   {
-    title: "Info",
+    title: "Information Pages",
     desc: "Manage information pages and records",
-    href: "/info",
+    href: "/admin/info",
     icon: Info,
     tint: "bg-slate-100",
     iconColor: "text-slate-700",
@@ -22,7 +22,7 @@ const tiles = [
   {
     title: "Forms",
     desc: "Create and edit forms for coaches, volunteers, associations",
-    href: "/forms",
+    href: "/admin/forms",
     icon: ClipboardList,
     tint: "bg-[#F2B705]/15",
     iconColor: "text-[#B45309]",
@@ -46,7 +46,7 @@ const tiles = [
   {
     title: "Reminders",
     desc: "Certification renewals, deadlines and alerts",
-    href: "/reminders",
+    href: "/admin/reminders",
     icon: Bell,
     tint: "bg-[#D81E27]/10",
     iconColor: "text-[#D81E27]",
