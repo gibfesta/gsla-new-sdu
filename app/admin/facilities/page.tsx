@@ -281,7 +281,7 @@ function Modal({
  * - If localStorage already has old data, the app loads that instead of seedFacilities().
  * - To force the new seed, clear localStorage OR change STORAGE_KEY.
  */
-const STORAGE_KEY = "gsla_facilities_demo_v4";
+const STORAGE_KEY = "gsla_facilities_demo_v5";
 
 /**
  * Demo seed data: FACILITIES
@@ -430,7 +430,7 @@ function seedIssues(): Issue[] {
   return [
     {
       id: "i-1001",
-      facilityId: "f-ocean-view-centre",
+      facilityId: "Lath-Barracks",
       createdAt: "2025-12-03T18:20:00.000Z",
       updatedAt: "2025-12-05T09:05:00.000Z",
       reportedBy: { name: "Leah Johnson", role: "Club Official", clubOrAssoc: "Marina Futsal Club" },
@@ -443,7 +443,7 @@ function seedIssues(): Issue[] {
     },
     {
       id: "i-1002",
-      facilityId: "f-king-george-v",
+      facilityId: "vic-stadium",
       createdAt: "2025-12-06T07:45:00.000Z",
       updatedAt: "2025-12-07T11:00:00.000Z",
       reportedBy: { name: "Omar Khan", role: "Member", clubOrAssoc: "Gibraltar Cricket Association" },
@@ -456,7 +456,7 @@ function seedIssues(): Issue[] {
     },
     {
       id: "i-1003",
-      facilityId: "f-north-ground",
+      facilityId: "Europa-Point-Complex",
       createdAt: "2025-12-10T16:10:00.000Z",
       updatedAt: "2025-12-12T14:25:00.000Z",
       reportedBy: { name: "Sofia Pereira", role: "Volunteer" },
