@@ -1,10 +1,15 @@
 // app/admin/sports/[sport]/page.tsx
 "use client";
 
+// NOTE: This page is the “sport admin hub” for a single sport (from the dynamic route param).
+// It’s a tabbed dashboard that shows summary cards + links out to deeper sub-pages (governance,
+// teams, participants, coaches, etc.). Everything is mock/static data right now.
+
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import {
+  // NOTE: Icon imports are purely presentational. Add/remove icons here as sections evolve.
   Users,
   Shield,
   Trophy,
@@ -21,6 +26,11 @@ import {
   Settings2,
 } from "lucide-react";
 
+// NOTE: Centralised tab keys for the page.
+// If you add a new tab, update:
+// 1) this union type
+// 2) the `tabs` array labels
+// 3) the conditional render block further down
 type TabKey =
   | "overview"
   | "governance"
@@ -30,16 +40,28 @@ type TabKey =
   | "coaches"
   | "compliance";
 
+// NOTE: Tiny helper for conditional className assembly.
+// Edit here if you ever want different behaviour (e.g. de-dupe or support arrays), but keep
+// usage consistent across the admin UI.
 function classNames(...v: Array<string | false | null | undefined>) {
   return v.filter(Boolean).join(" ");
 }
 
+// NOTE: Route slug -> human title helper.
+// This is used to make the H1 pretty from the `[sport]` param.
+// If you change URL naming conventions (e.g. underscores), update this conversion.
 function toTitleCaseSlug(slug: string) {
   return decodeURIComponent(slug)
     .replace(/-/g, " ")
     .replace(/\b\w/g, (m) => m.toUpperCase());
 }
 
+// NOTE: Generic modal shell used for all “mock CRUD” actions on this page.
+// Where to edit:
+// - Header layout: inside the first <div className="flex ... border-b ...">
+// - Body spacing: <div className="p-5">{children}</div>
+// - Footer buttons (Cancel/Save): bottom bar
+// This is intentionally “dumb”: it only renders UI, and `onClose` is the only action.
 function Modal({
   open,
   title,
@@ -53,22 +75,29 @@ function Modal({
   children?: React.ReactNode;
   onClose: () => void;
 }) {
+  // NOTE: Modal is conditionally mounted. If you need animation later, you’ll likely
+  // keep it mounted and transition opacity/scale instead of returning null.
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[80]">
+      {/* NOTE: Backdrop overlay. Click closes modal (mock behaviour). */}
       <div
         className="absolute inset-0 bg-slate-900/40"
         onClick={onClose}
         aria-hidden="true"
       />
+      {/* NOTE: Modal container (centered). */}
       <div className="absolute left-1/2 top-1/2 w-[92vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white shadow-xl">
+        {/* NOTE: Modal header. */}
         <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5">
           <div>
             <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+            {/* NOTE: Optional description line for context. */}
             {description ? (
               <p className="mt-1 text-sm text-slate-600">{description}</p>
             ) : null}
           </div>
+          {/* NOTE: Close “X” button. */}
           <button
             className="rounded-xl border border-slate-200 p-2 text-slate-700 hover:bg-slate-50"
             onClick={onClose}
@@ -77,7 +106,11 @@ function Modal({
             <X size={18} />
           </button>
         </div>
+
+        {/* NOTE: Modal content (form fields live here via children). */}
         <div className="p-5">{children}</div>
+
+        {/* NOTE: Modal footer actions (mock). Replace onClose with real submit handlers later. */}
         <div className="flex items-center justify-end gap-2 border-t border-slate-200 p-5">
           <button
             className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
@@ -97,6 +130,11 @@ function Modal({
   );
 }
 
+// NOTE: Shared “section card” wrapper used across tabs.
+// Where to edit:
+// - Padding/border/radius: the outer <section>
+// - Header row: title + optional right-side controls (buttons/links)
+// This keeps the tab content consistent and reduces repeated markup.
 function SectionShell({
   icon: Icon,
   title,
@@ -110,6 +148,7 @@ function SectionShell({
 }) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6">
+      {/* NOTE: Section header row (icon, title, optional actions). */}
       <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <Icon className="text-[#D81E27]" />
@@ -117,20 +156,33 @@ function SectionShell({
         </div>
         {right}
       </div>
+
+      {/* NOTE: Section body. */}
       {children}
     </section>
   );
 }
 
 export default function SportPage() {
+  // NOTE: Dynamic route param `[sport]` comes from /admin/sports/[sport].
+  // Used for building links (sub-pages) and for the on-page title.
   const { sport } = useParams<{ sport: string }>();
+
+  // NOTE: Display title for the page header.
+  // If “Association” isn’t the right label in future, change it here.
   const sportTitle = `${toTitleCaseSlug(sport)} Association`;
 
+  // NOTE: Season options for filtering the data displayed.
+  // Later: replace with fetched seasons per sport, and store `seasonId` instead of strings.
   const seasons = ["2025/26 (Current)", "2024/25", "2023/24", "2022/23"];
   const [season, setSeason] = useState(seasons[0]);
 
+  // NOTE: Mock admin mode toggle.
+  // Used to show/hide “Add/Edit” actions; in production this should be role-based access.
   const [adminMode, setAdminMode] = useState(true);
 
+  // NOTE: Tabs definition for the tab bar.
+  // If you add/remove a tab, update this array + the TabKey union + render blocks below.
   const tabs: Array<{ key: TabKey; label: string }> = [
     { key: "overview", label: "Overview" },
     { key: "governance", label: "Governance" },
@@ -142,10 +194,14 @@ export default function SportPage() {
   ];
   const [tab, setTab] = useState<TabKey>("overview");
 
+  // NOTE: Single modal state driving all modals on this page.
+  // Extend the union when adding new modal types.
   const [modal, setModal] = useState<
     null | { type: "addTeam" | "editCommittee" | "addLeague" | "addCoach" }
   >(null);
 
+  // NOTE: Mock committee roster.
+  // Later: fetch from DB/API; keep `role` stable as a key, or use IDs.
   const committee = useMemo(
     () => [
       { role: "Chairperson", name: "John Murphy" },
@@ -157,6 +213,8 @@ export default function SportPage() {
     []
   );
 
+  // NOTE: Mock league list for the sport + season.
+  // Later: add league IDs, divisions, start/end dates, and status derived from dates.
   const leagues = useMemo(
     () => [
       { name: "Senior County League", status: "Active" },
@@ -168,6 +226,8 @@ export default function SportPage() {
     []
   );
 
+  // NOTE: Mock age group breakdown (teams per age band).
+  // Later: drive from teams table filtered by season + sport + age category.
   const ageGroups = useMemo(
     () => [
       { group: "Under 11", teams: 4 },
@@ -180,6 +240,8 @@ export default function SportPage() {
     []
   );
 
+  // NOTE: Mock “quick stats” used in Overview + Participants tab.
+  // Later: compute from registrations/participants dataset for the selected season.
   const quickStats = useMemo(
     () => [
       { label: "Registered Players", value: "486" },
@@ -190,6 +252,8 @@ export default function SportPage() {
     []
   );
 
+  // NOTE: Mock coach qualification counts.
+  // Later: drive from coach records (qualifications, cert expiry, etc.).
   const coachQuals = useMemo(
     () => [
       { level: "Level 1 Coaches", count: 14 },
@@ -200,6 +264,8 @@ export default function SportPage() {
     []
   );
 
+  // NOTE: Mock compliance checklist.
+  // Later: store compliance items by season, with evidence/docs + expiry dates.
   const compliance = useMemo(
     () => [
       { label: "Annual affiliation submitted to GSLA", ok: true },
@@ -211,11 +277,24 @@ export default function SportPage() {
     []
   );
 
+  // NOTE: Derived count used to show a warning banner in the header.
+  // If compliance becomes API-driven, consider memoising or moving server-side.
   const missingComplianceCount = compliance.filter((c) => !c.ok).length;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header
+          Purpose: Top-level context for the sport admin area:
+          - Page title + description
+          - Compliance status banner (derived from checklist)
+          - Season selector (filters the displayed data)
+          - Admin mode toggle (mock permissions)
+          - Tab navigation
+          Where to edit:
+          - Header copy: sportTitle + paragraph text
+          - Compliance banner logic: missingComplianceCount / button action
+          - Season options: `seasons` array above
+          - Tabs: `tabs` array above */}
       <div className="rounded-2xl border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
@@ -224,6 +303,11 @@ export default function SportPage() {
               GSLA sport admin — governance, operations, participants and compliance.
             </p>
 
+            {/* Compliance banner
+                Purpose: Prominent warning/success callout based on compliance checklist state.
+                Where to edit:
+                - Items counted: `compliance` array
+                - CTA button: setTab("compliance") / label */}
             {missingComplianceCount > 0 ? (
               <div className="mt-4 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
                 <AlertTriangle className="mt-0.5 text-amber-700" size={18} />
@@ -258,7 +342,11 @@ export default function SportPage() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            {/* Season filter */}
+            {/* Season filter
+                Purpose: Switch the “season context” for the page.
+                Where to edit:
+                - options: `seasons`
+                - display formatting: the <option> label */}
             <div className="relative">
               <select
                 value={season}
@@ -277,6 +365,9 @@ export default function SportPage() {
               />
             </div>
 
+            {/* Admin mode toggle
+                Purpose: Mock permission switch to show/hide edit controls.
+                Later: replace with real auth/roles and remove the toggle. */}
             <button
               onClick={() => setAdminMode((v) => !v)}
               className={classNames(
@@ -293,7 +384,11 @@ export default function SportPage() {
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs
+            Purpose: Switch between major sport admin sections.
+            Where to edit:
+            - Tab list/labels: `tabs`
+            - Active styling: classNames branch below */}
         <div className="mt-6 flex flex-wrap gap-2">
           {tabs.map((t) => {
             const active = t.key === tab;
@@ -315,7 +410,12 @@ export default function SportPage() {
         </div>
       </div>
 
-      {/* Overview */}
+      {/* Overview tab
+          Purpose: High-level summary (stats + quick access to governance + compliance).
+          Where to edit:
+          - Stat cards: `quickStats`
+          - Governance preview: `committee.slice(0, 4)` + link target
+          - Compliance preview: `compliance.slice(0, 4)` */}
       {tab === "overview" && (
         <div className="space-y-6">
           <SectionShell icon={UserCheck} title="At a glance">
@@ -337,6 +437,7 @@ export default function SportPage() {
               icon={Shield}
               title="Governance (Top roles)"
               right={
+                // NOTE: Admin-only control (mock).
                 adminMode ? (
                   <button
                     className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
@@ -362,6 +463,7 @@ export default function SportPage() {
                 ))}
               </div>
 
+              {/* NOTE: “Drill-down” navigation to the dedicated governance page. */}
               <div className="mt-4">
                 <Link
                   href={`/admin/sports/${sport}/governance`}
@@ -376,6 +478,7 @@ export default function SportPage() {
               icon={ClipboardList}
               title="Compliance snapshot"
               right={
+                // NOTE: Quick jump to compliance tab.
                 <button
                   className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                   onClick={() => setTab("compliance")}
@@ -416,7 +519,11 @@ export default function SportPage() {
         </div>
       )}
 
-      {/* Governance */}
+      {/* Governance tab
+          Purpose: Full committee roster in a simple grid.
+          Where to edit:
+          - Committee data: `committee`
+          - Edit button action: opens editCommittee modal */}
       {tab === "governance" && (
         <SectionShell
           icon={Shield}
@@ -449,7 +556,11 @@ export default function SportPage() {
         </SectionShell>
       )}
 
-      {/* Leagues */}
+      {/* Leagues tab
+          Purpose: List of leagues/competitions for the sport, in the current season context.
+          Where to edit:
+          - League data: `leagues`
+          - Add league action: opens addLeague modal */}
       {tab === "leagues" && (
         <SectionShell
           icon={Trophy}
@@ -474,6 +585,7 @@ export default function SportPage() {
               >
                 <div>
                   <p className="font-semibold text-slate-900">{l.name}</p>
+                  {/* NOTE: Season shown is the selected filter; later this should control fetch/querying. */}
                   <p className="text-sm text-slate-600">Season: {season}</p>
                 </div>
                 <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
@@ -485,7 +597,12 @@ export default function SportPage() {
         </SectionShell>
       )}
 
-      {/* Teams */}
+      {/* Teams tab
+          Purpose: High-level “teams by age group” snapshot + navigation to full teams page.
+          Where to edit:
+          - Age group data: `ageGroups`
+          - View Teams link target: /teams
+          - Add team action: opens addTeam modal */}
       {tab === "teams" && (
         <SectionShell
           icon={Users}
@@ -523,7 +640,11 @@ export default function SportPage() {
         </SectionShell>
       )}
 
-      {/* Participants */}
+      {/* Participants tab
+          Purpose: Shortcut to the Participants sub-page + summary stats.
+          Where to edit:
+          - Link target: /participants
+          - Stats: `quickStats` */}
       {tab === "participants" && (
         <SectionShell
           icon={UserCheck}
@@ -553,7 +674,12 @@ export default function SportPage() {
         </SectionShell>
       )}
 
-      {/* Coaches */}
+      {/* Coaches tab
+          Purpose: Coach qualification counts + navigation to coaches list page + mock add.
+          Where to edit:
+          - Link target: /coaches
+          - Qualification counts: `coachQuals`
+          - Add coach action: opens addCoach modal */}
       {tab === "coaches" && (
         <SectionShell
           icon={GraduationCap}
@@ -594,7 +720,11 @@ export default function SportPage() {
         </SectionShell>
       )}
 
-      {/* Compliance */}
+      {/* Compliance tab
+          Purpose: Full checklist view (per season) with ok/missing highlighting.
+          Where to edit:
+          - Checklist items: `compliance`
+          - If you later add “resolve” actions, they would go on the right side of each row */}
       {tab === "compliance" && (
         <SectionShell icon={ClipboardList} title="Compliance & Administration">
           <div className="space-y-3">
@@ -639,7 +769,12 @@ export default function SportPage() {
         </SectionShell>
       )}
 
-      {/* Modals */}
+      {/* Modals
+          Purpose: Mock CRUD entry points for this page.
+          Where to edit:
+          - Modal form fields (inputs, labels, layout)
+          - When wiring to real APIs: replace onClose in the footer with submit handlers,
+            and store form state + validation errors instead of placeholders/defaultValue. */}
       <Modal
         open={modal?.type === "addTeam"}
         title="Add Team"
@@ -664,6 +799,8 @@ export default function SportPage() {
         onClose={() => setModal(null)}
       >
         <div className="grid gap-3">
+          {/* NOTE: Simple “role -> name” editor.
+              Later: use IDs, add validation, and allow add/remove roles if needed. */}
           {committee.map((m) => (
             <div key={m.role} className="grid gap-2 sm:grid-cols-2">
               <div className="text-sm font-semibold text-slate-900">{m.role}</div>

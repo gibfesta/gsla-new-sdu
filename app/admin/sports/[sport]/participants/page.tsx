@@ -17,10 +17,25 @@ import {
   X,
 } from "lucide-react";
 
+/**
+ * Utility: lightweight Tailwind class combiner.
+ * - Purpose: keeps conditional className logic readable without pulling in a dependency.
+ * - Edit here if you ever want smarter merging (e.g. Tailwind-merge), but keep signature stable.
+ */
 function classNames(...v: Array<string | false | null | undefined>) {
   return v.filter(Boolean).join(" ");
 }
 
+/**
+ * Reusable modal shell.
+ * - Purpose: shared overlay/layout for "Add" and "Edit" flows.
+ * - Where to edit UI/structure:
+ *   - Backdrop: the semi-transparent overlay behind the modal
+ *   - Header: title/description and close button
+ *   - Body: renders {children}
+ *   - Footer: "Cancel" + "Save (Mock)" actions (currently mock)
+ * - Rule: this modal is purely presentational; closing is controlled by onClose() callback.
+ */
 function Modal({
   open,
   title,
@@ -34,11 +49,17 @@ function Modal({
   children?: React.ReactNode;
   onClose: () => void;
 }) {
+  // Visibility gate: when open=false, we render nothing (no overlay, no portal).
   if (!open) return null;
+
   return (
     <div className="fixed inset-0 z-[80]">
+      {/* Backdrop: clicking outside closes the modal. Edit the opacity/color here. */}
       <div className="absolute inset-0 bg-slate-900/40" onClick={onClose} />
+
+      {/* Modal panel: sizing + positioning. Edit max width, padding, or rounding here. */}
       <div className="absolute left-1/2 top-1/2 w-[92vw] max-w-2xl -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white shadow-xl">
+        {/* Header: title + optional description + close icon */}
         <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5">
           <div>
             <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
@@ -46,6 +67,8 @@ function Modal({
               <p className="mt-1 text-sm text-slate-600">{description}</p>
             ) : null}
           </div>
+
+          {/* Close button: only calls onClose (no save logic here). */}
           <button
             className="rounded-xl border border-slate-200 p-2 text-slate-700 hover:bg-slate-50"
             onClick={onClose}
@@ -54,7 +77,11 @@ function Modal({
             <X size={18} />
           </button>
         </div>
+
+        {/* Body: form content is injected from caller */}
         <div className="p-5">{children}</div>
+
+        {/* Footer: mock actions. Replace with real submit wiring later. */}
         <div className="flex items-center justify-end gap-2 border-t border-slate-200 p-5">
           <button
             className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
@@ -74,6 +101,12 @@ function Modal({
   );
 }
 
+/**
+ * Data model: what the table expects per participant.
+ * - If you add fields in the UI (e.g. phone/email, guardian details),
+ *   add them here and update the mock dataset and modal fields.
+ * - ageGroup/role/status are strict unions for consistent filtering and badges.
+ */
 type Participant = {
   id: string;
   name: string;
@@ -87,19 +120,47 @@ type Participant = {
 };
 
 export default function ParticipantsPage() {
+  /**
+   * Route context: sport slug from /admin/sports/[sport]/participants
+   * - Used for the "Back to Sport" link and page context.
+   * - If your route param name changes, update the generic + usage here.
+   */
   const { sport } = useParams<{ sport: string }>();
 
+  /**
+   * Admin mode toggle (mock).
+   * - Purpose: switches between editable state (shows Add/Edit) and read-only display.
+   * - Later: could be driven by permissions/roles from auth rather than local state.
+   */
   const [adminMode, setAdminMode] = useState(true);
 
+  /**
+   * Season selection (mock).
+   * - Purpose: conceptual "season-scoped register" switcher.
+   * - Currently: only affects the label and display; dataset does not change per season.
+   * - Later: use season to fetch/filter data.
+   */
   const seasons = ["2025/26 (Current)", "2024/25", "2023/24"];
   const [season, setSeason] = useState(seasons[0]);
 
+  /**
+   * Filter controls (client-side).
+   * - q: search by name/team
+   * - ageGroup/role/status: dropdown filters
+   * - onlyFlags: show only records needing safeguarding/vetting attention
+   */
   const [q, setQ] = useState("");
   const [ageGroup, setAgeGroup] = useState<"All" | Participant["ageGroup"]>("All");
   const [role, setRole] = useState<"All" | Participant["role"]>("All");
   const [status, setStatus] = useState<"All" | Participant["status"]>("All");
   const [onlyFlags, setOnlyFlags] = useState(false);
 
+  /**
+   * Mock dataset.
+   * - Purpose: UI prototyping and layout testing without backend wiring.
+   * - Replace with data fetching (server action / API call) when ready.
+   * - Note: memoized once ([]) so data remains stable across renders.
+   */
   const data: Participant[] = useMemo(
     () => [
       {
@@ -172,40 +233,78 @@ export default function ParticipantsPage() {
     []
   );
 
+  /**
+   * Flag logic (business rule placeholder).
+   * - Current rule:
+   *   - safeguarding must be Complete for everyone
+   *   - vetting must be Complete for non-players (adults in roles)
+   * - Edit here if your policy changes (e.g. coaches require both, youth exceptions, etc.).
+   */
   const flagged = (p: Participant) =>
     p.safeguarding !== "Complete" || (p.role !== "Player" && p.vetting !== "Complete");
 
+  /**
+   * Derived table rows:
+   * - Applies all filters and sorts by name.
+   * - This is the single place to adjust client-side filtering behavior.
+   * - Later: move to backend queries if the dataset becomes large.
+   */
   const rows = useMemo(() => {
     return data
       .filter((p) => {
+        // Search: matches name or team; trims whitespace to avoid "empty" queries.
         const matchesQ =
           !q.trim() ||
           p.name.toLowerCase().includes(q.toLowerCase()) ||
           (p.team ?? "").toLowerCase().includes(q.toLowerCase());
 
+        // Dropdown filters: "All" means no filtering on that dimension.
         const matchesAge = ageGroup === "All" || p.ageGroup === ageGroup;
         const matchesRole = role === "All" || p.role === role;
         const matchesStatus = status === "All" || p.status === status;
 
+        // Flags toggle: when enabled, only show participants that are flagged().
         const matchesFlags = !onlyFlags || flagged(p);
+
         return matchesQ && matchesAge && matchesRole && matchesStatus && matchesFlags;
       })
+      // Sort: stable, user-friendly alphabetical order for lists.
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [data, q, ageGroup, role, status, onlyFlags]);
 
+  /**
+   * Modal state:
+   * - type: add or edit
+   * - id: used to find the participant being edited
+   * - This is mock-only: inputs do not persist and Save just closes.
+   */
   const [modal, setModal] = useState<null | { type: "add" | "edit"; id?: string }>(
     null
   );
+
+  /**
+   * Convenience: the participant being edited (null for "add").
+   * - If you change modal shape or add multi-step modals, update this mapping.
+   */
   const modalParticipant = modal?.type === "edit" ? data.find((d) => d.id === modal.id) : null;
 
+  /**
+   * Summary metrics:
+   * - flagsCount: drives the alert pill in the header ("X flagged records...")
+   * - Note: counts over full dataset, not filtered rows (intentional for global awareness).
+   */
   const flagsCount = data.filter(flagged).length;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header
+          - Purpose: page context + status summary + top-level actions (season/admin/add).
+          - Edit here for: title copy, helper text, callouts, and action layout.
+      */}
       <div className="rounded-2xl border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
+            {/* Navigation: returns to the sport landing page */}
             <Link
               href={`/admin/sports/${sport}`}
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
@@ -214,11 +313,13 @@ export default function ParticipantsPage() {
               Back to Sport
             </Link>
 
+            {/* Page title + description */}
             <h1 className="mt-4 text-2xl font-bold text-slate-900">Participants</h1>
             <p className="mt-1 text-sm text-slate-600">
               Season-scoped register — players, volunteers, coaches, safeguarding & vetting.
             </p>
 
+            {/* Status callout: switches based on global flagsCount */}
             {flagsCount > 0 ? (
               <div className="mt-4 inline-flex items-center gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900">
                 <AlertTriangle size={16} className="text-amber-700" />
@@ -232,8 +333,12 @@ export default function ParticipantsPage() {
             )}
           </div>
 
+          {/* Actions cluster: season selector + admin toggle + add button */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            {/* Season */}
+            {/* Season selector
+                - Edit the list in `seasons`.
+                - Hook to backend later to fetch season-specific participants.
+            */}
             <div className="relative">
               <select
                 value={season}
@@ -246,13 +351,14 @@ export default function ParticipantsPage() {
                   </option>
                 ))}
               </select>
+              {/* Decorative chevron for native select */}
               <ChevronDown
                 className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
                 size={16}
               />
             </div>
 
-            {/* Admin toggle */}
+            {/* Admin toggle (mock permissions) */}
             <button
               onClick={() => setAdminMode((v) => !v)}
               className={classNames(
@@ -266,6 +372,7 @@ export default function ParticipantsPage() {
               {adminMode ? "Admin mode: ON" : "Read-only: ON"}
             </button>
 
+            {/* Add action: only visible in adminMode */}
             {adminMode ? (
               <button
                 onClick={() => setModal({ type: "add" })}
@@ -278,8 +385,14 @@ export default function ParticipantsPage() {
           </div>
         </div>
 
-        {/* Filters */}
+        {/* Filters
+            - Purpose: fast client-side narrowing by search + dropdowns + flags toggle.
+            - Where to edit:
+              - Add new filter fields here
+              - Update logic in the `rows` useMemo above
+        */}
         <div className="mt-6 grid gap-3 lg:grid-cols-12">
+          {/* Search input */}
           <div className="lg:col-span-5">
             <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700">
               <Search size={18} className="text-slate-500" />
@@ -292,7 +405,9 @@ export default function ParticipantsPage() {
             </div>
           </div>
 
+          {/* Dropdown filters + flags toggle */}
           <div className="lg:col-span-7 grid gap-3 sm:grid-cols-4">
+            {/* Age group filter */}
             <div className="relative">
               <select
                 value={ageGroup}
@@ -307,9 +422,13 @@ export default function ParticipantsPage() {
                 <option value="Senior">Senior</option>
                 <option value="Women">Women</option>
               </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+              <ChevronDown
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                size={16}
+              />
             </div>
 
+            {/* Role filter */}
             <div className="relative">
               <select
                 value={role}
@@ -321,9 +440,13 @@ export default function ParticipantsPage() {
                 <option value="Volunteer">Volunteer</option>
                 <option value="Coach">Coach</option>
               </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+              <ChevronDown
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                size={16}
+              />
             </div>
 
+            {/* Status filter */}
             <div className="relative">
               <select
                 value={status}
@@ -335,9 +458,13 @@ export default function ParticipantsPage() {
                 <option value="Pending">Pending</option>
                 <option value="Inactive">Inactive</option>
               </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+              <ChevronDown
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                size={16}
+              />
             </div>
 
+            {/* Flags toggle */}
             <button
               onClick={() => setOnlyFlags((v) => !v)}
               className={classNames(
@@ -355,8 +482,13 @@ export default function ParticipantsPage() {
         </div>
       </div>
 
-      {/* Table */}
+      {/* Table
+          - Purpose: primary register view.
+          - Edit here for: columns, badge styles, row highlighting rules, action buttons.
+          - Note: min width ensures horizontal scroll on small screens.
+      */}
       <div className="rounded-2xl border border-slate-200 bg-white p-0 overflow-hidden">
+        {/* Summary bar: shows filtered vs total counts and selected season */}
         <div className="border-b border-slate-200 px-6 py-4">
           <p className="text-sm font-semibold text-slate-900">
             Showing <span className="font-bold">{rows.length}</span> of{" "}
@@ -367,6 +499,7 @@ export default function ParticipantsPage() {
 
         <div className="overflow-x-auto">
           <table className="min-w-[980px] w-full text-sm">
+            {/* Table header: column labels */}
             <thead className="bg-slate-50 text-slate-700">
               <tr className="text-left">
                 <th className="px-6 py-3 font-bold">Name</th>
@@ -380,40 +513,59 @@ export default function ParticipantsPage() {
                 <th className="px-6 py-3 font-bold text-right">Actions</th>
               </tr>
             </thead>
+
+            {/* Table body: maps filtered rows to display */}
             <tbody>
               {rows.map((p) => {
+                // Per-row derived state: used for row tint + "Needs attention" label.
                 const isFlagged = flagged(p);
+
                 return (
                   <tr
                     key={p.id}
                     className={classNames(
                       "border-t border-slate-200",
+                      // Visual emphasis for flagged records (edit tint here).
                       isFlagged ? "bg-amber-50/40" : "bg-white"
                     )}
                   >
+                    {/* Name + DOB */}
                     <td className="px-6 py-4">
                       <div className="font-semibold text-slate-900">{p.name}</div>
                       <div className="text-xs text-slate-500">DOB: {p.dob}</div>
                     </td>
+
+                    {/* Age group */}
                     <td className="px-6 py-4 font-semibold text-slate-800">{p.ageGroup}</td>
+
+                    {/* Role pill */}
                     <td className="px-6 py-4">
                       <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700">
                         {p.role}
                       </span>
                     </td>
+
+                    {/* Team */}
                     <td className="px-6 py-4 text-slate-700">{p.team ?? "-"}</td>
+
+                    {/* Status badge: tone changes based on status */}
                     <td className="px-6 py-4">
                       <span
                         className={classNames(
                           "rounded-full border px-3 py-1 text-xs font-bold",
-                          p.status === "Active" && "border-emerald-200 bg-emerald-50 text-emerald-900",
-                          p.status === "Pending" && "border-amber-200 bg-amber-50 text-amber-900",
-                          p.status === "Inactive" && "border-slate-200 bg-slate-50 text-slate-700"
+                          p.status === "Active" &&
+                            "border-emerald-200 bg-emerald-50 text-emerald-900",
+                          p.status === "Pending" &&
+                            "border-amber-200 bg-amber-50 text-amber-900",
+                          p.status === "Inactive" &&
+                            "border-slate-200 bg-slate-50 text-slate-700"
                         )}
                       >
                         {p.status}
                       </span>
                     </td>
+
+                    {/* Safeguarding badge: complete vs not complete */}
                     <td className="px-6 py-4">
                       <span
                         className={classNames(
@@ -427,6 +579,8 @@ export default function ParticipantsPage() {
                         {p.safeguarding}
                       </span>
                     </td>
+
+                    {/* Vetting badge: complete / pending / N/A */}
                     <td className="px-6 py-4">
                       <span
                         className={classNames(
@@ -435,12 +589,15 @@ export default function ParticipantsPage() {
                             "border-emerald-200 bg-emerald-50 text-emerald-900",
                           p.vetting === "Pending" &&
                             "border-amber-200 bg-amber-50 text-amber-900",
-                          p.vetting === "N/A" && "border-slate-200 bg-slate-50 text-slate-700"
+                          p.vetting === "N/A" &&
+                            "border-slate-200 bg-slate-50 text-slate-700"
                         )}
                       >
                         {p.vetting}
                       </span>
                     </td>
+
+                    {/* Flag summary chip: driven by flagged() */}
                     <td className="px-6 py-4">
                       {isFlagged ? (
                         <span className="inline-flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-900">
@@ -454,6 +611,8 @@ export default function ParticipantsPage() {
                         </span>
                       )}
                     </td>
+
+                    {/* Actions: Edit button in admin mode, otherwise read-only label */}
                     <td className="px-6 py-4 text-right">
                       {adminMode ? (
                         <button
@@ -464,12 +623,16 @@ export default function ParticipantsPage() {
                           Edit
                         </button>
                       ) : (
-                        <span className="text-xs font-semibold text-slate-400">Read-only</span>
+                        <span className="text-xs font-semibold text-slate-400">
+                          Read-only
+                        </span>
                       )}
                     </td>
                   </tr>
                 );
               })}
+
+              {/* Empty state: shown when filters return no rows */}
               {rows.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="px-6 py-10 text-center text-sm text-slate-600">
@@ -482,7 +645,13 @@ export default function ParticipantsPage() {
         </div>
       </div>
 
-      {/* Add/Edit modal */}
+      {/* Add/Edit modal
+          - Purpose: mock participant editor form.
+          - Where to edit:
+            - Field list / layout (inputs below)
+            - Default values (modalParticipant.*)
+          - Note: inputs are uncontrolled and do not persist — this is UI-only.
+      */}
       <Modal
         open={!!modal}
         title={modal?.type === "add" ? "Add Participant" : "Edit Participant"}
@@ -490,6 +659,7 @@ export default function ParticipantsPage() {
         onClose={() => setModal(null)}
       >
         <div className="grid gap-4">
+          {/* Identity fields */}
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="text-sm font-semibold text-slate-900">Full name</label>
@@ -509,6 +679,7 @@ export default function ParticipantsPage() {
             </div>
           </div>
 
+          {/* Classification fields (drive filters + badges) */}
           <div className="grid gap-3 sm:grid-cols-3">
             <div>
               <label className="text-sm font-semibold text-slate-900">Age group</label>
@@ -536,6 +707,7 @@ export default function ParticipantsPage() {
             </div>
           </div>
 
+          {/* Team + guardian contact (useful for youth participants) */}
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="text-sm font-semibold text-slate-900">Team</label>
@@ -546,7 +718,9 @@ export default function ParticipantsPage() {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-900">Guardian contact (youth)</label>
+              <label className="text-sm font-semibold text-slate-900">
+                Guardian contact (youth)
+              </label>
               <input
                 className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
                 placeholder="Name + phone/email"
@@ -554,6 +728,7 @@ export default function ParticipantsPage() {
             </div>
           </div>
 
+          {/* Compliance fields (drive flagged() + header callout) */}
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="text-sm font-semibold text-slate-900">Safeguarding</label>
@@ -564,7 +739,9 @@ export default function ParticipantsPage() {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-900">Vetting (adult roles)</label>
+              <label className="text-sm font-semibold text-slate-900">
+                Vetting (adult roles)
+              </label>
               <input
                 className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
                 defaultValue={modalParticipant?.vetting ?? ""}
