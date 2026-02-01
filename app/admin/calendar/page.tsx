@@ -1,3 +1,4 @@
+// app/calendar/page.tsx
 "use client";
 
 /**
@@ -75,18 +76,7 @@ type CalendarEvent = {
   notes?: string;
 };
 
-/**
- * DEV NOTE: SEED / DEMO DATA
- * ---------------------------------
- * This array is the fake dataset used by the calendar.
- * Edit/add/remove events here to change what appears by default.
- *
- * Tip:
- * - For multi-day events, set `end` to a later date/time.
- * - `sport` is just a string; it drives the “Sport filter” dropdown options.
- */
 const INITIAL_EVENTS: CalendarEvent[] = [
-  // --- Leagues / Tournaments / Local events ---
   {
     id: "e1",
     title: "Gibraltar Football League — Matchday 12",
@@ -134,8 +124,6 @@ const INITIAL_EVENTS: CalendarEvent[] = [
     end: "2025-12-14T18:00:00",
     notes: "Travel: Coach departs 05:30 | Hotel: Confirmed",
   },
-
-  // --- Courses / Seminars ---
   {
     id: "c1",
     title: "First Aid Course (Sports Environment)",
@@ -255,49 +243,29 @@ const INITIAL_EVENTS: CalendarEvent[] = [
   },
 ];
 
-/**
- * DEV NOTE: DATE HELPERS
- * ---------------------------------
- * These are tiny utilities used in multiple places (grid generation, grouping, formatting).
- * If you later adopt a date library (date-fns, dayjs), these are the functions you'd replace.
- */
 function pad2(n: number) {
   return String(n).padStart(2, "0");
 }
-
 function toDateKey(d: Date) {
-  // DEV NOTE: Key format used everywhere for day grouping: "YYYY-MM-DD"
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 }
-
 function clampToDay(d: Date) {
-  // DEV NOTE: Normalizes Date -> midnight for consistent day comparisons
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
-
 function startOfMonth(d: Date) {
-  // DEV NOTE: Drives the calendar cursor month
   return new Date(d.getFullYear(), d.getMonth(), 1);
 }
-
 function endOfMonth(d: Date) {
-  // DEV NOTE: Used to calculate the last day to render in the grid
   return new Date(d.getFullYear(), d.getMonth() + 1, 0);
 }
-
 function addMonths(d: Date, delta: number) {
-  // DEV NOTE: Month navigation buttons use this (+1 / -1)
   return new Date(d.getFullYear(), d.getMonth() + delta, 1);
 }
-
 function formatTime(iso: string) {
-  // DEV NOTE: Used in grid mini-cards + right rail
   const d = new Date(iso);
   return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
-
 function formatDateLong(iso: string) {
-  // DEV NOTE: Used in Upcoming list + multi-day labels
   const d = new Date(iso);
   return d.toLocaleDateString([], {
     weekday: "short",
@@ -306,9 +274,7 @@ function formatDateLong(iso: string) {
     year: "numeric",
   });
 }
-
 function isSameDay(a: Date, b: Date) {
-  // DEV NOTE: Needed to know whether a multi-day event starts/ends on the selected day
   return (
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
@@ -316,16 +282,6 @@ function isSameDay(a: Date, b: Date) {
   );
 }
 
-/**
- * DEV NOTE: EVENT TYPE STYLING + ICONS
- * ---------------------------------
- * Single source of truth for:
- * - Icon
- * - Pill color
- * - Dot color (used in small grid cards)
- *
- * Change colors/icons here if you want to re-theme categories.
- */
 function typeMeta(type: EventType) {
   switch (type) {
     case "League":
@@ -344,14 +300,6 @@ function typeMeta(type: EventType) {
   }
 }
 
-/**
- * DEV NOTE: EXTRA “HINT” ICONS
- * ---------------------------------
- * This adds a secondary pill for certain keywords in titles.
- * If you want more hints:
- * - Add more keyword checks here (e.g. “concussion”, “anti-doping”, etc.)
- * - Update the label logic where HintIcon is rendered
- */
 function eventIconHint(title: string) {
   const t = title.toLowerCase();
   if (t.includes("first aid")) return HeartPulse;
@@ -359,25 +307,13 @@ function eventIconHint(title: string) {
   return null;
 }
 
-/**
- * DEV NOTE: DATETIME INPUT CONVERTERS
- * ---------------------------------
- * The Create Event modal uses <input type="datetime-local"> which expects "YYYY-MM-DDTHH:mm".
- * Internally we store ISO strings.
- *
- * If you later store local times instead of ISO:
- * - These two functions are where you'd adjust that behavior.
- */
-// Convert "YYYY-MM-DDTHH:mm" (from <input type="datetime-local">) to ISO string
 function localInputToISO(v: string) {
   if (!v) return "";
-  // Treat as local time, store as ISO with timezone offset applied by Date
   const d = new Date(v);
   if (Number.isNaN(+d)) return "";
   return d.toISOString();
 }
 
-// Convert ISO string to "YYYY-MM-DDTHH:mm" for datetime-local input
 function isoToLocalInput(iso: string) {
   if (!iso) return "";
   const d = new Date(iso);
@@ -391,40 +327,14 @@ function isoToLocalInput(iso: string) {
 }
 
 export default function Page() {
-  /**
-   * DEV NOTE: "today" is clamped to midnight so all date comparisons are stable.
-   * If you ever need “current time” logic, use new Date() separately.
-   */
   const today = clampToDay(new Date());
 
-  /**
-   * DEV NOTE: CORE STATE
-   * ---------------------------------
-   * events: all calendar events (seeded by INITIAL_EVENTS)
-   * cursor: which month is currently being viewed in the grid
-   * selectedDayKey: which day is selected (right rail uses this)
-   * filters: type + sport
-   *
-   * If you later connect to a DB:
-   * - events becomes fetched data
-   * - createEvent becomes POST, then refresh events
-   */
   const [events, setEvents] = useState<CalendarEvent[]>(() => INITIAL_EVENTS);
   const [cursor, setCursor] = useState(() => startOfMonth(today));
   const [selectedDayKey, setSelectedDayKey] = useState<string>(toDateKey(today));
   const [typeFilter, setTypeFilter] = useState<EventType | "All">("All");
   const [sportFilter, setSportFilter] = useState<string>("All");
 
-  /**
-   * DEV NOTE: CREATE MODAL STATE
-   * ---------------------------------
-   * isCreateOpen: controls modal visibility
-   * createError: lightweight validation error string
-   * draft: form values for the new event
-   *
-   * Where to edit default draft values:
-   * - inside the initial setDraft initializer below
-   */
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [createError, setCreateError] = useState<string>("");
   const [draft, setDraft] = useState<{
@@ -436,7 +346,6 @@ export default function Page() {
     endLocal: string;
     notes: string;
   }>(() => {
-    // DEV NOTE: Default start time for the modal (today at 18:00 local)
     const d = new Date();
     d.setHours(18, 0, 0, 0);
     return {
@@ -450,30 +359,14 @@ export default function Page() {
     };
   });
 
-  /**
-   * DEV NOTE: MONTH BOUNDS
-   * Used for building the grid from Monday-start, including leading/trailing days.
-   */
   const monthStart = useMemo(() => startOfMonth(cursor), [cursor]);
   const monthEnd = useMemo(() => endOfMonth(cursor), [cursor]);
 
-  /**
-   * DEV NOTE: SPORT FILTER OPTIONS
-   * Built dynamically from events[] so the dropdown always matches existing data.
-   * If you want a fixed list (instead of derived), replace this with a hard-coded array.
-   */
   const sports = useMemo(() => {
     const s = Array.from(new Set(events.map((e) => e.sport))).sort();
     return ["All", ...s];
   }, [events]);
 
-  /**
-   * DEV NOTE: FILTERED EVENTS
-   * This is the “current view” list that drives:
-   * - eventsByDay (the grid contents)
-   * - upcoming list
-   * If filters feel “global”, it’s because everything downstream uses filteredEvents.
-   */
   const filteredEvents = useMemo(() => {
     return events.filter((e) => {
       if (typeFilter !== "All" && e.type !== typeFilter) return false;
@@ -482,15 +375,6 @@ export default function Page() {
     });
   }, [events, typeFilter, sportFilter]);
 
-  /**
-   * DEV NOTE: EVENTS GROUPED BY DAY (WITH MULTI-DAY SUPPORT)
-   * ---------------------------------
-   * We expand events into each day they span (inclusive), so multi-day events appear
-   * on every day in the grid and on selected-day detail view.
-   *
-   * If you ever want “multi-day events only appear on their start day”:
-   * - This is the block you would simplify (remove the while loop expansion)
-   */
   const eventsByDay = useMemo(() => {
     const map = new Map<string, Array<CalendarEvent & { _span?: { dayKey: string } }>>();
 
@@ -504,7 +388,6 @@ export default function Page() {
       let cur = clampToDay(start);
       const last = clampToDay(endSafe);
 
-      // DEV NOTE: Defensive fallback if end < start (bad data)
       if (+last < +cur) {
         const key = toDateKey(clampToDay(start));
         const arr = map.get(key) ?? [];
@@ -513,7 +396,6 @@ export default function Page() {
         continue;
       }
 
-      // DEV NOTE: Expand ev into every day between start..end
       while (+cur <= +last) {
         const key = toDateKey(cur);
         const arr = map.get(key) ?? [];
@@ -523,13 +405,6 @@ export default function Page() {
       }
     }
 
-    /**
-     * DEV NOTE: Sorting rule inside each day
-     * 1) Events that START on that day appear first
-     * 2) Then by actual start time
-     *
-     * Adjust this if you want multi-day “carry-over” items to appear first/last.
-     */
     for (const [k, arr] of map.entries()) {
       arr.sort((a, b) => {
         const aStart = new Date(a.start);
@@ -546,28 +421,16 @@ export default function Page() {
     return map;
   }, [filteredEvents]);
 
-  /**
-   * DEV NOTE: RIGHT-RAIL “SELECTED DAY” LIST
-   * This is the list rendered in the “Selected day details” card.
-   */
   const selectedEvents = useMemo(() => {
     return eventsByDay.get(selectedDayKey) ?? [];
   }, [eventsByDay, selectedDayKey]);
 
-  /**
-   * DEV NOTE: GRID DAYS (MONDAY START)
-   * ---------------------------------
-   * Builds a full-week calendar grid including leading/trailing padding days.
-   * If you want Sunday-start instead:
-   * - Change the mondayIndex math here + weekday header labels.
-   */
   const gridDays = useMemo(() => {
-    // Monday-start calendar
     const first = monthStart;
     const last = monthEnd;
 
-    const jsDay = first.getDay(); // Sun=0..Sat=6
-    const mondayIndex = (jsDay + 6) % 7; // Mon=0..Sun=6
+    const jsDay = first.getDay();
+    const mondayIndex = (jsDay + 6) % 7;
     const gridStart = new Date(first);
     gridStart.setDate(first.getDate() - mondayIndex);
 
@@ -585,24 +448,12 @@ export default function Page() {
     return days;
   }, [monthStart, monthEnd]);
 
-  /**
-   * DEV NOTE: MONTH LABEL
-   * Display only (top month navigation pill).
-   */
   const monthLabel = useMemo(() => {
     return cursor.toLocaleDateString([], { month: "long", year: "numeric" });
   }, [cursor]);
 
-  /**
-   * DEV NOTE: UPCOMING LIST
-   * ---------------------------------
-   * Shows the next 7 base events (not per-day expansions), based on current filters.
-   * If you want to include “ongoing multi-day” events even if they started in the past:
-   * - Change the filter condition here.
-   */
   const upcoming = useMemo(() => {
     const now = new Date();
-    // For upcoming, show unique base events (not per-day expansions)
     const base = filteredEvents
       .slice()
       .sort((a, b) => +new Date(a.start) - +new Date(b.start))
@@ -611,10 +462,6 @@ export default function Page() {
     return base.slice(0, 7);
   }, [filteredEvents]);
 
-  /**
-   * DEV NOTE: MODAL OPEN/CLOSE HELPERS
-   * Centralized so we consistently clear errors when opening/closing.
-   */
   function openCreateModal() {
     setCreateError("");
     setIsCreateOpen(true);
@@ -625,18 +472,6 @@ export default function Page() {
     setCreateError("");
   }
 
-  /**
-   * DEV NOTE: CREATE EVENT ACTION
-   * ---------------------------------
-   * Validates the draft, converts datetime-local -> ISO, creates a new CalendarEvent,
-   * and prepends it into events[].
-   *
-   * Where to change validation rules:
-   * - In this function (title/location/start required, end cannot be before start)
-   *
-   * If you later persist to a backend:
-   * - Replace setEvents(...) with an API call, then refresh events state.
-   */
   function createEvent() {
     setCreateError("");
 
@@ -647,7 +482,6 @@ export default function Page() {
     const startISO = localInputToISO(draft.startLocal);
     const endISO = draft.endLocal ? localInputToISO(draft.endLocal) : "";
 
-    // DEV NOTE: Basic required-field validation (kept simple on purpose)
     if (!title) return setCreateError("Please enter a title.");
     if (!startISO) return setCreateError("Please choose a start date/time.");
     if (!location) return setCreateError("Please enter a location.");
@@ -662,7 +496,6 @@ export default function Page() {
       if (+end < +start) return setCreateError("End cannot be earlier than start.");
     }
 
-    // DEV NOTE: ID is local-only (Date.now). In a real DB, use a UUID or server-generated id.
     const newEv: CalendarEvent = {
       id: `ev_${Date.now()}`,
       title,
@@ -674,19 +507,12 @@ export default function Page() {
       notes: draft.notes.trim() || undefined,
     };
 
-    // DEV NOTE: Prepend newest event so it appears quickly in state-derived lists.
     setEvents((prev) => [newEv, ...prev]);
 
-    // DEV NOTE: Auto-jump user to the created event’s day/month for better UX.
     const startDayKey = toDateKey(clampToDay(start));
     setSelectedDayKey(startDayKey);
     setCursor(startOfMonth(clampToDay(start)));
 
-    /**
-     * DEV NOTE: Reset draft fields
-     * Keeps Type + Sport as a convenience for creating multiple similar events.
-     * If you want a “full reset”, also reset draft.type and draft.sport here.
-     */
     setDraft((d) => ({
       ...d,
       title: "",
@@ -700,51 +526,34 @@ export default function Page() {
   }
 
   return (
-    <div className="p-6">
-      {/* =========================
-          HEADER / CONTROLS
-          =========================
-          - Page title + subtitle
-          - Primary actions: New event / Today
-          - Month navigation (cursor)
-          - Filters: type + sport (affects grid + upcoming + selected-day list)
-          Edit:
-          - Button labels/icons here
-          - Filter options here (keep in sync with EventType and typeMeta)
-      */}
-      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-sm">
-            <CalendarDays size={20} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">Calendar</h1>
-            <p className="text-sm text-slate-600">
-              Leagues, tournaments, away trips, local events, courses & seminars
-            </p>
-          </div>
-        </div>
+    <div>
+      {/* PAGE TITLE / DESCRIPTION (match other admin pages like Info) */}
+      <div className="mb-6">
+        <h1 className="text-4xl font-extrabold text-[#0C2F57]">Calendar</h1>
+        <p className="mt-2 text-slate-600">
+          Leagues, tournaments, away trips, local events, courses &amp; seminars
+        </p>
+      </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {/* DEV NOTE: Opens the Create Event modal (local-only, no backend) */}
+      {/* HEADER / CONTROLS (kept same behavior; styled to match site buttons/chips) */}
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={openCreateModal}
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-3 py-2 text-sm font-semibold text-white hover:opacity-95"
           >
             <Plus size={16} />
             New event
           </button>
 
-          {/* DEV NOTE: Quick jump back to the current month */}
           <button
             onClick={() => setCursor(startOfMonth(today))}
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
           >
             Today
           </button>
 
-          {/* DEV NOTE: Month navigation updates `cursor`, which rebuilds the grid */}
-          <div className="flex items-center overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center overflow-hidden rounded-xl border border-slate-200 bg-white">
             <button
               onClick={() => setCursor(addMonths(cursor, -1))}
               className="px-3 py-2 text-slate-700 hover:bg-slate-50"
@@ -762,15 +571,13 @@ export default function Page() {
             </button>
           </div>
 
-          {/* DEV NOTE: Filters apply to the entire view (grid + upcoming + selected day) */}
-          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm">
+          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
             <Filter size={16} />
             <select
               className="bg-transparent text-sm outline-none"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value as any)}
             >
-              {/* DEV NOTE: If you add an EventType, add it here too */}
               <option value="All">All types</option>
               <option value="League">League</option>
               <option value="Tournament">Tournament</option>
@@ -787,7 +594,6 @@ export default function Page() {
               value={sportFilter}
               onChange={(e) => setSportFilter(e.target.value)}
             >
-              {/* DEV NOTE: Sports list is derived from events[] (see useMemo above) */}
               {sports.map((s) => (
                 <option key={s} value={s}>
                   {s === "All" ? "All sports" : s}
@@ -798,27 +604,12 @@ export default function Page() {
         </div>
       </div>
 
-      {/* =========================
-          BODY LAYOUT
-          =========================
-          Left: calendar grid (month view)
-          Right: selected day details + upcoming + legend
-      */}
+      {/* BODY LAYOUT */}
       <div className="grid gap-6 lg:grid-cols-12">
-        {/* =========================
-            CALENDAR GRID (MONTH VIEW)
-            =========================
-            - Weekday header
-            - Day cells (click to select)
-            - Shows up to 2 event “mini cards” per day + “+N more”
-            Edit:
-            - Day cell styling here
-            - How many mini cards are visible (slice(0,2)) below
-        */}
+        {/* CALENDAR GRID */}
         <div className="lg:col-span-8">
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
             <div className="grid grid-cols-7 border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-600">
-              {/* DEV NOTE: Weekday labels for Monday-start calendar */}
               {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
                 <div key={d} className="px-3 py-2">
                   {d}
@@ -828,16 +619,12 @@ export default function Page() {
 
             <div className="grid grid-cols-7">
               {gridDays.map((d) => {
-                // DEV NOTE: key is the canonical day identifier used in eventsByDay map
                 const key = toDateKey(d);
                 const inMonth = d.getMonth() === cursor.getMonth();
                 const isToday = key === toDateKey(today);
                 const isSelected = key === selectedDayKey;
 
-                // DEV NOTE: Pull events for this day (already expanded for multi-day)
                 const dayEvents = eventsByDay.get(key) ?? [];
-
-                // DEV NOTE: Only show 2 items per cell to keep the grid compact
                 const visible = dayEvents.slice(0, 2);
                 const extra = Math.max(0, dayEvents.length - visible.length);
 
@@ -849,20 +636,20 @@ export default function Page() {
                       "min-h-[110px] border-b border-r border-slate-200 p-2 text-left transition",
                       "hover:bg-slate-50",
                       !inMonth ? "bg-slate-50/50 text-slate-400" : "bg-white text-slate-900",
-                      isSelected ? "ring-2 ring-slate-900 ring-inset" : "",
+                      isSelected ? "ring-2 ring-[#0C2F57] ring-inset" : "",
                     ].join(" ")}
                   >
                     <div className="mb-2 flex items-center justify-between">
                       <div
                         className={[
                           "flex h-7 w-7 items-center justify-center rounded-xl text-xs font-bold",
-                          isToday ? "bg-slate-900 text-white" : "bg-transparent",
+                          isToday ? "bg-[#0C2F57] text-white" : "bg-transparent",
                         ].join(" ")}
                       >
                         {d.getDate()}
                       </div>
+
                       {dayEvents.length > 0 ? (
-                        // DEV NOTE: small badge showing how many events are on this day
                         <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700">
                           {dayEvents.length}
                         </span>
@@ -871,10 +658,8 @@ export default function Page() {
 
                     <div className="space-y-1">
                       {visible.map((ev) => {
-                        // DEV NOTE: Meta gives the category colors/icons
                         const meta = typeMeta(ev.type);
 
-                        // DEV NOTE: used to label start time vs "Multi-day" in the mini card
                         const day = new Date(key + "T00:00:00");
                         const startsToday = isSameDay(clampToDay(new Date(ev.start)), day);
                         const ends = ev.end ? new Date(ev.end) : null;
@@ -900,7 +685,6 @@ export default function Page() {
                         );
                       })}
 
-                      {/* DEV NOTE: If there are more than 2 events, show a "+N more" label */}
                       {extra > 0 ? (
                         <div className="text-[11px] font-semibold text-slate-600">+{extra} more</div>
                       ) : null}
@@ -912,23 +696,9 @@ export default function Page() {
           </div>
         </div>
 
-        {/* =========================
-            RIGHT RAIL
-            =========================
-            1) Selected day details (driven by selectedDayKey)
-            2) Upcoming list (next 7 based on filters)
-            3) Legend (category styles)
-        */}
+        {/* RIGHT RAIL */}
         <div className="lg:col-span-4 space-y-6">
-          {/* =========================
-              SELECTED DAY DETAILS
-              =========================
-              Shows all events that fall on the selected day (including multi-day expansions).
-              Edit:
-              - Card layout and labels here
-              - What metadata pills show here (type/sport/hints/multi-day)
-          */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="mb-3">
               <div className="text-sm font-bold text-slate-900">
                 {new Date(selectedDayKey).toLocaleDateString([], {
@@ -952,11 +722,8 @@ export default function Page() {
                 selectedEvents.map((ev) => {
                   const meta = typeMeta(ev.type);
                   const Icon = meta.icon;
-
-                  // DEV NOTE: Optional hint icon (keyword-based)
                   const HintIcon = eventIconHint(ev.title);
 
-                  // DEV NOTE: Multi-day calculations (affects “When:” display)
                   const start = new Date(ev.start);
                   const end = ev.end ? new Date(ev.end) : null;
                   const day = new Date(selectedDayKey + "T00:00:00");
@@ -971,7 +738,6 @@ export default function Page() {
                         <div className="min-w-0">
                           <div className="truncate text-sm font-bold text-slate-900">{ev.title}</div>
 
-                          {/* DEV NOTE: Pills row (type + sport + optional hints + multi-day) */}
                           <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-600">
                             <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${meta.pill}`}>
                               <Icon size={14} />
@@ -1002,7 +768,6 @@ export default function Page() {
                         <div className="flex items-center gap-2">
                           <span className="font-semibold">When:</span>
                           <span>
-                            {/* DEV NOTE: Multi-day events show full date range + “starts/ends/continues” hint */}
                             {isMultiDay ? (
                               <>
                                 {formatDateLong(ev.start)} {formatTime(ev.start)} →{" "}
@@ -1025,7 +790,6 @@ export default function Page() {
                           <span className="truncate">{ev.location}</span>
                         </div>
 
-                        {/* DEV NOTE: Notes are optional free-text */}
                         {ev.notes ? (
                           <div className="mt-2 rounded-xl bg-slate-50 p-2 text-xs text-slate-700">{ev.notes}</div>
                         ) : null}
@@ -1037,15 +801,7 @@ export default function Page() {
             </div>
           </div>
 
-          {/* =========================
-              UPCOMING
-              =========================
-              Shows the next 7 filtered events starting from “now”.
-              Edit:
-              - Slice count (base.slice(0,7)) in the useMemo above
-              - Card look here
-          */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="mb-3 text-sm font-bold text-slate-900">Upcoming</div>
             <div className="space-y-2">
               {upcoming.length === 0 ? (
@@ -1078,13 +834,7 @@ export default function Page() {
             </div>
           </div>
 
-          {/* =========================
-              LEGEND
-              =========================
-              Visual reference for event types.
-              Keep this list in sync with EventType + typeMeta + filter dropdown.
-          */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="mb-3 text-sm font-bold text-slate-900">Legend</div>
             <div className="grid gap-2 text-sm">
               {(["League", "Tournament", "Away Tournament", "Local Event", "Course", "Seminar"] as EventType[]).map(
@@ -1108,31 +858,18 @@ export default function Page() {
         </div>
       </div>
 
-      {/* =========================
-          CREATE EVENT MODAL
-          =========================
-          - Purely client-side modal
-          - Uses `draft` state for inputs
-          - createEvent() validates + inserts into events[]
-          Edit:
-          - Form fields / placeholders here
-          - Default draft values in the draft initializer above
-          - Validation rules in createEvent()
-      */}
+      {/* CREATE EVENT MODAL */}
       {isCreateOpen ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          {/* DEV NOTE: Backdrop closes modal on click (button used for accessibility) */}
           <button aria-label="Close" onClick={closeCreateModal} className="absolute inset-0 bg-black/40" />
 
-          {/* DEV NOTE: Modal container */}
           <div className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
               <div>
                 <div className="text-lg font-extrabold text-slate-900">Create event</div>
                 <div className="text-sm text-slate-600">Add leagues, tournaments, courses, seminars, etc.</div>
               </div>
 
-              {/* DEV NOTE: Top-right X button */}
               <button
                 onClick={closeCreateModal}
                 className="rounded-xl p-2 text-slate-600 hover:bg-slate-100"
@@ -1142,15 +879,13 @@ export default function Page() {
               </button>
             </div>
 
-            <div className="px-5 py-4">
-              {/* DEV NOTE: Inline validation error (string) */}
+            <div className="px-6 py-5">
               {createError ? (
                 <div className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700">
                   {createError}
                 </div>
               ) : null}
 
-              {/* DEV NOTE: Form grid layout */}
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="md:col-span-2">
                   <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-600">
@@ -1171,7 +906,6 @@ export default function Page() {
                     onChange={(e) => setDraft((d) => ({ ...d, type: e.target.value as EventType }))}
                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-slate-400"
                   >
-                    {/* DEV NOTE: Keep in sync with EventType union */}
                     <option value="League">League</option>
                     <option value="Tournament">Tournament</option>
                     <option value="Away Tournament">Away Tournament</option>
@@ -1244,8 +978,7 @@ export default function Page() {
               </div>
             </div>
 
-            {/* DEV NOTE: Modal footer actions */}
-            <div className="flex items-center justify-end gap-2 border-t border-slate-200 px-5 py-4">
+            <div className="flex items-center justify-end gap-2 border-t border-slate-200 px-6 py-4">
               <button
                 onClick={closeCreateModal}
                 className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
@@ -1254,7 +987,7 @@ export default function Page() {
               </button>
               <button
                 onClick={createEvent}
-                className="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                className="rounded-xl bg-[#0C2F57] px-3 py-2 text-sm font-semibold text-white hover:opacity-95"
               >
                 Create event
               </button>

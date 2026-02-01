@@ -1,0 +1,310 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Facilities_Table {
+  id            String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String   @default("required")
+  type          String   @default("default:Other")
+  status        String   @default("default:Operational")
+  address       String   @default("default")
+  contact_email String   @map("contact email")
+  contact_phone String   @map("contact phone")
+  notes         String
+  created__at   DateTime @map("created _at") @db.Timestamp(6)
+  updated_at    DateTime @db.Timestamp(6)
+
+  @@id([id, name, type, status, address, contact_email, contact_phone, notes, created__at, updated_at])
+  @@map("Facilities Table")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model activities {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  title      String?
+  date_text  String?
+  time_text  String?
+  location   String?
+  kind       String?
+  role_label String?
+  status     String?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  profiles   profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model compliance_records {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?   @db.Uuid
+  label        String
+  status       String
+  detail       String?
+  completed_on DateTime? @db.Date
+  expires_on   DateTime? @db.Date
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  profiles     profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model courses {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?   @db.Uuid
+  name         String?
+  provider     String?
+  status       String?
+  completed_on DateTime? @db.Date
+  expires_on   DateTime? @db.Date
+  note         String?
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  profiles     profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model documents {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?   @db.Uuid
+  name         String?
+  uploaded_at  DateTime? @default(now()) @db.Timestamptz(6)
+  expires_on   DateTime? @db.Date
+  storage_path String?
+  profiles     profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model internal_notes {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String?   @db.Uuid
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  created_by       String?   @db.Uuid
+  created_by_label String?   @default("System")
+  text             String
+  profiles         profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model membership_teams {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  membership_id String?      @db.Uuid
+  team_name     String?
+  memberships   memberships? @relation(fields: [membership_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model memberships {
+  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String?            @db.Uuid
+  sport_name       String?
+  club_name        String?
+  membership_type  String?
+  registration_no  String?            @unique
+  season           String?
+  league           String?
+  status           String?            @default("Active")
+  created_at       DateTime?          @default(now()) @db.Timestamptz(6)
+  membership_teams membership_teams[]
+  profiles         profiles?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model profiles {
+  id                     String                   @id @db.Uuid
+  full_name              String
+  preferred_name         String?
+  date_of_birth          DateTime?                @db.Date
+  email                  String
+  email_verified         Boolean?                 @default(false)
+  phone                  String?
+  address_text           String?
+  status                 String?                  @default("Active")
+  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  activities             activities[]
+  compliance_records     compliance_records[]
+  courses                courses[]
+  documents              documents[]
+  internal_notes         internal_notes[]
+  memberships            memberships[]
+  user_access_modules    user_access_modules[]
+  user_accounts          user_accounts?
+  user_roles             user_roles[]
+  user_sports            user_sports[]
+  volunteer_availability volunteer_availability[]
+  volunteer_profiles     volunteer_profiles?
+  volunteer_roles        volunteer_roles[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_access_modules {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String?   @db.Uuid
+  module_name String
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  profiles    profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_accounts {
+  user_id          String    @id @db.Uuid
+  username         String?   @unique
+  public_user_code String    @unique
+  created_on       DateTime? @default(now()) @db.Timestamptz(6)
+  last_login_at    DateTime? @db.Timestamptz(6)
+  two_fa_enabled   Boolean?  @default(false)
+  profiles         profiles  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_roles {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  role_name  String
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  profiles   profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_sports {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  sport_name String
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  profiles   profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model volunteer_availability {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String?   @db.Uuid
+  availability_label String
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  profiles           profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model volunteer_profiles {
+  user_id      String    @id @db.Uuid
+  status       String?   @default("Active")
+  start_date   DateTime? @db.Date
+  renewal_date DateTime? @db.Date
+  away_events  Boolean?  @default(false)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  profiles     profiles  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model volunteer_roles {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  role_name  String
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  profiles   profiles? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+//
+// HR Timesheets (Saturday → Saturday)
+// NOTE: We store facility_id as a UUID string without a Prisma relation for now,
+// because Facilities_Table does not have a simple primary key in the current schema.
+//
+
+enum TimesheetWeekStatus {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  LOCKED
+  SENT
+}
+
+enum TimesheetReasonCode {
+  AS_ROTA
+  ROTA_CHANGE
+  OVERTIME
+  SICK_COVER
+  SICK_LEAVE
+  ANNUAL_LEAVE
+  UNPAID_LEAVE
+  OTHER
+}
+
+model timesheet_week_packs {
+  id          String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id String              @db.Uuid
+  week_start  DateTime            @db.Date
+  week_end    DateTime            @db.Date
+  status      TimesheetWeekStatus @default(DRAFT)
+
+  submitted_by String?   @db.Uuid
+  submitted_at DateTime? @db.Timestamptz(6)
+
+  approved_by String?   @db.Uuid
+  approved_at DateTime? @db.Timestamptz(6)
+
+  locked_by String?   @db.Uuid
+  locked_at DateTime? @db.Timestamptz(6)
+
+  sent_to_treasury_by String?   @db.Uuid
+  sent_to_treasury_at DateTime? @db.Timestamptz(6)
+
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+
+  shifts timesheet_shift_entries[]
+  audit  timesheet_audit_logs[]
+
+  @@unique([facility_id, week_start])
+  @@map("timesheet_week_packs")
+}
+
+model timesheet_shift_entries {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  week_pack_id String @db.Uuid
+
+  date          DateTime @db.Date
+  staff_user_id String?  @db.Uuid
+  staff_label   String
+
+  role_label String?
+
+  planned_start String?
+  planned_end   String?
+
+  actual_start String
+  actual_end   String
+
+  reason TimesheetReasonCode @default(AS_ROTA)
+  notes  String?
+
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+
+  week_pack timesheet_week_packs @relation(fields: [week_pack_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([week_pack_id, date])
+  @@map("timesheet_shift_entries")
+}
+
+model timesheet_audit_logs {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  week_pack_id String @db.Uuid
+
+  actor_user_id String? @db.Uuid
+  actor_label   String? @default("System")
+
+  action String
+  detail String?
+
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+
+  week_pack timesheet_week_packs @relation(fields: [week_pack_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([week_pack_id, created_at])
+  @@map("timesheet_audit_logs")
+}

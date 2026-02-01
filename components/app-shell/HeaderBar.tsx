@@ -4,45 +4,60 @@
  * HeaderBar
  * ------------------------------------------------------------------
  * Purpose:
- * - Top-level persistent header for the admin app
- * - Contains branding, global search, quick-access icons, and profile entry
+ * - Persistent header for the admin app
+ * - Global search + quick-access icons + profile entry
  *
- * Notes for future edits:
- * - Layout + spacing is handled entirely with Tailwind here
- * - Navigation actions (router.push) live directly on icon buttons
- * - Visual badges (notification dots) are purely presentational for now
+ * MAIL / INBOX (Demo wiring)
+ * - Unread count is read from localStorage key: "gsla_admin_mail_unread"
+ * - /admin/mail is responsible for updating that value (seed/demo today)
+ * - Later: replace localStorage with API/DB unread count
  */
 
-import { Bell, Search, Inbox, Calendar } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Bell, Search, Inbox, Calendar } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function HeaderBar() {
-  /**
-   * Next.js router
-   * --------------------------------------------------------------
-   * Used for programmatic navigation from header icons
-   * (e.g. Calendar button routing to /admin/calendar)
-   */
   const router = useRouter();
 
+  // ---------------------------------------------------------------------------
+  // Unread count (demo)
+  // - /admin/mail writes to localStorage and dispatches a custom event
+  // - Header listens and updates badge immediately
+  // ---------------------------------------------------------------------------
+  const [mailUnread, setMailUnread] = useState<number>(0);
+
+  useEffect(() => {
+    const read = () => {
+      const raw = window.localStorage.getItem("gsla_admin_mail_unread");
+      const n = raw ? Number(raw) : 0;
+      setMailUnread(Number.isFinite(n) ? n : 0);
+    };
+
+    // initial read
+    read();
+
+    // storage event (other tabs) + custom event (same tab)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "gsla_admin_mail_unread") read();
+    };
+    const onCustom = () => read();
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("gsla:mail-unread-updated", onCustom as any);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("gsla:mail-unread-updated", onCustom as any);
+    };
+  }, []);
+
   return (
-    /**
-     * Sticky header wrapper
-     * --------------------------------------------------------------
-     * - sticky + top-0 keeps the header fixed during page scroll
-     * - z-50 ensures it stays above sidebars, modals, and content
-     * - height is locked to keep layout consistent across pages
-     */
     <header className="sticky top-0 z-50 h-[72px] border-b border-slate-200 bg-white">
       <div className="flex h-full items-center justify-between px-6">
-        {/* ------------------------------------------------------------------
-            Left section: Branding / Logo
-            ------------------------------------------------------------------
-            - Static logo for now
-            - If logo ever becomes clickable, wrap Image with a Link
-            - Image size is controlled via width/height props (not CSS)
-        */}
+        {/* Logo */}
         <div className="flex items-center">
           <Image
             src="/gsla-transp-logo.png"
@@ -53,20 +68,9 @@ export default function HeaderBar() {
           />
         </div>
 
-        {/* ------------------------------------------------------------------
-            Right section: Search, utilities, and profile
-            ------------------------------------------------------------------
-            - All global user actions live here
-            - Items are visually grouped using flex + gap
-        */}
+        {/* Actions */}
         <div className="flex items-center gap-5">
-          {/* --------------------------------------------------------------
-              Global Search (desktop only)
-              --------------------------------------------------------------
-              - Hidden on small screens (md:flex)
-              - Currently UI-only (no state / handlers wired yet)
-              - Placeholder text defines intended search scope
-          */}
+          {/* Global Search */}
           <div className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-slate-600">
             <Search size={18} />
             <input
@@ -75,12 +79,7 @@ export default function HeaderBar() {
             />
           </div>
 
-          {/* --------------------------------------------------------------
-              Calendar shortcut
-              --------------------------------------------------------------
-              - Navigates directly to the admin calendar view
-              - router.push keeps this client-side
-          */}
+          {/* Calendar */}
           <button
             type="button"
             onClick={() => router.push("/admin/calendar")}
@@ -90,27 +89,24 @@ export default function HeaderBar() {
             <Calendar />
           </button>
 
-          {/* --------------------------------------------------------------
-              Inbox shortcut
-              --------------------------------------------------------------
-              - Yellow dot indicates unread messages
-              - Dot is hardcoded for now (no state / data connection)
-          */}
-          <button
-            type="button"
-            className="relative rounded-xl p-2 hover:bg-slate-100"
-            aria-label="Inbox"
-          >
-            <Inbox />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[#F2B705]" />
-          </button>
+          {/* Inbox (ONLY access to /admin/mail) */}
+          <Link href="/admin/mail" aria-label="Inbox">
+            <button
+              type="button"
+              className="relative rounded-xl p-2 hover:bg-slate-100"
+            >
+              <Inbox />
 
-          {/* --------------------------------------------------------------
-              Notifications shortcut
-              --------------------------------------------------------------
-              - Red dot implies high-priority alerts
-              - Visual indicator only (no click handler yet)
-          */}
+              {/* Unread badge (replaces the dot) */}
+              {mailUnread > 0 && (
+                <span className="absolute -right-1 -top-1 min-w-[18px] rounded-full bg-[#F2B705] px-1.5 py-0.5 text-[11px] font-bold leading-none text-[#0C2F57] text-center">
+                  {mailUnread > 99 ? "99+" : mailUnread}
+                </span>
+              )}
+            </button>
+          </Link>
+
+          {/* Notifications */}
           <button
             type="button"
             className="relative rounded-xl p-2 hover:bg-slate-100"
@@ -120,12 +116,7 @@ export default function HeaderBar() {
             <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[#D81E27]" />
           </button>
 
-          {/* --------------------------------------------------------------
-              Profile entry point
-              --------------------------------------------------------------
-              - Placeholder avatar circle for now
-              - Likely future dropdown trigger (profile, settings, logout)
-          */}
+          {/* Profile */}
           <button
             type="button"
             className="rounded-xl p-2 hover:bg-slate-100"

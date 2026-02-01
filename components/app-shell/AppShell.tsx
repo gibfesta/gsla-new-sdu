@@ -65,9 +65,10 @@ export default function AppShell({
              - THIS is where all page.tsx content ultimately renders
              - If spacing/layout feels off globally, adjust here
           ------------------------------------------------------------ */}
-          <div className="mx-auto w-full max-w-6xl px-8 py-8">
-            {children}
-          </div>
+          <div className="mx-auto w-full max-w-[1400px] px-8 py-8">
+  {children}
+</div>
+
         </main>
       </div>
     </div>
