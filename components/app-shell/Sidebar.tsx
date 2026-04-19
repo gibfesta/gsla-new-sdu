@@ -2,32 +2,29 @@
 
 /**
  * Sidebar navigation for the admin area.
- * Edit the sections below to add/remove/reorder links.
+ * Cleaned up and reorganised to match the new department structure.
  */
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutGrid,
-  BarChart3,
-  ClipboardList,
-  Info,
   Bell,
+  Info,
   Settings,
   ArrowLeftRight,
   Trophy,
   Calendar,
   User,
   Building2,
-  Umbrella,
   Users,
   Clock,
+  House,
+  Landmark,
+  BarChart3,
+  Trees,
+  ShieldCheck,
 } from "lucide-react";
 
-/**
- * Sports list used to render the "Sports" links under Sports Development Unit.
- * Add more sports here to automatically create sidebar links.
- */
 const sports = ["Hockey"];
 
 function NavItem({
@@ -46,13 +43,15 @@ function NavItem({
     <Link
       href={href}
       className={[
-        "group flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition",
-        active ? "bg-white font-semibold text-slate-900" : "text-slate-700 hover:bg-white",
+        "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition",
+        active
+          ? "bg-white font-semibold text-slate-900 shadow-sm"
+          : "text-slate-700 hover:bg-white hover:text-slate-900",
       ].join(" ")}
     >
       <span
         className={[
-          "h-5 w-1 rounded-full",
+          "h-5 w-1 rounded-full transition",
           active ? "bg-[#D81E27]" : "bg-transparent group-hover:bg-slate-200",
         ].join(" ")}
       />
@@ -62,40 +61,58 @@ function NavItem({
   );
 }
 
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="px-3 pb-2 pt-1 text-sm font-bold tracking-[0.12em] text-slate-800 uppercase">
+      {children}
+    </div>
+  );
+}
+
+function SubSectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="px-3 pt-3 pb-1 text-[11px] font-bold tracking-[0.14em] text-slate-500 uppercase">
+      {children}
+    </div>
+  );
+}
+
 export default function Sidebar() {
   return (
-    <aside className="min-h-[calc(100vh-72px)] w-[260px] border-r border-slate-200 bg-[#F8FAFC] px-3 py-5">
-      {/* Dashboard */}
-      <div className="space-y-2">
-        <NavItem href="/admin/dashboard" label="Dashboard" icon={LayoutGrid} />
+    <aside className="min-h-[calc(100vh-72px)] w-[280px] border-r border-slate-200 bg-[#F8FAFC] px-3 py-5">
+      {/* Main */}
+      <div className="space-y-1">
+        <NavItem href="/" label="Home" icon={House} />
+        <NavItem href="/admin/profile" label="Profile" icon={User} />
+        <NavItem href="/admin/calendar" label="Calendar" icon={Calendar} />
       </div>
 
-      {/* System */}
+      {/* Superuser Privileges */}
       <div className="mt-6">
-        <div className="px-3 pb-2 text-xs font-semibold tracking-wider text-slate-500">SYSTEM</div>
+        <SectionTitle>Superuser Privileges</SectionTitle>
         <div className="space-y-1">
-          <NavItem href="/admin/profile" label="Profile" icon={User} />
-          <NavItem href="/admin/info" label="Info" icon={Info} />
-          <NavItem href="/admin/calendar" label="Calendar" icon={Calendar} />
-          <NavItem href="/admin/statistics" label="Statistics" icon={BarChart3} />
           <NavItem href="/admin/reminders" label="Reminders" icon={Bell} />
-        </div>
-      </div>
-
-      {/* Superuser Tools */}
-      <div className="mt-6">
-        <div className="px-3 pb-2 text-xs font-semibold tracking-wider text-slate-500">SUPERUSER TOOLS</div>
-        <div className="space-y-1">
+          <NavItem href="/admin/superuser-dashboard" label="Superuser Dashboard" icon={ShieldCheck} />
           <NavItem href="/admin/manage" label="Superuser Tools" icon={Settings} />
+          <NavItem href="/admin/info" label="Information" icon={Info} />
           <NavItem href="/admin/import-export" label="Import / Export" icon={ArrowLeftRight} />
         </div>
       </div>
 
-      {/* Admin Department */}
+      {/* Finance & Accounts Department */}
       <div className="mt-6">
-        <div className="px-3 pb-2 text-xs font-semibold tracking-wider text-slate-500">
-          ADMIN DEPARTMENT
+        <SectionTitle>Finance & Accounts Department</SectionTitle>
+        <div className="space-y-1">
+          {/* Add finance links here later */}
+          {/* Example:
+          <NavItem href="/admin/accounts" label="Accounts Overview" icon={Landmark} />
+          */}
         </div>
+      </div>
+
+      {/* Administration Department */}
+      <div className="mt-6">
+        <SectionTitle>Administration Department</SectionTitle>
         <div className="space-y-1">
           <NavItem href="/admin/hr" label="Human Resources" icon={Users} />
           <NavItem href="/admin/hr/timesheets" label="Time Sheets" icon={Clock} />
@@ -104,38 +121,41 @@ export default function Sidebar() {
 
       {/* Facilities Department */}
       <div className="mt-6">
-        <div className="px-3 pb-2 text-xs font-semibold tracking-wider text-slate-500">
-          FACILITIES DEPARTMENT
-        </div>
+        <SectionTitle>Facilities Department</SectionTitle>
         <div className="space-y-1">
-          <NavItem href="/admin/facilities" label="Facilities" icon={Building2} />
-          <NavItem href="/admin/bookings" label="Bookings" icon={ClipboardList} />
+          <NavItem href="/admin/facilities" label="Facilities Directory" icon={Building2} />
+          <NavItem href="/admin/bookings" label="Bookings" icon={Calendar} />
           <NavItem href="/admin/events" label="Community / Cultural Events" icon={Calendar} />
         </div>
       </div>
 
-      {/* Sports Development Unit */}
+      {/* Sports Development Department */}
       <div className="mt-6">
-        <div className="px-3 pb-2 text-xs font-semibold tracking-wider text-slate-500">
-          SPORTS DEVELOPMENT UNIT
+        <SectionTitle>Sports Development Department</SectionTitle>
+
+        <div className="space-y-1">
+          <NavItem
+            href="/admin/statistics"
+            label="Overall Participation Statistics"
+            icon={BarChart3}
+          />
         </div>
 
-        {/* Sports */}
-        <div className="px-3 pt-2 pb-1 text-[11px] font-semibold tracking-wider text-slate-400">
-          SPORTS
-        </div>
+        <SubSectionTitle>Sports</SubSectionTitle>
         <div className="space-y-1">
-          {sports.map((s) => (
-            <NavItem key={s} href={`/admin/sports/${encodeURIComponent(s)}`} label={s} icon={Trophy} />
+          {sports.map((sport) => (
+            <NavItem
+              key={sport}
+              href={`/admin/sports/${encodeURIComponent(sport.toLowerCase())}`}
+              label={sport}
+              icon={Trophy}
+            />
           ))}
         </div>
 
-        {/* Leisure */}
-        <div className="px-3 pt-4 pb-1 text-[11px] font-semibold tracking-wider text-slate-400">
-          LEISURE
-        </div>
+        <SubSectionTitle>Leisure</SubSectionTitle>
         <div className="space-y-1">
-          <NavItem href="/admin/leisure" label="Leisure" icon={Umbrella} />
+          <NavItem href="/admin/leisure/parks" label="Parks" icon={Trees} />
         </div>
       </div>
     </aside>
