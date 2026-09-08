@@ -4,6 +4,9 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { ClipboardList, Plus, Building2 } from "lucide-react";
 
+// Timesheets must reflect live database data when the page is requested.
+export const dynamic = "force-dynamic";
+
 type WeekStatus = "DRAFT" | "SUBMITTED" | "RETURNED" | "LOCKED" | "SENT";
 
 function fmtDate(d: Date) {

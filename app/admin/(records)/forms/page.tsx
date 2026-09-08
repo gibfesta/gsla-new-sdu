@@ -20,7 +20,16 @@ import { Badge } from "@/components/ui/badge";
 
 const currentYear = new Date().getFullYear();
 
-const forms = [
+type Form = {
+  id: string;
+  name: string;
+  description?: string;
+} & (
+  | { type: "annual"; baseRoute: string; years: { year: number; status: string }[] }
+  | { type: "single"; status: string }
+);
+
+const forms: Form[] = [
   {
     id: "form-a",
     name: "Annual Association Registration (Form A)",
