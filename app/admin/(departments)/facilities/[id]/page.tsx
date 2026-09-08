@@ -666,9 +666,15 @@ export default function FacilityPage() {
   const [docModalOpen, setDocModalOpen] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
 
-  const [docForm, setDocForm] = useState({
+  const [docForm, setDocForm] = useState<{
+    title: string;
+    category: DocumentItem["category"];
+    version: string;
+    owner: string;
+    fileName: string;
+  }>({
     title: "",
-    category: "SOP" as DocumentItem["category"],
+    category: "SOP",
     version: "",
     owner: role,
     fileName: "",

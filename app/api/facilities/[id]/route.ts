@@ -3,11 +3,12 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const facility = await prisma.facilities_Table.findFirst({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!facility) {
@@ -26,9 +27,10 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await req.json();
 
     // Only update fields that were sent (prevents accidental null overwrites)
@@ -44,7 +46,7 @@ export async function PATCH(
     if ("notes" in body) data.notes = body.notes ?? null;
 
     const result = await prisma.facilities_Table.updateMany({
-      where: { id: params.id },
+      where: { id },
       data,
     });
 
@@ -53,7 +55,7 @@ export async function PATCH(
     }
 
     const updated = await prisma.facilities_Table.findFirst({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(updated);
@@ -68,11 +70,12 @@ export async function PATCH(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const result = await prisma.facilities_Table.deleteMany({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (result.count === 0) {

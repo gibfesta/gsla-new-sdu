@@ -201,7 +201,7 @@ const sportsRows: SportHealthRow[] = [
     fixturesThisMonth: 28,
   },
   {
-    sport: "Hockey",
+    sport: "Gib Hockey",
     participants: 190,
     yoyGrowthPct: 7.9,
     new30d: 96,
@@ -224,15 +224,15 @@ function seriesForSport(sport: SportKey) {
     Cricket: [160, 168, 172, 178, 184, 190, 198, 205, 212, 220, 230, 240],
     Athletics: [180, 176, 172, 170, 168, 166, 165, 167, 170, 175, 182, 190],
     Swimming: [92, 95, 98, 100, 102, 104, 106, 107, 108, 109, 110, 110],
-    Hockey: [140, 150, 156, 160, 165, 170, 174, 178, 182, 185, 188, 190],
+    "Gib Hockey": [140, 150, 156, 160, 165, 170, 174, 178, 182, 185, 188, 190],
   };
 
   if (sport === "All Sports") {
     return months.map((m, idx) => ({
       month: m,
       participants:
-        base.Football[idx] + base.Cricket[idx] + base.Athletics[idx] + base.Swimming[idx] + base.Hockey[idx],
-      newParticipants: Math.round((base.Football[idx] + base.Cricket[idx] + base.Hockey[idx]) / 25),
+        base.Football[idx] + base.Cricket[idx] + base.Athletics[idx] + base.Swimming[idx] + base["Gib Hockey"][idx],
+      newParticipants: Math.round((base.Football[idx] + base.Cricket[idx] + base["Gib Hockey"][idx]) / 25),
       returningParticipants: Math.round(
         (base.Athletics[idx] + base.Swimming[idx] + base.Football[idx] + base.Cricket[idx]) / 4
       ),
@@ -287,7 +287,7 @@ function distributionForSport(sport: SportKey) {
       { band: "Adult", value: 30 },
       { band: "Masters", value: 5 },
     ],
-    Hockey: [
+    "Gib Hockey": [
       { band: "U12", value: 20 },
       { band: "U16", value: 20 },
       { band: "U18", value: 30 },
@@ -306,7 +306,7 @@ function distributionForSport(sport: SportKey) {
 export default function StatsPage() {
   const [sportFilter, setSportFilter] = useState<SportKey>("All Sports");
 
-  const sportOptions: SportKey[] = ["All Sports", "Football", "Cricket", "Athletics", "Swimming", "Hockey"];
+  const sportOptions: SportKey[] = ["All Sports", "Football", "Cricket", "Athletics", "Swimming", "Gib Hockey"];
 
   const selectedRow = useMemo(() => {
     if (sportFilter === "All Sports") return null;
@@ -387,7 +387,7 @@ export default function StatsPage() {
             : risk >= 3
               ? "Support needed"
               : "Keep monitoring",
-        tone: (risk >= 5 ? "red" : risk >= 3 ? "amber" : "slate") as const,
+        tone: risk >= 5 ? "red" as const : risk >= 3 ? "amber" as const : "slate" as const,
         detail: `Retention ${r.retentionPct}% • YoY ${formatPct(r.yoyGrowthPct)} • Flags ${r.complianceFlags}`,
       }));
   }, []);
