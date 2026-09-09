@@ -2,7 +2,7 @@
 
 /**
  * Sidebar navigation for the admin area.
- * Cleaned up and reorganised to match the new department structure.
+ * Organised to match the department structure and URL-safe route names.
  */
 
 import Link from "next/link";
@@ -110,12 +110,12 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Administration Department */}
+      {/* Human Resources */}
       <div className="mt-6">
-        <SectionTitle>Administration Department</SectionTitle>
+        <SectionTitle>Human Resources</SectionTitle>
         <div className="space-y-1">
-          <NavItem href="/admin/hr" label="Human Resources" icon={Users} />
-          <NavItem href="/admin/hr/timesheets" label="Time Sheets" icon={Clock} />
+          <NavItem href="/admin/human-resources" label="Human Resources" icon={Users} />
+          <NavItem href="/admin/human-resources/timesheets" label="Time Sheets" icon={Clock} />
         </div>
       </div>
 
@@ -129,9 +129,9 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Sports Development Department */}
+      {/* Sports Development Unit */}
       <div className="mt-6">
-        <SectionTitle>Sports Development Department</SectionTitle>
+        <SectionTitle>Sports Development Unit</SectionTitle>
 
         <div className="space-y-1">
           <NavItem
@@ -146,7 +146,7 @@ export default function Sidebar() {
           {sports.map((sport) => (
             <NavItem
               key={sport}
-              href={`/admin/sports/${encodeURIComponent(sport.toLowerCase())}`}
+              href={`/admin/sports-development-unit/${encodeURIComponent(sport.toLowerCase())}`}
               label={sport}
               icon={Trophy}
             />
