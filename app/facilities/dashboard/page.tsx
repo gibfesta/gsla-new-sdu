@@ -1,7 +1,7 @@
 import DepartmentOverview from "@/components/shared/DepartmentOverview";
 
 export default function FacilitiesDashboard() {
-  return <DepartmentOverview title="Facilities" description="Venues, bookings and shared operations."
+  return <DepartmentOverview title="Facilities" badge="GSLA Facilities" sectionTitle="Facilities Areas" description="Venues, bookings and shared operations."
     links={[
       { label: "Facilities directory", href: "/facilities/facilities" },
       { label: "Bookings", href: "/facilities/bookings", detail: "Current demonstration screen" },
