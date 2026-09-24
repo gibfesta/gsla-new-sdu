@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowLeft,
@@ -621,10 +621,18 @@ function Modal({
   );
 }
 
-export default function FacilityPage() {
+function FacilityPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [activeTab, setActiveTab] = useState<TabKey>("handover");
+  useEffect(() => {
+    const requested = searchParams.get("tab");
+    const validTabs: TabKey[] = ["handover", "information", "issues", "timeline", "events", "bookings", "procedures", "weekly", "monthly", "documents", "photos", "compliance", "audit"];
+    if (requested && validTabs.includes(requested as TabKey)) {
+      setActiveTab(requested as TabKey);
+    }
+  }, [searchParams]);
   const [role, setRole] = useState<Role>("Centre Manager");
 
   const [timeline, setTimeline] = useState(initialTimeline);
@@ -2287,4 +2295,8 @@ export default function FacilityPage() {
       </Modal>
     </div>
   );
+}
+
+export default function FacilityPage() {
+  return <Suspense fallback={<div className="p-8 text-sm text-slate-600">Loading facility...</div>}><FacilityPageContent /></Suspense>;
 }

@@ -3,15 +3,32 @@
 import { usePathname } from "next/navigation";
 import HeaderBar from "./HeaderBar";
 import Sidebar from "./Sidebar";
+import FacilitiesSidebar from "@/components/facilities/FacilitiesSidebar";
+import FacilitiesHeader from "@/components/facilities/FacilitiesHeader";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const publicPage = ["/login", "/signup", "/join"].includes(pathname);
   const noSidebar = ["/", "/superuser/dashboard"].includes(pathname);
   const ownHeader = pathname === "/superuser/dashboard";
+  const facilitiesArea = pathname.startsWith("/facilities");
 
   if (publicPage) {
     return <main className="mx-auto min-h-screen w-full max-w-[1400px] px-8 py-8">{children}</main>;
+  }
+
+  if (facilitiesArea) {
+    return (
+      <div className="min-h-screen bg-[#f5f9ff] lg:flex">
+        <FacilitiesSidebar />
+        <div className="min-w-0 flex-1">
+          <FacilitiesHeader />
+          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">
+            {children}
+          </main>
+        </div>
+      </div>
+    );
   }
 
   return (
