@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
-  const next = url.searchParams.get("next") ?? "/profile";
+  const next = url.searchParams.get("next") ?? "/superuser/dashboard";
 
   // If no code, just go where we wanted
   if (!code) {
