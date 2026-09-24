@@ -29,7 +29,7 @@ export default function SignupPage() {
       options: {
         // IMPORTANT: confirmation email will come back here,
         // and then we redirect to /profile
-        emailRedirectTo: `${origin}/auth/callback?next=/profile`,
+        emailRedirectTo: `${origin}/callback?next=/profile`,
       },
     });
 

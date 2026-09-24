@@ -9,7 +9,7 @@
  *
  * MAIL / INBOX (Demo wiring)
  * - Unread count is read from localStorage key: "gsla_admin_mail_unread"
- * - /admin/mail is responsible for updating that value (seed/demo today)
+ * - /superuser/system/mail is responsible for updating that value (seed/demo today)
  * - Later: replace localStorage with API/DB unread count
  */
 
@@ -24,7 +24,7 @@ export default function HeaderBar() {
 
   // ---------------------------------------------------------------------------
   // Unread count (demo)
-  // - /admin/mail writes to localStorage and dispatches a custom event
+  // - /superuser/system/mail writes to localStorage and dispatches a custom event
   // - Header listens and updates badge immediately
   // ---------------------------------------------------------------------------
   const [mailUnread, setMailUnread] = useState<number>(0);
@@ -82,15 +82,15 @@ export default function HeaderBar() {
           {/* Calendar */}
           <button
             type="button"
-            onClick={() => router.push("/admin/calendar")}
+            onClick={() => router.push("/facilities/shared-calendar")}
             className="relative rounded-xl p-2 hover:bg-slate-100"
             aria-label="Calendar"
           >
             <Calendar />
           </button>
 
-          {/* Inbox (ONLY access to /admin/mail) */}
-          <Link href="/admin/mail" aria-label="Inbox">
+          {/* Inbox (ONLY access to /superuser/system/mail) */}
+          <Link href="/superuser/system/mail" aria-label="Inbox">
             <button
               type="button"
               className="relative rounded-xl p-2 hover:bg-slate-100"
