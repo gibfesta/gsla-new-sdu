@@ -1,74 +1,24 @@
-// AppShell
-// ------------------------------------------------------------------
-// Purpose:
-// This component defines the *global application layout* that wraps
-// every page in the app.
-//
-// Think of this as the structural skeleton of the UI:
-// - Top navigation (HeaderBar)
-// - Side navigation (Sidebar)
-// - Main content area (children)
-//
-// IMPORTANT:
-// - This file should only deal with layout and structure
-// - Do NOT put page-specific logic or data fetching here
-// ------------------------------------------------------------------
+"use client";
 
+import { usePathname } from "next/navigation";
 import HeaderBar from "./HeaderBar";
 import Sidebar from "./Sidebar";
 
-export default function AppShell({
-  children,
-}: {
-  // children = whatever page content is currently being rendered
-  // (e.g. dashboard, profile page, admin screens, etc.)
-  children: React.ReactNode;
-}) {
+export default function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const standalone = ["/", "/login", "/signup", "/join", "/superuser/dashboard"].includes(pathname);
+
+  if (standalone) {
+    return <main className="mx-auto min-h-screen w-full max-w-[1400px] px-5 py-8 md:px-8">{children}</main>;
+  }
+
   return (
-    // Full-height wrapper to ensure sidebar + content stretch to viewport height
     <div className="min-h-screen">
-      
-      {/* ----------------------------------------------------------------
-         HeaderBar
-         - Global top navigation
-         - Typically contains: app title, user menu, notifications, etc.
-         - Edit visual/layout changes inside ./HeaderBar.tsx
-      ---------------------------------------------------------------- */}
       <HeaderBar />
-
-      {/* ----------------------------------------------------------------
-         Main layout row
-         - Flex container holding sidebar + main content
-         - Sidebar stays fixed-width, main content grows
-      ---------------------------------------------------------------- */}
-      <div className="flex">
-        
-        {/* --------------------------------------------------------------
-           Sidebar
-           - Primary navigation for the app
-           - Links to dashboard, sports, admin sections, etc.
-           - Edit nav items and structure inside ./Sidebar.tsx
-        -------------------------------------------------------------- */}
+      <div className="flex flex-col md:flex-row">
         <Sidebar />
-
-        {/* --------------------------------------------------------------
-           Main content area
-           - flex-1 allows it to fill remaining horizontal space
-           - Background color is intentionally white for consistency
-        -------------------------------------------------------------- */}
-        <main className="flex-1 bg-white">
-          
-          {/* ------------------------------------------------------------
-             Inner content container
-             - max-w-6xl keeps content readable on large screens
-             - px-8 / py-8 control global page padding
-             - THIS is where all page.tsx content ultimately renders
-             - If spacing/layout feels off globally, adjust here
-          ------------------------------------------------------------ */}
-          <div className="mx-auto w-full max-w-[1400px] px-8 py-8">
-  {children}
-</div>
-
+        <main className="min-w-0 flex-1 bg-white">
+          <div className="mx-auto w-full max-w-[1400px] px-5 py-8 md:px-8">{children}</div>
         </main>
       </div>
     </div>

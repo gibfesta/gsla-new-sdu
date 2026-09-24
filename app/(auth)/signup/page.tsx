@@ -6,7 +6,6 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function SignupPage() {
   const router = useRouter();
-  const supabase = createSupabaseBrowserClient();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,13 +22,14 @@ export default function SignupPage() {
 
     const origin = window.location.origin;
 
+    const supabase = createSupabaseBrowserClient();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         // IMPORTANT: confirmation email will come back here,
         // and then we redirect to /profile
-        emailRedirectTo: `${origin}/auth/callback?next=/profile`,
+        emailRedirectTo: `${origin}/callback?next=/profile`,
       },
     });
 
