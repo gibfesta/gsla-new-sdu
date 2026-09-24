@@ -34,8 +34,7 @@ export default function LoginPage() {
     // This helps ensure cookies are set and middleware can see them
     router.refresh();
 
-    // Go test /api/profile
-    router.push("/profile");
+    router.replace("/superuser/dashboard");
   }
 
   return (
@@ -81,13 +80,6 @@ export default function LoginPage() {
         </p>
       </form>
 
-      <div className="mt-6 text-sm">
-        After logging in, open{" "}
-        <a className="underline" href="/api/profile">
-          /api/profile
-        </a>{" "}
-        to confirm auth works.
-      </div>
     </div>
   );
 }
