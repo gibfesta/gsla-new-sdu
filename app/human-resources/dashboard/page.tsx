@@ -1,178 +1,103 @@
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { ClipboardList, CalendarDays, FileText, Users, ArrowRight, Clock } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import {
+  ArrowRight, CalendarDays, CheckCircle2, ClipboardList, Clock3,
+  FileText, RotateCcw, Settings, UsersRound, type LucideIcon,
+} from "lucide-react";
 
-function classNames(...v: Array<string | false | null | undefined>) {
-  return v.filter(Boolean).join(" ");
+export const dynamic = "force-dynamic";
+
+type Week = { id: string; week_start: Date; week_end: Date; status: string };
+type WeekGroup = { status: string; _count: { _all: number } };
+
+async function getTimesheetSummary(): Promise<{ weeks: Week[]; counts: Record<string, number> } | null> {
+  if (!process.env.DATABASE_URL) return null;
+  try {
+    const [weeks, groups] = await Promise.all([
+      prisma.timesheet_week_packs.findMany({
+        select: { id: true, week_start: true, week_end: true, status: true },
+        orderBy: { week_start: "desc" },
+        take: 5,
+      }),
+      prisma.timesheet_week_packs.groupBy({ by: ["status"], _count: { _all: true } }),
+    ]);
+    return {
+      weeks,
+      counts: Object.fromEntries(groups.map((group: WeekGroup) => [group.status, group._count._all])),
+    };
+  } catch {
+    return null;
+  }
 }
 
-function Tile({
-  href,
-  title,
-  description,
-  icon: Icon,
-  tone = "slate",
-  badge,
-}: {
-  href: string;
-  title: string;
-  description: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  tone?: "slate" | "indigo" | "emerald" | "amber";
-  badge?: string;
-}) {
-  const toneCls =
-    tone === "indigo"
-      ? "bg-indigo-50 text-indigo-700 ring-indigo-200"
-      : tone === "emerald"
-        ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
-        : tone === "amber"
-          ? "bg-amber-50 text-amber-700 ring-amber-200"
-          : "bg-slate-50 text-slate-700 ring-slate-200";
-
+function Metric({ label, value, note, icon: Icon }: { label: string; value: string; note: string; icon: LucideIcon }) {
   return (
-    <Link
-      href={href}
-      className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:bg-slate-50"
-    >
-      <div className="flex items-start gap-3">
-        <div className={classNames("rounded-xl p-2 ring-1", toneCls)}>
-          <Icon size={18} className="opacity-90" />
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-3">
-            <div className="truncate text-sm font-semibold text-slate-900">{title}</div>
-            {badge ? (
-              <span className="inline-flex items-center rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                {badge}
-              </span>
-            ) : null}
-          </div>
-
-          <div className="mt-1 text-sm text-slate-600">{description}</div>
-
-          <div className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#0C2F57]">
-            Open <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
-          </div>
-        </div>
-      </div>
-    </Link>
+    <article className="flex min-h-32 items-start gap-4 rounded-xl border border-[#d5e4f6] bg-white p-4 shadow-sm">
+      <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#eaf2fc] text-[#174a84]"><Icon size={30} strokeWidth={1.8} aria-hidden="true" /></span>
+      <div><h2 className="text-sm font-semibold text-[#35557f]">{label}</h2><p className="mt-1 text-3xl font-bold text-[#102b59]">{value}</p><p className="mt-1 text-xs text-[#637da2]">{note}</p></div>
+    </article>
   );
 }
 
-export default function HRDashboardPage() {
+function dateLabel(date: Date) {
+  return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+}
+
+const modules = [
+  { title: "Timesheets", description: "Review facility week packs and payroll status.", href: "/human-resources/timesheets/weeks", icon: ClipboardList, state: "Database connected" },
+  { title: "Employees", description: "Explore employee profiles and departments.", href: "/human-resources/employees", icon: UsersRound, state: "Example records" },
+  { title: "Leave Management", description: "Review leave requests and approvals.", href: "/human-resources/leave", icon: CalendarDays, state: "Example requests" },
+] as const;
+
+export default async function HRDashboardPage() {
+  const summary = await getTimesheetSummary();
+  const counts = summary?.counts;
+  const count = (keys: string[]) => counts ? String(keys.reduce((total, key) => total + (counts[key] ?? 0), 0)) : "—";
+  const note = summary ? "From timesheet week packs" : "Database currently unavailable";
   return (
-    <div>
-      {/* PAGE TITLE (same style as Community Events) */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-4xl font-extrabold text-[#0C2F57]">Human Resources</h1>
-          <p className="mt-2 text-slate-600">
-            Central place for leave, timesheets, and HR administration workflows.
-          </p>
+    <div className="space-y-4 text-[#112d56]">
+      <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-9 text-white shadow-sm sm:px-9 sm:py-10">
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
+        <div className="relative flex flex-wrap items-end justify-between gap-8">
+          <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Human Resources</p><h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl xl:text-5xl">Human Resources Dashboard</h1><p className="mt-4 max-w-2xl text-base leading-7 text-blue-50 sm:text-lg">Support our people, track timesheets and keep HR work moving.</p></div>
+          <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">Stronger people<br />Stronger teams</p>
         </div>
+      </section>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
-            <Clock size={16} className="text-slate-500" />
-            Saturday → Saturday payroll week
-          </span>
-        </div>
-      </div>
+      <section aria-label="Timesheet overview" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <Metric label="Total Week Packs" value={count(["DRAFT", "SUBMITTED", "RETURNED", "LOCKED", "SENT"])} note={note} icon={ClipboardList} />
+        <Metric label="Awaiting Review" value={count(["SUBMITTED"])} note={note} icon={Clock3} />
+        <Metric label="Returned" value={count(["RETURNED"])} note={note} icon={RotateCcw} />
+        <Metric label="Locked / Sent" value={count(["LOCKED", "SENT"])} note={note} icon={CheckCircle2} />
+      </section>
 
-      {/* QUICK MODULES */}
-      <Card className="mt-6">
-        <CardContent className="p-5">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <Tile
-              href="/human-resources/timesheets"
-              title="Timesheets"
-              description="Facility week packs → CM submits → HR/Accounts review → lock & export for Treasury."
-              icon={ClipboardList}
-              tone="indigo"
-              badge="Live"
-            />
-            <Tile
-              href="/human-resources/leave"
-              title="Leave management"
-              description="Digital leave requests, approvals, attachments and audit trail (add next)."
-              icon={CalendarDays}
-              tone="amber"
-              badge="Next"
-            />
-            <Tile
-              href="/human-resources/employees"
-              title="Employees"
-              description="Profiles, roles, departments and contracts (optional module)."
-              icon={Users}
-              tone="emerald"
-              badge="Optional"
-            />
+      <section className="grid gap-4 lg:grid-cols-3" aria-label="Human Resources modules">
+        {modules.map(({ title, description, href, icon: Icon, state }) => (
+          <Link key={title} href={href} className="group rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm transition hover:border-[#8ab8eb] hover:bg-[#f8fbff]">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#eaf2fc] text-[#174a84]"><Icon size={24} aria-hidden="true" /></span>
+            <h2 className="mt-4 text-xl font-bold">{title}</h2><p className="mt-2 min-h-10 text-sm text-[#60799f]">{description}</p>
+            <div className="mt-4 flex items-center justify-between gap-2"><span className="rounded-full bg-[#eef5fd] px-3 py-1 text-xs font-medium text-[#42648c]">{state}</span><ArrowRight size={18} className="text-[#155ca7] transition group-hover:translate-x-1" aria-hidden="true" /></div>
+          </Link>
+        ))}
+      </section>
+
+      <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
+        <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="recent-weeks-heading">
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="recent-weeks-heading" className="text-xl font-bold">Recent Timesheet Weeks</h2><p className="mt-1 text-sm text-[#60799f]">The latest week packs from the HR database.</p></div><Link href="/human-resources/timesheets/weeks" className="inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7] hover:underline">View weeks inbox <ArrowRight size={16} aria-hidden="true" /></Link></div>
+          <div className="mt-5 divide-y divide-[#e5edf8]">
+            {summary?.weeks.length ? summary.weeks.map((week) => (
+              <Link key={week.id} href={`/human-resources/timesheets/weeks/${week.id}`} className="flex flex-wrap items-center justify-between gap-2 py-3 text-sm hover:bg-[#f8fbff]"><span className="font-semibold">{dateLabel(week.week_start)} – {dateLabel(week.week_end)}</span><span className="rounded-lg bg-[#eef5fd] px-2.5 py-1 text-xs font-semibold text-[#35557f]">{week.status}</span></Link>
+            )) : <p className="rounded-xl border border-dashed border-[#cadcf2] bg-[#f8fbff] px-4 py-8 text-center text-sm text-[#637da2]">{summary ? "No timesheet week packs yet." : "Timesheet data is currently unavailable."}</p>}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* SECONDARY LINKS */}
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <Card className="lg:col-span-7">
-          <CardContent className="p-5">
-            <div className="text-sm font-semibold text-slate-900">What’s working now</div>
-            <p className="mt-2 text-sm text-slate-600">
-              Your Timesheets module is now themed consistently and backed by Supabase/Postgres tables via Prisma. Next
-              step is adding “Create week pack (choose facility)” + “Add/Edit shift” flows, then submit/lock/export.
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link
-                href="/human-resources/timesheets/weeks"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
-              >
-                Go to weeks inbox <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/human-resources/timesheets/settings"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-              >
-                Timesheet settings
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-5">
-          <CardContent className="p-5">
-            <div className="text-sm font-semibold text-slate-900">Planned next</div>
-            <ul className="mt-3 space-y-2 text-sm text-slate-700">
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-2 w-2 rounded-full bg-slate-400" />
-                Facility picker for week pack creation (no more env default).
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-2 w-2 rounded-full bg-slate-400" />
-                Add/Edit shift entry drawer (staff, times, reason codes, notes).
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-2 w-2 rounded-full bg-slate-400" />
-                Submit/Return/Lock/Export server actions + audit log.
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-2 w-2 rounded-full bg-slate-400" />
-                Leave module (requests + approvals + calendar).
-              </li>
-            </ul>
-
-            <div className="mt-4 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
-                <FileText size={14} className="text-slate-500" />
-                Note
-              </div>
-              <div className="mt-1 text-sm text-slate-700">
-                If you already have sidebar links for HR, this page becomes the “home” dashboard.
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        </section>
+        <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="hr-actions-heading">
+          <h2 id="hr-actions-heading" className="text-xl font-bold">HR Workspaces</h2><p className="mt-1 text-sm text-[#60799f]">Open the tools already available.</p>
+          <div className="mt-5 space-y-3">
+            <Link href="/human-resources/timesheets" className="flex items-center gap-3 rounded-xl border border-[#d5e4f6] px-4 py-3 text-sm font-semibold text-[#155ca7] hover:bg-blue-50"><ClipboardList size={19} aria-hidden="true" />Timesheets <ArrowRight size={16} className="ml-auto" aria-hidden="true" /></Link>
+            <Link href="/human-resources/timesheets/settings" className="flex items-center gap-3 rounded-xl border border-[#d5e4f6] px-4 py-3 text-sm font-semibold text-[#155ca7] hover:bg-blue-50"><Settings size={19} aria-hidden="true" />Timesheet settings <ArrowRight size={16} className="ml-auto" aria-hidden="true" /></Link>
+          </div>
+          <p className="mt-5 flex gap-2 rounded-xl bg-[#f5f9ff] p-3 text-xs leading-5 text-[#60799f]"><FileText size={17} className="shrink-0" aria-hidden="true" />Employee and leave pages currently show example records. Live counts will be added when those sources are connected.</p>
+        </section>
       </div>
     </div>
   );
