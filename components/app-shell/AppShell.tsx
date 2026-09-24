@@ -13,8 +13,8 @@ import HumanResourcesHeader from "@/components/human-resources/HumanResourcesHea
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const publicPage = ["/login", "/signup", "/join"].includes(pathname);
-  const noSidebar = ["/", "/superuser/dashboard"].includes(pathname);
-  const ownHeader = pathname === "/superuser/dashboard";
+  const noSidebar = ["/", "/superuser/dashboard", "/superuser/health"].includes(pathname);
+  const ownHeader = ["/superuser/dashboard", "/superuser/health"].includes(pathname);
   const facilitiesArea = pathname.startsWith("/facilities");
   const sportsDevelopmentArea = pathname.startsWith("/sports-development");
   const humanResourcesArea = pathname.startsWith("/human-resources");
