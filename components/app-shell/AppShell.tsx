@@ -5,6 +5,8 @@ import HeaderBar from "./HeaderBar";
 import Sidebar from "./Sidebar";
 import FacilitiesSidebar from "@/components/facilities/FacilitiesSidebar";
 import FacilitiesHeader from "@/components/facilities/FacilitiesHeader";
+import SportsDevelopmentSidebar from "@/components/sports-development/SportsDevelopmentSidebar";
+import SportsDevelopmentHeader from "@/components/sports-development/SportsDevelopmentHeader";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -12,6 +14,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const noSidebar = ["/", "/superuser/dashboard"].includes(pathname);
   const ownHeader = pathname === "/superuser/dashboard";
   const facilitiesArea = pathname.startsWith("/facilities");
+  const sportsDevelopmentArea = pathname.startsWith("/sports-development");
 
   if (publicPage) {
     return <main className="mx-auto min-h-screen w-full max-w-[1400px] px-8 py-8">{children}</main>;
@@ -26,6 +29,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">
             {children}
           </main>
+        </div>
+      </div>
+    );
+  }
+
+  if (sportsDevelopmentArea) {
+    return (
+      <div className="min-h-screen bg-[#f5f9ff] lg:flex">
+        <SportsDevelopmentSidebar />
+        <div className="min-w-0 flex-1">
+          <SportsDevelopmentHeader />
+          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">{children}</main>
         </div>
       </div>
     );
