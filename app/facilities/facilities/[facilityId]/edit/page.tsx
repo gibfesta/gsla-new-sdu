@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import VenueDetailNotice from "@/components/facilities/VenueDetailNotice";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowLeft,
@@ -63,7 +64,7 @@ function statusStyles(status: FacilityStatus) {
   };
 }
 
-export default function EditFacilityPage() {
+function EuropaEditFacilityPage() {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -592,4 +593,9 @@ export default function EditFacilityPage() {
       </section>
     </div>
   );
+}
+
+export default function EditFacilityPage() {
+  const { facilityId } = useParams<{ facilityId: string }>();
+  return facilityId === "fac-001" ? <EuropaEditFacilityPage /> : <VenueDetailNotice venueId={facilityId} section="Edit facility" />;
 }

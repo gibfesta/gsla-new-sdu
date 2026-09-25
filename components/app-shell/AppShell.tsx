@@ -1,9 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import HeaderBar from "./HeaderBar";
 import Sidebar from "./Sidebar";
 import FacilitiesSidebar from "@/components/facilities/FacilitiesSidebar";
+import FacilitiesDepartmentSidebar from "@/components/facilities/FacilitiesDepartmentSidebar";
 import FacilitiesHeader from "@/components/facilities/FacilitiesHeader";
 import SportsDevelopmentSidebar from "@/components/sports-development/SportsDevelopmentSidebar";
 import SportsDevelopmentHeader from "@/components/sports-development/SportsDevelopmentHeader";
@@ -18,6 +20,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const noSidebar = ["/", "/superuser/dashboard", "/superuser/health"].includes(pathname);
   const ownHeader = ["/superuser/dashboard", "/superuser/health"].includes(pathname);
   const facilitiesArea = pathname.startsWith("/facilities");
+  const venueArea = /^\/facilities\/facilities\/fac-[0-9]{3}(?:\/|$)/.test(pathname);
   const sportsDevelopmentArea = pathname.startsWith("/sports-development");
   const humanResourcesArea = pathname.startsWith("/human-resources");
   const financeArea = pathname.startsWith("/finance");
@@ -29,7 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (facilitiesArea) {
     return (
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
-        <FacilitiesSidebar />
+        {venueArea ? <Suspense fallback={<aside className="w-full shrink-0 bg-[#0d2d52] lg:w-[286px]" />}><FacilitiesSidebar /></Suspense> : <FacilitiesDepartmentSidebar />}
         <div className="min-w-0 flex-1">
           <FacilitiesHeader />
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">
