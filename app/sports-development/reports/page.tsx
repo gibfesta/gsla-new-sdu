@@ -410,7 +410,7 @@ export default function StatsPage() {
           </Pill>
           <Pill tone="emerald">
             <Activity size={14} />
-            Live demo
+            Example data
           </Pill>
 
           {/* Sport filter */}

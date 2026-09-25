@@ -3,3 +3,22 @@
 html, body {
   height: 100%;
 }
+
+/* Department pages share one banner; retain their existing controls and content below it. */
+.department-page-content:not(.department-page-detail) h1,
+.department-page-content:not(.department-page-detail) h1 + p {
+  display: none;
+}
+
+.department-page-content .rounded-2xl.border.border-slate-200.bg-white {
+  border-color: #d5e4f6;
+  border-radius: 0.75rem;
+}
+
+.department-page-overview > div > section:first-child {
+  display: none;
+}
+
+.department-page-content > div > .mt-6:first-child {
+  margin-top: 0;
+}

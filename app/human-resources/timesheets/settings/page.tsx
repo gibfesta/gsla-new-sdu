@@ -1,55 +1,24 @@
+import Link from "next/link";
+import { ArrowLeft, CalendarDays, ListChecks } from "lucide-react";
+
 export default function TimesheetsSettingsPage() {
   return (
-    <div style={{ padding: 24, maxWidth: 900 }}>
-      <a href="/human-resources/timesheets" style={{ textDecoration: "underline" }}>
-        ← Back to Timesheets
-      </a>
-
-      <h1 style={{ fontSize: 22, fontWeight: 800, marginTop: 14 }}>Timesheets Settings</h1>
-      <p style={{ marginTop: 6, opacity: 0.8 }}>
-        Placeholder settings page. Next we’ll connect these to the database.
-      </p>
-
-      <div
-        style={{
-          marginTop: 16,
-          padding: 14,
-          border: "1px solid #eee",
-          borderRadius: 12,
-          background: "#fff",
-        }}
-      >
-        <h2 style={{ fontSize: 16, fontWeight: 800, marginTop: 0 }}>Week rules</h2>
-        <ul style={{ margin: 0, paddingLeft: 18, opacity: 0.85 }}>
-          <li>Payroll week: Saturday → Saturday</li>
-          <li>Facility submission: 1 centre manager approval required</li>
-          <li>After Accounts lock: no edits (only adjustments)</li>
-        </ul>
-      </div>
-
-      <div
-        style={{
-          marginTop: 16,
-          padding: 14,
-          border: "1px solid #eee",
-          borderRadius: 12,
-          background: "#fff",
-        }}
-      >
-        <h2 style={{ fontSize: 16, fontWeight: 800, marginTop: 0 }}>Reason codes</h2>
-        <p style={{ marginTop: 6, opacity: 0.8 }}>
-          These will become editable (add/remove/rename) once wired to DB.
-        </p>
-        <ul style={{ margin: 0, paddingLeft: 18, opacity: 0.85 }}>
-          <li>As rota</li>
-          <li>Rota change</li>
-          <li>Overtime</li>
-          <li>Sick cover</li>
-          <li>Sick leave</li>
-          <li>Annual leave</li>
-          <li>Unpaid leave</li>
-          <li>Other</li>
-        </ul>
+    <div className="space-y-4">
+      <Link href="/human-resources/timesheets" className="inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7] hover:underline"><ArrowLeft size={16} aria-hidden="true" />Back to Timesheets</Link>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf2fc] text-[#174a84]"><CalendarDays size={22} aria-hidden="true" /></span><h2 className="text-xl font-bold">Week Rules</h2></div>
+          <dl className="mt-5 divide-y divide-[#e5edf8] text-sm">
+            <div className="flex justify-between gap-4 py-3"><dt className="text-[#60799f]">Payroll week</dt><dd className="font-semibold">Saturday to Saturday</dd></div>
+            <div className="flex justify-between gap-4 py-3"><dt className="text-[#60799f]">Facility submission</dt><dd className="text-right font-semibold">One Centre Manager approval</dd></div>
+            <div className="flex justify-between gap-4 py-3"><dt className="text-[#60799f]">After Accounts lock</dt><dd className="text-right font-semibold">Adjustments only</dd></div>
+          </dl>
+        </section>
+        <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf2fc] text-[#174a84]"><ListChecks size={22} aria-hidden="true" /></span><h2 className="text-xl font-bold">Reason Codes</h2></div>
+          <p className="mt-4 text-sm text-[#60799f]">These codes will be editable once timesheet settings are connected.</p>
+          <div className="mt-4 flex flex-wrap gap-2">{["As rota", "Rota change", "Overtime", "Sick cover", "Sick leave", "Annual leave", "Unpaid leave", "Other"].map((reason) => <span key={reason} className="rounded-lg border border-[#d5e4f6] bg-[#f8fbff] px-3 py-2 text-sm font-medium">{reason}</span>)}</div>
+        </section>
       </div>
     </div>
   );

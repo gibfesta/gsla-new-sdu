@@ -13,6 +13,7 @@ import HumanResourcesSidebar from "@/components/human-resources/HumanResourcesSi
 import HumanResourcesHeader from "@/components/human-resources/HumanResourcesHeader";
 import FinanceSidebar from "@/components/finance/FinanceSidebar";
 import FinanceHeader from "@/components/finance/FinanceHeader";
+import DepartmentPageFrame from "@/components/shared/DepartmentPageFrame";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -49,7 +50,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <SportsDevelopmentSidebar />
         <div className="min-w-0 flex-1">
           <SportsDevelopmentHeader />
-          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">{children}</main>
+          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6"><DepartmentPageFrame department="sports-development">{children}</DepartmentPageFrame></main>
         </div>
       </div>
     );
@@ -61,7 +62,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <HumanResourcesSidebar />
         <div className="min-w-0 flex-1">
           <HumanResourcesHeader />
-          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">{children}</main>
+          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6"><DepartmentPageFrame department="human-resources">{children}</DepartmentPageFrame></main>
         </div>
       </div>
     );
@@ -73,7 +74,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <FinanceSidebar />
         <div className="min-w-0 flex-1">
           <FinanceHeader />
-          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">{children}</main>
+          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6"><DepartmentPageFrame department="finance">{children}</DepartmentPageFrame></main>
         </div>
       </div>
     );
