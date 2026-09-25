@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import VenueDetailNotice from "@/components/facilities/VenueDetailNotice";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowLeft,
@@ -198,7 +199,7 @@ function StatCard({
   );
 }
 
-export default function FacilityIssuesPage() {
+function EuropaIssuesPage() {
   const router = useRouter();
 
   const [search, setSearch] = useState("");
@@ -476,4 +477,9 @@ export default function FacilityIssuesPage() {
       </section>
     </div>
   );
+}
+
+export default function FacilityIssuesPage() {
+  const { facilityId } = useParams<{ facilityId: string }>();
+  return facilityId === "fac-001" ? <EuropaIssuesPage /> : <VenueDetailNotice venueId={facilityId} section="Venue issues" />;
 }

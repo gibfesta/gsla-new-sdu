@@ -1,10 +1,10 @@
 "use client";
 
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import OtherVenueWorkspace from "@/components/facilities/OtherVenueWorkspace";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  ArrowLeft,
   Building2,
   MapPin,
   CheckCircle2,
@@ -884,14 +884,6 @@ function FacilityPageContent() {
         <div className="px-6 py-8 md:px-8">
           <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
             <div className="max-w-4xl">
-              <button
-                onClick={() => router.push("/facilities/facilities")}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15"
-              >
-                <ArrowLeft size={16} />
-                Back to Facilities
-              </button>
-
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/15">
                   <Building2 size={14} />
@@ -2298,5 +2290,8 @@ function FacilityPageContent() {
 }
 
 export default function FacilityPage() {
-  return <Suspense fallback={<div className="p-8 text-sm text-slate-600">Loading facility...</div>}><FacilityPageContent /></Suspense>;
+  const { facilityId } = useParams<{ facilityId: string }>();
+  return <Suspense fallback={<div className="p-8 text-sm text-slate-600">Loading facility...</div>}>
+    {facilityId === "fac-001" ? <FacilityPageContent /> : <OtherVenueWorkspace venueId={facilityId} />}
+  </Suspense>;
 }
