@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OtherVenueWorkspace from "@/components/facilities/OtherVenueWorkspace";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,25 +12,14 @@ import {
   ShieldAlert,
   Pencil,
   ClipboardList,
-  CalendarDays,
-  Clock3,
-  Wrench,
-  Phone,
-  Mail,
-  FileText,
-  PlayCircle,
-  CheckSquare,
-  CalendarRange,
   BellRing,
   CircleDot,
   Plus,
   Send,
-  MessageSquare,
   DoorClosed,
   Siren,
   TriangleAlert,
   Info,
-  FolderOpen,
   Camera,
   BadgeCheck,
   Download,
@@ -43,9 +32,7 @@ import {
   X,
   Lock,
   UserCog,
-  CalendarClock,
   ExternalLink,
-  History,
 } from "lucide-react";
 
 function classNames(...v: Array<string | false | null | undefined>) {
@@ -629,9 +616,7 @@ function FacilityPageContent() {
   useEffect(() => {
     const requested = searchParams.get("tab");
     const validTabs: TabKey[] = ["handover", "information", "issues", "timeline", "events", "bookings", "procedures", "weekly", "monthly", "documents", "photos", "compliance", "audit"];
-    if (requested && validTabs.includes(requested as TabKey)) {
-      setActiveTab(requested as TabKey);
-    }
+    setActiveTab(requested && validTabs.includes(requested as TabKey) ? requested as TabKey : "handover");
   }, [searchParams]);
   const [role, setRole] = useState<Role>("Centre Manager");
 
@@ -710,25 +695,6 @@ function FacilityPageContent() {
   const canUpload = roleCanUpload(role);
   const canManageDocs = roleCanEditDocuments(role);
   const canManageCompliance = roleCanManageCompliance(role);
-
-  const tabs = useMemo(
-    () => [
-      { key: "handover" as TabKey, label: "Daily Handover", icon: MessageSquare, badge: "Live" },
-      { key: "information" as TabKey, label: "Information", icon: FileText },
-      { key: "issues" as TabKey, label: "Issues", icon: ClipboardList, badge: String(openIssueCount) },
-      { key: "timeline" as TabKey, label: "Timeline", icon: Clock3 },
-      { key: "events" as TabKey, label: "Events", icon: CalendarDays, badge: String(events.length) },
-      { key: "bookings" as TabKey, label: "Bookings / Calendar", icon: CalendarClock, badge: String(bookingItems.length) },
-      { key: "procedures" as TabKey, label: "Opening / Closing", icon: PlayCircle },
-      { key: "weekly" as TabKey, label: "Weekly Tasks", icon: CheckSquare, badge: String(weeklyDue) },
-      { key: "monthly" as TabKey, label: "Monthly Tasks", icon: CalendarRange, badge: String(monthlyDue) },
-      { key: "documents" as TabKey, label: "Documents / SOPs", icon: FolderOpen, badge: String(documents.length) },
-      { key: "photos" as TabKey, label: "Photo Log", icon: Camera, badge: String(photos.length) },
-      { key: "compliance" as TabKey, label: "Compliance", icon: BadgeCheck, badge: overdueCompliance > 0 ? String(overdueCompliance) : undefined },
-      { key: "audit" as TabKey, label: "Audit Trail", icon: History, badge: String(audit.length) },
-    ],
-    [audit.length, documents.length, monthlyDue, openIssueCount, overdueCompliance, photos.length, weeklyDue]
-  );
 
   function addAuditEntry(action: string, detail: string) {
     const userName =
@@ -994,117 +960,7 @@ function FacilityPageContent() {
         />
       </section>
 
-      <section className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-3">
-          <Card className="rounded-2xl border-slate-200 shadow-sm">
-            <CardContent className="p-4">
-              <div className="mb-3 text-sm font-semibold text-slate-900">
-                Facility Workspace
-              </div>
-
-              <div className="space-y-2">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon;
-                  const active = activeTab === tab.key;
-
-                  return (
-                    <button
-                      key={tab.key}
-                      onClick={() => setActiveTab(tab.key)}
-                      className={classNames(
-                        "flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium transition",
-                        active
-                          ? "bg-[#0C2F57] text-white"
-                          : "bg-white text-slate-700 hover:bg-slate-50"
-                      )}
-                    >
-                      <span className="flex items-center gap-3">
-                        <Icon size={16} />
-                        <span>{tab.label}</span>
-                      </span>
-
-                      {tab.badge ? (
-                        <span
-                          className={classNames(
-                            "rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1",
-                            active
-                              ? "bg-white/15 text-white ring-white/15"
-                              : "bg-slate-100 text-slate-700 ring-slate-200"
-                          )}
-                        >
-                          {tab.badge}
-                        </span>
-                      ) : null}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="mt-5 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Mock Permissions
-                </div>
-                <div className="mt-3 space-y-2 text-sm text-slate-700">
-                  <div className="flex items-center gap-2">
-                    {canEdit ? <CheckCircle2 size={14} /> : <Lock size={14} />}
-                    Edit workspace content
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {canUpload ? <CheckCircle2 size={14} /> : <Lock size={14} />}
-                    Upload documents / photos
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {canManageCompliance ? (
-                      <CheckCircle2 size={14} />
-                    ) : (
-                      <Lock size={14} />
-                    )}
-                    Manage compliance items
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Main Contact
-                </div>
-                <div className="mt-2 text-sm font-semibold text-slate-900">
-                  {facility.manager.name}
-                </div>
-                <div className="mt-1 text-sm text-slate-600">
-                  {facility.manager.title}
-                </div>
-                <div className="mt-4 space-y-2 text-sm text-slate-700">
-                  <div className="flex items-center gap-2">
-                    <Mail size={14} className="text-slate-500" />
-                    {facility.manager.email}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone size={14} className="text-slate-500" />
-                    {facility.manager.phone}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Remote Oversight
-                </div>
-                <div className="mt-2 text-sm font-semibold text-slate-900">
-                  {facility.facilitiesManager.name}
-                </div>
-                <div className="mt-1 text-sm text-slate-600">
-                  Reviews updates remotely
-                </div>
-                <div className="mt-3 text-sm text-slate-700">
-                  {facility.facilitiesManager.email}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="xl:col-span-9">
+      <section>
           {activeTab === "handover" && (
             <div className="space-y-6">
               <Card className="rounded-2xl border-slate-200 shadow-sm">
@@ -2093,7 +1949,6 @@ function FacilityPageContent() {
               </CardContent>
             </Card>
           )}
-        </div>
       </section>
 
       <Modal
