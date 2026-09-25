@@ -9,6 +9,8 @@ import SportsDevelopmentSidebar from "@/components/sports-development/SportsDeve
 import SportsDevelopmentHeader from "@/components/sports-development/SportsDevelopmentHeader";
 import HumanResourcesSidebar from "@/components/human-resources/HumanResourcesSidebar";
 import HumanResourcesHeader from "@/components/human-resources/HumanResourcesHeader";
+import FinanceSidebar from "@/components/finance/FinanceSidebar";
+import FinanceHeader from "@/components/finance/FinanceHeader";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -18,6 +20,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const facilitiesArea = pathname.startsWith("/facilities");
   const sportsDevelopmentArea = pathname.startsWith("/sports-development");
   const humanResourcesArea = pathname.startsWith("/human-resources");
+  const financeArea = pathname.startsWith("/finance");
 
   if (publicPage) {
     return <main className="mx-auto min-h-screen w-full max-w-[1400px] px-8 py-8">{children}</main>;
@@ -55,6 +58,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <HumanResourcesSidebar />
         <div className="min-w-0 flex-1">
           <HumanResourcesHeader />
+          <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">{children}</main>
+        </div>
+      </div>
+    );
+  }
+
+  if (financeArea) {
+    return (
+      <div className="min-h-screen bg-[#f5f9ff] lg:flex">
+        <FinanceSidebar />
+        <div className="min-w-0 flex-1">
+          <FinanceHeader />
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">{children}</main>
         </div>
       </div>
