@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeft, BarChart3, CalendarDays, CheckSquare2, ClipboardList, Download,
@@ -44,10 +45,7 @@ export default function SportsDevelopmentSidebar() {
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[266px] lg:overflow-y-auto">
       <div className="px-4 py-5 lg:px-5">
-        <Link href="/sports-development/dashboard" className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-white" aria-label="GSLA Sports Development Unit home">
-          <span className="text-3xl" aria-hidden="true">✦</span> GSLA
-        </Link>
-        <h2 className="mt-1 text-base font-bold">Sports Development Unit</h2>
+        <Link href="/sports-development/dashboard" className="inline-flex w-fit items-center" aria-label="GSLA Sports Development Unit home"><Image src="/gsla-white.png" alt="GSLA" width={600} height={279} className="h-auto w-[180px]" priority /></Link>
         <p className="mt-1 text-sm leading-5 text-blue-100">Developing People.<br />Stronger Communities.<br />More Opportunities.</p>
         <nav aria-label="Sports Development Unit navigation" className="mt-5 space-y-4">
           {groups.map((group) => (
