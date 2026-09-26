@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
-  CalendarDays, CalendarRange, Camera, CheckSquare2,
+  ArrowLeft, CalendarDays, CalendarRange, Camera, CheckSquare2,
   ClipboardList, Clock3, DoorOpen, FileText, HelpCircle, Info,
   LayoutDashboard, ListChecks, LockKeyhole, Settings, ShieldCheck,
   TriangleAlert, type LucideIcon,
@@ -75,6 +75,8 @@ export default function FacilitiesSidebar() {
           ))}
         </nav>
         <div className="mt-4 border-t border-blue-300/30 pt-3">
+          <Link href="/facilities/facilities" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
+          <Link href="/superuser/dashboard" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><HelpCircle size={19} aria-hidden="true" />Help</span>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><Settings size={19} aria-hidden="true" />Settings</span>
         </div>
