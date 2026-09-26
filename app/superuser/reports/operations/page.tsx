@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   BarChart3,
@@ -277,58 +278,69 @@ export default function SuperuserDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Hero */}
-      <div className="rounded-3xl border border-slate-200 bg-gradient-to-r from-white to-slate-50 p-6 shadow-sm">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
+      <div className="overflow-hidden rounded-3xl bg-[linear-gradient(110deg,#0C2F57_0%,#174A84_70%,#0C2F57_100%)] p-6 text-white shadow-sm sm:p-8">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="h-6 w-6 text-[#D81E27]" />
-              <h1 className="text-3xl font-extrabold text-[#0C2F57]">Operations Dashboard (Demo)</h1>
+              <ShieldCheck className="h-6 w-6 shrink-0 text-blue-200" />
+              <h1 className="text-3xl font-extrabold text-white">Operations Dashboard (Demo)</h1>
             </div>
-            <p className="mt-2 max-w-2xl text-sm text-slate-600">
+            <p className="mt-2 max-w-2xl text-sm text-blue-100">
               Original operations dashboard design. Values shown here are demonstration data.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
-                <CheckCircle2 className="h-4 w-4" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white ring-1 ring-white/20">
+                <CheckCircle2 className="h-4 w-4 text-emerald-300" />
                 Sample system status
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 ring-1 ring-amber-200">
-                <Clock3 className="h-4 w-4" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white ring-1 ring-white/20">
+                <Clock3 className="h-4 w-4 text-amber-300" />
                 6 items need review today
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 ring-1 ring-red-200">
-                <Siren className="h-4 w-4" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white ring-1 ring-white/20">
+                <Siren className="h-4 w-4 text-rose-300" />
                 2 urgent facility issues
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Link
-              href="/superuser/system/manage"
-              className="rounded-2xl bg-[#0C2F57] px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:opacity-95"
-            >
-              Review Queue
-            </Link>
-            <Link
-              href="/superuser/system/reminders"
-              className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 ring-1 ring-slate-200 transition hover:bg-slate-50"
-            >
-              Open Alerts
-            </Link>
-            <Link
-              href="/facilities/shared-calendar"
-              className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 ring-1 ring-slate-200 transition hover:bg-slate-50"
-            >
-              View Calendar
-            </Link>
-            <Link
-              href="/superuser/system/import-export"
-              className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 ring-1 ring-slate-200 transition hover:bg-slate-50"
-            >
-              Export Data
-            </Link>
+          <div className="flex w-full shrink-0 flex-col items-start gap-4 lg:w-[320px] lg:items-end">
+            <Image
+              src="/gsla-white.png"
+              alt="GSLA"
+              width={600}
+              height={279}
+              sizes="(min-width: 1024px) 208px, 176px"
+              className="h-auto w-44 object-contain lg:w-52"
+              priority
+            />
+            <div className="grid w-full grid-cols-2 gap-3">
+              <Link
+                href="/superuser/system/manage"
+                className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-[#0C2F57] shadow-sm transition hover:bg-blue-50"
+              >
+                Review Queue
+              </Link>
+              <Link
+                href="/superuser/system/reminders"
+                className="rounded-2xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white ring-1 ring-white/30 transition hover:bg-white/20"
+              >
+                Open Alerts
+              </Link>
+              <Link
+                href="/facilities/shared-calendar"
+                className="rounded-2xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white ring-1 ring-white/30 transition hover:bg-white/20"
+              >
+                View Calendar
+              </Link>
+              <Link
+                href="/superuser/system/import-export"
+                className="rounded-2xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white ring-1 ring-white/30 transition hover:bg-white/20"
+              >
+                Export Data
+              </Link>
+            </div>
           </div>
         </div>
       </div>
