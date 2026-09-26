@@ -75,7 +75,7 @@ export default async function HealthDashboard() {
       <header className="border-b border-[#dfe8f4] bg-white/90">
         <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center gap-4 px-5 py-3 md:px-8">
           <Link href="/superuser/dashboard" aria-label="GSLA organisation dashboard" className="mr-auto flex items-center"><Image src="/gsla-transp-logo.png" alt="GSLA" width={125} height={70} className="h-12 w-auto max-w-32 object-contain" priority /></Link>
-          <Link href="/superuser/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#d7e1ef] px-4 text-sm font-semibold text-[#16365f] hover:bg-blue-50"><ArrowLeft size={17} aria-hidden="true" />Organisation Dashboard</Link>
+          <Link href="/superuser/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#d7e1ef] px-4 text-sm font-semibold text-[#16365f] hover:bg-blue-50"><ArrowLeft size={17} aria-hidden="true" />Back to Organisation</Link>
           <span className="rounded-full bg-[#315d90] px-3 py-2 text-sm font-semibold text-white" aria-label="SuperUser account">SU</span>
           <span className="hidden text-sm font-medium sm:inline">SuperUser</span>
         </div>
