@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Activity, ArrowRight, Building2, Database, Globe2, Info, Landmark,
-  MapPin, Search, ShieldCheck, UsersRound, Link2, Server,
+  ShieldCheck, UsersRound, Link2, Server,
   type LucideIcon,
 } from "lucide-react";
 
@@ -67,18 +67,9 @@ export default function SuperuserDashboard() {
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#f1f7ff_100%)] text-[#142542]">
       <header className="border-b border-[#dfe8f4] bg-white/90">
-        <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center gap-4 px-5 py-3 md:px-8">
-          <Link href="/superuser/dashboard" aria-label="GSLA home" className="mr-auto flex items-center">
-            <Image src="/gsla-transp-logo.png" alt="GSLA" width={125} height={70} className="h-12 w-auto max-w-32 object-contain" priority />
-          </Link>
-          <div className="hidden min-w-[280px] items-center gap-3 rounded-xl border border-[#d7e1ef] bg-white px-4 py-3 text-sm text-slate-500 shadow-sm lg:flex" aria-label="Global search is not available yet">
-            <Search size={19} aria-hidden="true" /> Search coming soon
-          </div>
-          <div className="flex items-center gap-2 rounded-xl border border-[#d7e1ef] bg-white px-4 py-3 text-sm font-medium shadow-sm">
-            <MapPin size={18} className="text-[#173c70]" aria-hidden="true" /> All venues
-          </div>
-          <span className="rounded-full bg-[#315d90] px-3 py-2 text-sm font-semibold text-white" aria-label="SuperUser account">SU</span>
-          <span className="hidden text-sm font-medium sm:inline">SuperUser</span>
+        <div className="mx-auto flex h-12 max-w-[1500px] items-center justify-end gap-2 px-5 md:px-8">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#315d90] text-[10px] font-semibold text-white" aria-label="SuperUser account">SU</span>
+          <span className="text-xs font-medium text-[#16365f]">SuperUser</span>
         </div>
       </header>
 
