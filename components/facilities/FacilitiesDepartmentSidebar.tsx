@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeft, BarChart3, Building2, CalendarDays, CircleHelp, FileText,
@@ -23,8 +24,7 @@ export default function FacilitiesDepartmentSidebar() {
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
       <div className="flex min-h-full flex-col px-4 py-5 lg:px-5">
-        <Link href="/facilities/dashboard" className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-white" aria-label="GSLA Facilities department home"><span className="text-3xl" aria-hidden="true">✦</span> GSLA</Link>
-        <h2 className="mt-1 text-lg font-bold">Facilities Section</h2>
+        <Link href="/facilities/dashboard" className="inline-flex w-fit items-center" aria-label="GSLA Facilities department home"><Image src="/gsla-white.png" alt="GSLA" width={600} height={279} className="h-auto w-[180px]" priority /></Link>
         <p className="mt-1 text-sm text-blue-100">Shared Facilities Workspace</p>
         <p className="mt-1 text-xs leading-5 text-blue-200">Less typing. Faster navigation.<br />More time in venues.</p>
         <nav aria-label="Facilities department navigation" className="mt-7 space-y-1">
