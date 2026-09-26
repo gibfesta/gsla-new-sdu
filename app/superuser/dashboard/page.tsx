@@ -91,7 +91,10 @@ export default function SuperuserDashboard() {
               <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">Organisation Dashboard</h1>
               <p className="mt-4 text-base leading-relaxed text-blue-50 md:text-xl">Four departments. One connected platform.<br />Supporting safer venues, stronger people and a thriving sporting community.</p>
             </div>
-            <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">People<br />Facilities<br />Opportunities<br />Stronger together</p>
+            <div className="flex shrink-0 flex-col items-start gap-3 md:items-end">
+              <Image src="/gsla-white.png" alt="GSLA" width={600} height={279} sizes="(min-width: 768px) 208px, 176px" className="h-auto w-44 object-contain md:w-52" />
+              <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100 md:text-right">People<br />Facilities<br />Opportunities<br />Stronger together</p>
+            </div>
           </div>
         </section>
 
