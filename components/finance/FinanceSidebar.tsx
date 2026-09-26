@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeft, BarChart3, Building2, CircleHelp, ClipboardCheck, CreditCard,
@@ -34,8 +35,7 @@ export default function FinanceSidebar() {
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[266px] lg:overflow-y-auto">
       <div className="px-4 py-5 lg:px-5">
-        <Link href="/finance/dashboard" className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-white" aria-label="GSLA Finance home"><span className="text-3xl" aria-hidden="true">✦</span> GSLA</Link>
-        <h2 className="mt-1 text-base font-bold">Finance Department</h2>
+        <Link href="/finance/dashboard" className="inline-flex w-fit items-center" aria-label="GSLA Finance home"><Image src="/gsla-white.png" alt="GSLA" width={600} height={279} className="h-auto w-[180px]" priority /></Link>
         <p className="mt-1 text-sm leading-5 text-blue-100">Clear budgets.<br />Better decisions.<br />Stronger accountability.</p>
         <nav aria-label="Finance navigation" className="mt-5 space-y-4">
           {groups.map((group) => (
