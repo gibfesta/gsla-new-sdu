@@ -34,7 +34,7 @@ export default function FacilitiesDepartmentSidebar() {
           })}
         </nav>
         <div className="mt-8 border-t border-blue-300/30 pt-3 lg:mt-auto">
-          <Link href="/superuser/dashboard" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Admin</Link>
+          <Link href="/superuser/dashboard" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon" aria-disabled="true"><CircleHelp size={19} aria-hidden="true" />Help</span>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon" aria-disabled="true"><Settings size={19} aria-hidden="true" />Settings</span>
           <p className="mt-3 flex gap-2 rounded-xl border border-blue-300/20 bg-[#194c80] p-3 text-xs leading-4 text-blue-100"><LockKeyhole size={16} className="shrink-0" aria-hidden="true" />Department overview across venues. Editing access will follow account permissions.</p>
