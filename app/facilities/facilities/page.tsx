@@ -210,8 +210,7 @@ export default function FacilitiesPage() {
         <div className="mb-4 flex items-center justify-between">
           <div>
             <p className="text-sm text-slate-500">
-              {filteredFacilities.length} facility
-              {filteredFacilities.length === 1 ? "" : "ies"} shown
+              {filteredFacilities.length} {filteredFacilities.length === 1 ? "facility" : "facilities"} shown
             </p>
           </div>
         </div>
