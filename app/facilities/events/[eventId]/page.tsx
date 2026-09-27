@@ -28,6 +28,7 @@
  */
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -47,6 +48,8 @@ import {
   Stamp,
   Wrench,
   DoorOpen,
+  Archive,
+  Pencil,
 } from "lucide-react";
 
 type DocStatus = "Pending" | "Approved" | "Rejected";
@@ -341,6 +344,8 @@ export default function AdminEventProfilePage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2" aria-label="Event management actions not connected">
+          <Link href={`/facilities/events/${event.id}/edit`} className="inline-flex items-center gap-2 rounded-xl border border-[#b8d4f5] bg-white px-4 py-2 text-sm font-semibold text-[#155ca7] hover:bg-blue-50"><Pencil size={16} aria-hidden="true" />Edit Event</Link>
+          <Link href={`/facilities/events/${event.id}/archive`} className="inline-flex items-center gap-2 rounded-xl border border-[#b8d4f5] bg-white px-4 py-2 text-sm font-semibold text-[#155ca7] hover:bg-blue-50"><Archive size={16} aria-hidden="true" />Archive Event</Link>
           <button
             type="button"
             disabled
