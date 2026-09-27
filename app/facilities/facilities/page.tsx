@@ -1,10 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Search,
   Plus,
   MapPin,
   Building2,
@@ -146,26 +144,6 @@ function typeIcon(type: FacilityType) {
 export default function FacilitiesPage() {
   const router = useRouter();
 
-  const [facilities] = useState<Facility[]>(MOCK_FACILITIES);
-  const [search, setSearch] = useState("");
-
-  const filteredFacilities = useMemo(() => {
-    const q = search.trim().toLowerCase();
-
-    return facilities.filter((facility) => {
-      const matchesSearch =
-        !q ||
-        facility.name.toLowerCase().includes(q) ||
-        facility.suburb.toLowerCase().includes(q) ||
-        facility.address.toLowerCase().includes(q) ||
-        facility.sportsSupported.some((sport) =>
-          sport.toLowerCase().includes(q)
-        );
-
-      return matchesSearch;
-    });
-  }, [facilities, search]);
-
   return (
     <div className="space-y-8">
       <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
@@ -191,44 +169,17 @@ export default function FacilitiesPage() {
         </div>
       </section>
 
-      <Card className="rounded-2xl border-slate-200 shadow-sm">
-        <CardContent className="p-4 md:p-5">
-          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
-              <Search size={18} className="text-slate-500" />
-              <input
-                aria-label="Search facilities"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-transparent text-sm text-slate-900 outline-none"
-                placeholder="Search by facility, area, address, or sport..."
-              />
-          </div>
-        </CardContent>
-      </Card>
-
       <section>
         <div className="mb-4 flex items-center justify-between">
           <div>
             <p className="text-sm text-slate-500">
-              {filteredFacilities.length} {filteredFacilities.length === 1 ? "facility" : "facilities"} shown
+              {MOCK_FACILITIES.length} facilities
             </p>
           </div>
         </div>
 
-        {!filteredFacilities.length ? (
-          <Card className="rounded-2xl border-slate-200 shadow-sm">
-            <CardContent className="p-10 text-center">
-              <div className="text-base font-semibold text-slate-900">
-                No facilities found
-              </div>
-              <p className="mt-2 text-sm text-slate-500">
-                Try a different search.
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {filteredFacilities.map((facility) => {
+            {MOCK_FACILITIES.map((facility) => {
               const status = statusStyles(facility.status);
               const StatusIcon = status.icon;
               const TypeIcon = typeIcon(facility.type);
@@ -333,7 +284,6 @@ export default function FacilitiesPage() {
               );
             })}
           </div>
-        )}
       </section>
     </div>
   );
