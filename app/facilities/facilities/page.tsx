@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
+import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 import {
   Plus,
   MapPin,
@@ -146,36 +147,12 @@ export default function FacilitiesPage() {
 
   return (
     <div className="space-y-8">
-      <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
-        <div className="flex flex-col gap-6 px-6 py-8 md:flex-row md:items-end md:justify-between md:px-8">
-          <div className="max-w-2xl">
-            <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
-              Facilities Directory
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-white/80 md:text-base">
-              Browse GSLA facilities and open a dedicated page for each location.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => router.push("/facilities/facilities/new")}
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0C2F57] transition hover:brightness-95"
-            >
-              <Plus size={16} />
-              Add Facility
-            </button>
-          </div>
-        </div>
-      </section>
+      <FacilitiesDepartmentBanner title="Facilities Directory" description="Browse GSLA facilities and open a dedicated page for each location." />
 
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p className="text-sm text-slate-500">
-              {MOCK_FACILITIES.length} facilities
-            </p>
-          </div>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-slate-500">{MOCK_FACILITIES.length} facilities</p>
+          <button onClick={() => router.push("/facilities/facilities/new")} className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"><Plus size={16} aria-hidden="true" />Add Facility</button>
         </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">

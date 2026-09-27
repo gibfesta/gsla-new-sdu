@@ -7,6 +7,7 @@ import {
   Search, TriangleAlert, UsersRound,
 } from "lucide-react";
 import { facilitiesVenues } from "./venues";
+import FacilitiesDepartmentBanner from "./FacilitiesDepartmentBanner";
 
 type SessionType = "Sport & Training" | "Community" | "Education" | "Competition" | "Maintenance";
 type SampleSession = { venueId: string; slot: number; title: string; type: SessionType; participants?: number; clash?: boolean };
@@ -74,10 +75,7 @@ export default function SharedCalendarBoard({ initialDate }: { initialDate: stri
 
   return (
     <div className="space-y-4 text-[#112d56]">
-      <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-7 text-white shadow-sm sm:px-9">
-        <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
-        <div className="relative flex flex-wrap items-end justify-between gap-8"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Facilities</p><div className="mt-2 flex flex-wrap items-center gap-4"><h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Shared Calendar</h1><span className="rounded-lg border border-blue-300/70 bg-white/10 px-4 py-2 text-sm">Facilities Manager View</span></div><p className="mt-3 max-w-3xl text-base leading-6 text-blue-50">See what is happening across venues, manage resources and spot scheduling clashes.</p></div><p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">One timetable<br />Stronger communities</p></div>
-      </section>
+      <FacilitiesDepartmentBanner title="Shared Calendar" description="See what is happening across venues, manage resources and spot scheduling clashes." />
 
       <div className="rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]"><Info size={18} className="mr-2 inline text-[#155ca7]" aria-hidden="true" />The venue list is a directory demo. Calendar events are not connected. {example ? <strong>You are viewing illustrative sample sessions and clash markers.</strong> : <span>Use “Preview example day” to see how a populated operations board will look.</span>}</div>
 

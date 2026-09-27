@@ -4,6 +4,7 @@ import {
   Clock3, FileText, Info, TriangleAlert,
 } from "lucide-react";
 import { facilitiesVenues } from "@/components/facilities/venues";
+import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 
 // Illustrative states for the visual preview only. Venue checklists are currently
 // local page state, so no department-wide status can be calculated from them yet.
@@ -25,11 +26,7 @@ const tones = {
 export default function FacilitiesDailyOperationsPage() {
   return (
     <div className="space-y-4 text-[#112d56]">
-      <section className="rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-9 text-white shadow-sm sm:px-10">
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Facilities · All venues</p>
-        <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl">Daily Operations</h1>
-        <p className="mt-3 max-w-3xl text-blue-50">See which venues have opened, what needs attention and whether handovers and closing checks are on track.</p>
-      </section>
+      <FacilitiesDepartmentBanner title="Daily Operations" description="See which venues have opened, what needs attention and whether handovers and closing checks are on track." />
 
       <div className="flex items-start gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]">
         <Info size={18} className="mt-1 shrink-0 text-[#155ca7]" aria-hidden="true" />

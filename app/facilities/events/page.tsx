@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { eventExamples } from "@/components/facilities/eventExamples";
 import { facilitiesVenues } from "@/components/facilities/venues";
+import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 
 type StatusFilter = "All statuses" | (typeof eventExamples)[number]["status"];
 
@@ -38,13 +39,7 @@ export default function FacilitiesEventsPage() {
 
   return (
     <div className="space-y-4 text-[#112d56]">
-      <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-9 text-white shadow-sm sm:px-9 sm:py-10">
-        <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
-        <div className="relative flex flex-wrap items-end justify-between gap-6">
-          <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Facilities · Department control</p><h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Events Control</h1><p className="mt-4 max-w-3xl text-base leading-7 text-blue-50">The central place to review and coordinate events across every venue. Venue teams handle the on-site delivery of events assigned to them.</p></div>
-          <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">One event record<br />All venues</p>
-        </div>
-      </section>
+      <FacilitiesDepartmentBanner title="Events Control" description="The central place to review and coordinate events across every venue. Venue teams handle the on-site delivery of events assigned to them." />
 
       <div className="flex items-start gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]"><Info size={18} className="mt-1 shrink-0 text-[#155ca7]" aria-hidden="true" /><p><strong>Demonstration workspace.</strong> The records below are historical examples from 2025–26, not a live event schedule. Event creation, approvals and changes are not connected yet; no action here changes an event or grants permission.</p></div>
 

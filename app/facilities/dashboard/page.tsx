@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Building2, Info } from "lucide-react";
+import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 
 // Matches the demonstration venues in the current Facilities Directory.
 // Replace this together with that directory when live venue data is connected.
@@ -15,17 +16,7 @@ const venues = [
 export default function FacilitiesDashboard() {
   return (
     <div className="space-y-4 text-[#112d56]">
-      <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-9 text-white shadow-sm sm:px-10 sm:py-10">
-        <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
-        <div className="relative flex flex-wrap items-end justify-between gap-8">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Facilities</p>
-            <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">Facilities Overview</h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-blue-50 sm:text-lg">Monitor all GSLA venues at a glance. Less typing, faster navigation, more time in venues.</p>
-          </div>
-          <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">Safe venues<br />Stronger communities</p>
-        </div>
-      </section>
+      <FacilitiesDepartmentBanner title="Facilities Overview" description="Monitor all GSLA venues at a glance. Less typing, faster navigation, more time in venues." />
 
       <section className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white p-4 shadow-sm sm:p-5" aria-labelledby="venues-heading">
           <div className="flex flex-wrap items-start justify-between gap-3">
