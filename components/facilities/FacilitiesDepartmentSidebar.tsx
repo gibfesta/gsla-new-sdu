@@ -13,6 +13,7 @@ const items: Item[] = [
   { label: "Facilities", href: "/facilities/dashboard", icon: Building2, activeFor: ["/facilities/facilities"] },
   { label: "CM Assignments", href: "/facilities/cm-assignments", icon: UsersRound },
   { label: "Shared Calendar", href: "/facilities/shared-calendar", icon: CalendarDays },
+  { label: "Events", href: "/facilities/events", icon: CalendarDays },
   { label: "Maintenance & Issues", href: "/facilities/maintenance", icon: Wrench },
   { label: "Compliance", href: "/facilities/compliance", icon: ShieldCheck },
   { label: "Procedures & SOPs", href: "/facilities/procedures", icon: FileText },
@@ -29,7 +30,7 @@ export default function FacilitiesDepartmentSidebar() {
         <p className="mt-1 text-xs leading-5 text-blue-200">Less typing. Faster navigation.<br />More time in venues.</p>
         <nav aria-label="Facilities department navigation" className="mt-7 space-y-1">
           {items.map(({ label, href, icon: Icon, activeFor }) => {
-            const active = pathname === href || (activeFor?.includes(pathname) ?? false);
+            const active = pathname === href || pathname.startsWith(href + "/") || (activeFor?.includes(pathname) ?? false);
             return <Link key={href} href={href} aria-current={active ? "page" : undefined} className={`flex min-h-12 items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${active ? "bg-[#245d9b] font-semibold text-white" : "text-blue-50 hover:bg-white/10"}`}><Icon size={20} className="shrink-0" aria-hidden="true" />{label}</Link>;
           })}
         </nav>
