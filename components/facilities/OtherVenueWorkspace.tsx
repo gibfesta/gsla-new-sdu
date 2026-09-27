@@ -7,7 +7,7 @@ import { facilitiesVenues } from "./venues";
 
 const tabNames: Record<string, string> = {
   handover: "Daily Handover", information: "Information", issues: "Issues", timeline: "Timeline",
-  events: "Events", bookings: "Bookings / Calendar", procedures: "Opening / Closing",
+  events: "Venue Events", bookings: "Bookings / Calendar", procedures: "Opening / Closing",
   weekly: "Weekly Tasks", monthly: "Monthly Tasks", documents: "Documents / SOPs",
   photos: "Photo Log", compliance: "Compliance", audit: "Audit Trail",
 };
@@ -26,6 +26,14 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
       { label: "Open Issues", icon: TriangleAlert }, { label: "Today’s Events", icon: CalendarDays },
       { label: "Weekly Tasks", icon: ClipboardCheck }, { label: "Venue Status", icon: Building2 },
     ].map(({ label, icon: Icon }) => <article key={label} className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm"><Icon size={25} className="text-[#174a84]" aria-hidden="true" /><h2 className="mt-3 text-sm font-semibold">{label}</h2><p className="mt-1 text-3xl font-bold">—</p><p className="text-xs text-[#637da2]">Venue data not connected</p></article>)}</section>
-    <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading"><h2 id="venue-section-heading" className="text-xl font-bold">{section}</h2><p className="mt-1 text-sm text-[#60799f]">{venue.name}</p><p className="mt-5 rounded-xl border border-dashed border-[#cadcf2] bg-[#f8fbff] px-5 py-8 text-sm text-[#637da2]">{section} for this venue will appear when its records and permissions are connected.</p></section>
+    {tab === "events" ? (
+      <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading">
+        <h2 id="venue-section-heading" className="text-xl font-bold">Events at {venue.name}</h2>
+        <p className="mt-1 text-sm text-[#60799f]">This venue will see its assigned events, preparation and on-site delivery tasks here. Records for this venue are not connected yet.</p>
+        <div className="mt-5 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-4 text-sm leading-6 text-[#35557f]">Facilities Department controls event requests, approvals and cross-venue decisions. <Link href="/facilities/events" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link></div>
+      </section>
+    ) : (
+      <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading"><h2 id="venue-section-heading" className="text-xl font-bold">{section}</h2><p className="mt-1 text-sm text-[#60799f]">{venue.name}</p><p className="mt-5 rounded-xl border border-dashed border-[#cadcf2] bg-[#f8fbff] px-5 py-8 text-sm text-[#637da2]">{section} for this venue will appear when its records and permissions are connected.</p></section>
+    )}
   </div>;
 }
