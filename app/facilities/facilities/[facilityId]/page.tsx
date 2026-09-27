@@ -1,8 +1,10 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OtherVenueWorkspace from "@/components/facilities/OtherVenueWorkspace";
+import { eventExamples } from "@/components/facilities/eventExamples";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Building2,
@@ -197,6 +199,7 @@ const initialTimeline: TimelineItem[] = [
   },
 ];
 
+// Historical venue-side activity examples, not the department's event register.
 const events = [
   {
     title: "Youth Football Training",
@@ -1357,11 +1360,28 @@ function FacilityPageContent() {
             <Card className="rounded-2xl border-slate-200 shadow-sm">
               <CardContent className="p-6">
                 <SectionTitle
-                  title="Facility Events"
-                  description="Scheduled activities, bookings, and on-site operational use."
+                  title="Events at Europa Sports Complex"
+                  description="Venue-side preparation and on-site delivery. Facilities Department owns event records, approvals and cross-venue changes."
                 />
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] p-4 text-sm text-[#35557f]">
+                  <p>Need to review an event request or change its status? Use the department Events Control page.</p>
+                  <Link href="/facilities/events" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link>
+                </div>
+                <h3 className="mt-6 text-base font-bold text-[#112d56]">Department example records for this venue</h3>
+                <p className="mt-1 text-xs text-[#60799f]">Historical demonstration records from 2025–26, not live scheduled events.</p>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {eventExamples.filter((event) => event.venueId === facility.id).map((event) => (
+                    <div key={event.id} className="rounded-xl border border-[#d5e4f6] bg-white p-4">
+                      <strong className="block text-sm">{event.name}</strong>
+                      <p className="mt-1 text-xs text-[#60799f]">{event.date} · {event.impact} · {event.status}</p>
+                      <Link href={`/facilities/events/${event.id}`} className="mt-3 inline-block text-xs font-semibold text-[#155ca7] hover:underline">View department record →</Link>
+                    </div>
+                  ))}
+                </div>
+                <h3 className="mt-6 text-base font-bold text-[#112d56]">Local activity examples</h3>
+                <p className="mt-1 text-xs text-[#60799f]">Past sample sessions shown for venue operations only. Manage event decisions in Facilities Department.</p>
 
-                <div className="mt-5 space-y-4">
+                <div className="mt-4 space-y-4">
                   {events.map((event) => (
                     <div
                       key={`${event.title}-${event.date}-${event.time}`}
