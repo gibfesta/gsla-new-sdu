@@ -25,7 +25,7 @@ const groups: NavGroup[] = [
     { label: "Timeline", icon: Clock3, tab: "timeline" },
   ] },
   { title: "Planning & Scheduling", entries: [
-    { label: "Events", icon: CalendarDays, tab: "events" },
+    { label: "Venue Events", icon: CalendarDays, tab: "events" },
     { label: "Bookings / Calendar", icon: CalendarRange, tab: "bookings" },
     { label: "Opening / Closing", icon: DoorOpen, tab: "procedures" },
     { label: "Weekly Tasks", icon: CheckSquare2, tab: "weekly" },
