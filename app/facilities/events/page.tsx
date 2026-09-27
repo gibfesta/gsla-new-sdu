@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight, Building2, CalendarDays, ClipboardList,
-  Clock3, Info, Search, ShieldCheck, TriangleAlert,
+  Clock3, Info, Plus, Search, ShieldCheck, TriangleAlert,
 } from "lucide-react";
 import { eventExamples } from "@/components/facilities/eventExamples";
 import { facilitiesVenues } from "@/components/facilities/venues";
@@ -56,7 +56,7 @@ export default function FacilitiesEventsPage() {
         <section className="min-w-0 rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="event-register-heading">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div><h2 id="event-register-heading" className="text-xl font-bold">Event register</h2><p className="mt-1 text-sm text-[#60799f]">Find a record, review its status and open the department-level detail.</p></div>
-            <span className="rounded-lg bg-[#eef5fd] px-3 py-2 text-xs font-semibold text-[#35557f]">Example records · {eventExamples.length}</span>
+            <div className="flex flex-wrap items-center gap-2"><span className="rounded-lg bg-[#eef5fd] px-3 py-2 text-xs font-semibold text-[#35557f]">Example records · {eventExamples.length}</span><Link href="/facilities/events/new" className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#155ca7] px-4 text-sm font-semibold text-white hover:bg-[#104d90]"><Plus size={17} aria-hidden="true" />Add Event</Link></div>
           </div>
           <div className="mt-5 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
             <label className="flex min-h-11 items-center gap-2 rounded-lg border border-[#cfdff2] px-3 text-[#60799f]"><Search size={17} aria-hidden="true" /><span className="sr-only">Search events</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search event, organiser or venue" className="w-full min-w-0 bg-transparent text-sm text-[#112d56] outline-none" /></label>
