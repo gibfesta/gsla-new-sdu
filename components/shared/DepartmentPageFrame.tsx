@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import BannerAccount from "./BannerAccount";
 
 type Department = "sports-development" | "human-resources" | "finance";
 
@@ -46,7 +47,8 @@ export default function DepartmentPageFrame({ department, children }: { departme
 
   return (
     <div className="space-y-4 text-[#112d56]">
-      <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-9 text-white shadow-sm sm:px-9 sm:py-10">
+      <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 pb-9 pt-16 text-white shadow-sm sm:px-9 sm:pb-10 sm:pt-14">
+        <BannerAccount />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
         <div className="relative flex flex-wrap items-end justify-between gap-6">
           <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA {name} · {section}</p><h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1><p className="mt-4 max-w-3xl text-base leading-7 text-blue-50">{description}</p></div>

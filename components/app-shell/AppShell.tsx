@@ -8,11 +8,8 @@ import FacilitiesSidebar from "@/components/facilities/FacilitiesSidebar";
 import FacilitiesDepartmentSidebar from "@/components/facilities/FacilitiesDepartmentSidebar";
 import FacilitiesHeader from "@/components/facilities/FacilitiesHeader";
 import SportsDevelopmentSidebar from "@/components/sports-development/SportsDevelopmentSidebar";
-import SportsDevelopmentHeader from "@/components/sports-development/SportsDevelopmentHeader";
 import HumanResourcesSidebar from "@/components/human-resources/HumanResourcesSidebar";
-import HumanResourcesHeader from "@/components/human-resources/HumanResourcesHeader";
 import FinanceSidebar from "@/components/finance/FinanceSidebar";
-import FinanceHeader from "@/components/finance/FinanceHeader";
 import DepartmentPageFrame from "@/components/shared/DepartmentPageFrame";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -35,7 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
         {venueArea ? <Suspense fallback={<aside className="w-full shrink-0 bg-[#0d2d52] lg:w-[286px]" />}><FacilitiesSidebar /></Suspense> : <FacilitiesDepartmentSidebar />}
         <div className="min-w-0 flex-1">
-          <FacilitiesHeader />
+          {venueArea && <FacilitiesHeader />}
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">
             {children}
           </main>
@@ -49,7 +46,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
         <SportsDevelopmentSidebar />
         <div className="min-w-0 flex-1">
-          <SportsDevelopmentHeader />
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6"><DepartmentPageFrame department="sports-development">{children}</DepartmentPageFrame></main>
         </div>
       </div>
@@ -61,7 +57,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
         <HumanResourcesSidebar />
         <div className="min-w-0 flex-1">
-          <HumanResourcesHeader />
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6"><DepartmentPageFrame department="human-resources">{children}</DepartmentPageFrame></main>
         </div>
       </div>
@@ -73,7 +68,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
         <FinanceSidebar />
         <div className="min-w-0 flex-1">
-          <FinanceHeader />
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6"><DepartmentPageFrame department="finance">{children}</DepartmentPageFrame></main>
         </div>
       </div>

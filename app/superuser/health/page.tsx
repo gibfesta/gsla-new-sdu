@@ -1,8 +1,8 @@
-import Image from "next/image";
+import BannerAccount from "@/components/shared/BannerAccount";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import {
-  Activity, ArrowLeft, ArrowRight, CheckCircle2, Clock3, Database,
+  Activity, ArrowRight, CheckCircle2, Clock3, Database,
   Globe2, Info, Link2, RotateCw, Server, ShieldCheck,
   TriangleAlert, type LucideIcon,
 } from "lucide-react";
@@ -72,17 +72,9 @@ export default async function HealthDashboard() {
 
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#f1f7ff_100%)] text-[#142542]">
-      <header className="border-b border-[#dfe8f4] bg-white/90">
-        <div className="mx-auto flex min-h-20 max-w-[1500px] flex-wrap items-center gap-4 px-5 py-3 md:px-8">
-          <Link href="/superuser/dashboard" aria-label="GSLA organisation dashboard" className="mr-auto flex items-center"><Image src="/gsla-transp-logo.png" alt="GSLA" width={125} height={70} className="h-12 w-auto max-w-32 object-contain" priority /></Link>
-          <Link href="/superuser/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#d7e1ef] px-4 text-sm font-semibold text-[#16365f] hover:bg-blue-50"><ArrowLeft size={17} aria-hidden="true" />Back to Organisation</Link>
-          <span className="rounded-full bg-[#315d90] px-3 py-2 text-sm font-semibold text-white" aria-label="SuperUser account">SU</span>
-          <span className="hidden text-sm font-medium sm:inline">SuperUser</span>
-        </div>
-      </header>
-
       <main className="mx-auto max-w-[1500px] space-y-5 px-5 py-6 md:px-8">
-        <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#143960_0%,#10447e_55%,#0e5195_100%)] px-7 py-9 text-white shadow-sm md:px-11 md:py-11">
+        <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#143960_0%,#10447e_55%,#0e5195_100%)] px-7 pb-9 pt-16 text-white shadow-sm md:px-11 md:pb-11 md:pt-14">
+          <BannerAccount />
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 right-0 h-80 w-[65%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_36px_rgba(255,255,255,0.025),0_0_0_85px_rgba(255,255,255,0.018)]" />
           <div className="relative flex flex-wrap items-end justify-between gap-8">
             <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA SuperUser</p><h1 className="mt-3 text-3xl font-extrabold tracking-tight md:text-5xl">Health Dashboard</h1><p className="mt-4 max-w-2xl text-base leading-relaxed text-blue-50 md:text-xl">A clear view of the checks currently available for the GSLA WebApp.</p></div>
