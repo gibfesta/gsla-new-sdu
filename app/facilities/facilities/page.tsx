@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -16,7 +16,6 @@ import {
   Waves,
   Trees,
   Dumbbell,
-  Filter,
 } from "lucide-react";
 
 function classNames(...v: Array<string | false | null | undefined>) {
@@ -144,37 +143,11 @@ function typeIcon(type: FacilityType) {
   return Building2;
 }
 
-function StatCard({
-  title,
-  value,
-  subtitle,
-}: {
-  title: string;
-  value: string | number;
-  subtitle: string;
-}) {
-  return (
-    <Card className="rounded-2xl border-slate-200 shadow-sm">
-      <CardContent className="p-5">
-        <div className="text-sm font-medium text-slate-500">{title}</div>
-        <div className="mt-2 text-3xl font-bold text-slate-900">{value}</div>
-        <div className="mt-1 text-xs text-slate-500">{subtitle}</div>
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function FacilitiesPage() {
   const router = useRouter();
 
-  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [facilities] = useState<Facility[]>(MOCK_FACILITIES);
   const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<FacilityType | "All">("All");
-  const [statusFilter, setStatusFilter] = useState<FacilityStatus | "All">("All");
-
-  useEffect(() => {
-    setFacilities(MOCK_FACILITIES);
-  }, []);
 
   const filteredFacilities = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -189,38 +162,20 @@ export default function FacilitiesPage() {
           sport.toLowerCase().includes(q)
         );
 
-      const matchesType =
-        typeFilter === "All" || facility.type === typeFilter;
-
-      const matchesStatus =
-        statusFilter === "All" || facility.status === statusFilter;
-
-      return matchesSearch && matchesType && matchesStatus;
+      return matchesSearch;
     });
-  }, [facilities, search, typeFilter, statusFilter]);
-
-  const totalFacilities = facilities.length;
-  const operationalCount = facilities.filter(
-    (f) => f.status === "Operational"
-  ).length;
-  const limitedCount = facilities.filter((f) => f.status === "Limited").length;
-  const parkCount = facilities.filter((f) => f.type === "Park").length;
+  }, [facilities, search]);
 
   return (
     <div className="space-y-8">
       <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
         <div className="flex flex-col gap-6 px-6 py-8 md:flex-row md:items-end md:justify-between md:px-8">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/90 ring-1 ring-white/15">
-              <Building2 size={14} />
+            <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
               Facilities Directory
-            </div>
-            <h1 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-              Facilities
             </h1>
             <p className="mt-3 text-sm leading-6 text-white/80 md:text-base">
-              Browse all GSLA facilities, filter by type or status, and open a
-              dedicated page for each location.
+              Browse GSLA facilities and open a dedicated page for each location.
             </p>
           </div>
 
@@ -236,76 +191,17 @@ export default function FacilitiesPage() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          title="Total Facilities"
-          value={totalFacilities}
-          subtitle="All facilities in the directory"
-        />
-        <StatCard
-          title="Operational"
-          value={operationalCount}
-          subtitle="Currently fully available"
-        />
-        <StatCard
-          title="Limited Access"
-          value={limitedCount}
-          subtitle="Partially available or restricted"
-        />
-        <StatCard
-          title="Parks"
-          value={parkCount}
-          subtitle="Outdoor locations and recreation areas"
-        />
-      </section>
-
       <Card className="rounded-2xl border-slate-200 shadow-sm">
         <CardContent className="p-4 md:p-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-1 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
               <Search size={18} className="text-slate-500" />
               <input
+                aria-label="Search facilities"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full bg-transparent text-sm text-slate-900 outline-none"
                 placeholder="Search by facility, area, address, or sport..."
               />
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
-                <Filter size={16} className="text-slate-500" />
-                <select
-                  value={typeFilter}
-                  onChange={(e) =>
-                    setTypeFilter(e.target.value as FacilityType | "All")
-                  }
-                  className="bg-transparent text-sm text-slate-900 outline-none"
-                >
-                  <option value="All">All types</option>
-                  <option value="Park">Park</option>
-                  <option value="Sports Centre">Sports Centre</option>
-                  <option value="Grounds">Grounds</option>
-                  <option value="Multi Sports Center">Multi Sports Center</option>
-                  <option value="Courts">Courts</option>
-                </select>
-              </div>
-
-              <div className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
-                <select
-                  value={statusFilter}
-                  onChange={(e) =>
-                    setStatusFilter(e.target.value as FacilityStatus | "All")
-                  }
-                  className="bg-transparent text-sm text-slate-900 outline-none"
-                >
-                  <option value="All">All statuses</option>
-                  <option value="Operational">Operational</option>
-                  <option value="Limited">Limited</option>
-                  <option value="Closed">Closed</option>
-                </select>
-              </div>
-            </div>
           </div>
         </CardContent>
       </Card>
@@ -313,9 +209,6 @@ export default function FacilitiesPage() {
       <section>
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">
-              Facility Directory
-            </h2>
             <p className="text-sm text-slate-500">
               {filteredFacilities.length} facility
               {filteredFacilities.length === 1 ? "" : "ies"} shown
@@ -330,7 +223,7 @@ export default function FacilitiesPage() {
                 No facilities found
               </div>
               <p className="mt-2 text-sm text-slate-500">
-                Try changing your search or filters.
+                Try a different search.
               </p>
             </CardContent>
           </Card>
