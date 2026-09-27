@@ -5,8 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeft, BarChart3, Building2, CalendarCheck2, CalendarDays,
-  ClipboardCheck, FileText, LayoutDashboard, ShieldCheck, UsersRound,
-  Wrench, type LucideIcon,
+  ClipboardCheck, FileText, LayoutDashboard, ShieldCheck, UserRoundCog,
+  UsersRound, Wrench, type LucideIcon,
 } from "lucide-react";
 
 type Item = { label: string; href: string; icon: LucideIcon };
@@ -25,8 +25,11 @@ const groups: { title: string; items: Item[] }[] = [
     { label: "Compliance", href: "/facilities/compliance", icon: ShieldCheck },
     { label: "Procedures & SOPs", href: "/facilities/procedures", icon: FileText },
   ] },
-  { title: "Management & Insight", items: [
-    { label: "Centre Manager Assignments", href: "/facilities/cm-assignments", icon: UsersRound },
+  { title: "Staffing & Cover", items: [
+    { label: "Duty Team", href: "/facilities/duty-team", icon: UsersRound },
+    { label: "Centre Manager Assignments", href: "/facilities/cm-assignments", icon: UserRoundCog },
+  ] },
+  { title: "Reporting", items: [
     { label: "Reports & History", href: "/facilities/reports", icon: BarChart3 },
   ] },
 ];
