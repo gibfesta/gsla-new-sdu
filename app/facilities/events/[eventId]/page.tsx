@@ -325,10 +325,11 @@ export default function AdminEventProfilePage() {
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Community Events
+            Back to Events Control
           </button>
 
-          <h1 className="mt-3 truncate text-4xl font-extrabold text-[#0C2F57]">{event.name}</h1>
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-[#155ca7]">Facilities Department · Event record</p>
+          <h1 className="mt-2 truncate text-4xl font-extrabold text-[#0C2F57]">{event.name}</h1>
 
           <p className="mt-2 max-w-3xl text-slate-600">{event.quickNotes}</p>
 
@@ -339,28 +340,33 @@ export default function AdminEventProfilePage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2" aria-label="Event management actions not connected">
           <button
-            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
-            title="Placeholder (wire comment / message later)"
+            type="button"
+            disabled
+            className="cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-500"
+            title="Messaging is not connected"
           >
             <span className="inline-flex items-center gap-2">
               <MessageSquare className="h-4 w-4" />
-              Message organiser (placeholder)
+              Message organiser
             </span>
           </button>
 
           <button
-            className="rounded-xl bg-[#0C2F57] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-            title="Placeholder (wire approve flow later)"
+            type="button"
+            disabled
+            className="cursor-not-allowed rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
+            title="Approval is not connected"
           >
             <span className="inline-flex items-center gap-2">
               <Stamp className="h-4 w-4" />
-              Quick approve (placeholder)
+              Approve event
             </span>
           </button>
         </div>
       </div>
+      <p className="mt-4 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm text-[#35557f]">Historical demonstration record. This department-level page contains the review, documents, logistics and approval context; venue workspaces handle on-site delivery. Messaging and approvals are not connected yet.</p>
 
       {/* Top summary row */}
       <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-4">
@@ -549,28 +555,32 @@ export default function AdminEventProfilePage() {
 
                       <div className="mt-3 flex flex-wrap items-center gap-2">
                         <button
-                          className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
-                          title="Placeholder (wire file preview later)"
+                          type="button" disabled
+                          className="cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500"
+                          title="File preview is not connected"
                         >
-                          View (placeholder)
+                          View file
                         </button>
                         <button
-                          className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
-                          title="Placeholder (wire reviewer comment later)"
+                          type="button" disabled
+                          className="cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500"
+                          title="Comments are not connected"
                         >
-                          Add comment (placeholder)
+                          Add comment
                         </button>
                         <button
-                          className="rounded-xl bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90"
-                          title="Placeholder (wire approve later)"
+                          type="button" disabled
+                          className="cursor-not-allowed rounded-xl bg-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-500"
+                          title="Approval is not connected"
                         >
-                          Approve (placeholder)
+                          Approve
                         </button>
                         <button
-                          className="rounded-xl bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90"
-                          title="Placeholder (wire reject later)"
+                          type="button" disabled
+                          className="cursor-not-allowed rounded-xl bg-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-500"
+                          title="Rejection is not connected"
                         >
-                          Reject (placeholder)
+                          Reject
                         </button>
                       </div>
                     </div>
@@ -691,10 +701,11 @@ export default function AdminEventProfilePage() {
               </div>
 
               <button
-                className="mt-4 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                title="Placeholder (wire add-note later)"
+                type="button" disabled
+                className="mt-4 w-full cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-500"
+                title="Internal notes are not connected"
               >
-                Add internal note (placeholder)
+                Add internal note
               </button>
             </CardContent>
           </Card>
@@ -715,10 +726,11 @@ export default function AdminEventProfilePage() {
               </div>
 
               <button
-                className="mt-3 w-full rounded-xl bg-[#0C2F57] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-                title="Placeholder (wire duplicate later)"
+                type="button" disabled
+                className="mt-3 w-full cursor-not-allowed rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
+                title="Duplicating events is not connected"
               >
-                Duplicate this event (placeholder)
+                Duplicate this event
               </button>
             </CardContent>
           </Card>
