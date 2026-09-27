@@ -12,7 +12,7 @@ import {
 type Item = { label: string; href: string; icon: LucideIcon };
 const groups: { title: string; items: Item[] }[] = [
   { title: "Overview", items: [
-    { label: "Dashboard", href: "/facilities/dashboard", icon: LayoutDashboard },
+    { label: "All Facilities Overview", href: "/facilities/dashboard", icon: LayoutDashboard },
     { label: "Facilities Directory", href: "/facilities/facilities", icon: Building2 },
     { label: "Daily Operations", href: "/facilities/daily-operations", icon: ClipboardCheck },
   ] },
