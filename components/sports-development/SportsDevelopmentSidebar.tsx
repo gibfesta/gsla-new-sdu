@@ -15,6 +15,7 @@ const groups: { title: string; entries: Entry[] }[] = [
     { label: "Sports Development Unit Dashboard", icon: LayoutDashboard, href: "/sports-development/dashboard" },
     { label: "Sports & Associations", icon: Trophy, href: "/sports-development/sports" },
     { label: "Participation Statistics", icon: BarChart3, href: "/sports-development/reports" },
+    { label: "Sports Rankings", icon: Trophy, href: "/sports-development/ranking" },
   ] },
   { title: "Planning & Activity", entries: [
     { label: "Calendar", icon: CalendarDays },

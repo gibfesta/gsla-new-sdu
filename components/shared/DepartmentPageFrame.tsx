@@ -9,6 +9,7 @@ const descriptions: Record<Department, Record<string, [string, string]>> = {
   "sports-development": {
     sports: ["Sports & Associations", "Explore the sports, associations and people in the GSLA workspace."],
     reports: ["Participation Statistics", "Review participation, retention and activity across sports."],
+    ranking: ["Sports Rankings", "Compare sports using a transparent development score and see how each result is calculated."],
     teams: ["Teams", "Manage association teams and their league assignments."],
     leagues: ["Leagues", "Organise competitions and the teams taking part."],
     "associations/forms": ["Forms", "Manage association registrations, annual submissions and funding applications."],
