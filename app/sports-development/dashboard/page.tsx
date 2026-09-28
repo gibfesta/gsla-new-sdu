@@ -35,8 +35,7 @@ export default function SportsDevelopmentDashboard() {
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
         <div className="relative flex flex-wrap items-end justify-between gap-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Sports Development Unit</p>
-            <h1 className="mt-3 max-w-[900px] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl xl:text-5xl">Sports Development Unit Dashboard</h1>
+            <h1 className="max-w-[900px] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl xl:text-5xl">Sports Development Unit Dashboard</h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-blue-50 sm:text-lg">Developing sport. Supporting people. Building stronger communities.</p>
           </div>
           <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">More participation<br />Brighter opportunities</p>

@@ -42,8 +42,6 @@ export default function DepartmentPageFrame({ department, children }: { departme
   const hasRecordHeading = (department === "sports-development" && ((parts[0] === "sports" && parts.length > 1) || (parts[0] === "leagues" && parts.length > 1 && parts[1] !== "add"))) || (department === "human-resources" && parts[0] === "employees" && parts.length > 1);
   const title = known?.[0] ?? (isSportDetail ? `${titleCase(parts[1])} ${titleCase(parts[2])}` : isWeekDetail ? "Week Pack" : hasRecordHeading ? parts[0] === "employees" ? "Employee Profile" : parts[0] === "leagues" ? "League Workspace" : `${titleCase(parts[1])} Overview` : parts.at(-1) === "add" ? `Add ${titleCase(parts.at(-2) ?? "Record")}` : titleCase(parts.at(-1) ?? "Overview"));
   const description = known?.[1] ?? (department === "sports-development" ? "Explore and manage Sports Development Unit activity." : department === "human-resources" ? "View and manage Human Resources records." : "Review Finance Department activity.");
-  const name = department === "sports-development" ? "Sports Development Unit" : department === "human-resources" ? "Human Resources" : "Finance Department";
-  const section = parts.length > 1 ? titleCase(parts[0]) : "Department Workspace";
 
   return (
     <div className="space-y-4 text-[#112d56]">
@@ -51,7 +49,7 @@ export default function DepartmentPageFrame({ department, children }: { departme
         <BannerAccount />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
         <div className="relative flex flex-wrap items-end justify-between gap-6">
-          <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA {name} · {section}</p><h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1><p className="mt-4 max-w-3xl text-base leading-7 text-blue-50">{description}</p></div>
+          <div><h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1><p className="mt-4 max-w-3xl text-base leading-7 text-blue-50">{description}</p></div>
           <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">One workspace<br />Stronger communities</p>
         </div>
       </section>

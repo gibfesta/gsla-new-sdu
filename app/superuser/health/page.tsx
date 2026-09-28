@@ -77,7 +77,7 @@ export default async function HealthDashboard() {
           <BannerAccount />
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 right-0 h-80 w-[65%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_36px_rgba(255,255,255,0.025),0_0_0_85px_rgba(255,255,255,0.018)]" />
           <div className="relative flex flex-wrap items-end justify-between gap-8">
-            <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA SuperUser</p><h1 className="mt-3 text-3xl font-extrabold tracking-tight md:text-5xl">Health Dashboard</h1><p className="mt-4 max-w-2xl text-base leading-relaxed text-blue-50 md:text-xl">A clear view of the checks currently available for the GSLA WebApp.</p></div>
+            <div><h1 className="text-3xl font-extrabold tracking-tight md:text-5xl">Health Dashboard</h1><p className="mt-4 max-w-2xl text-base leading-relaxed text-blue-50 md:text-xl">A clear view of the checks currently available for the GSLA WebApp.</p></div>
             <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">Reliable systems<br />Clear visibility</p>
           </div>
         </section>

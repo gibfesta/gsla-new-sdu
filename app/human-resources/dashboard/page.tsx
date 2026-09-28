@@ -61,7 +61,7 @@ export default async function HRDashboardPage() {
         <BannerAccount />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
         <div className="relative flex flex-wrap items-end justify-between gap-8">
-          <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA Human Resources</p><h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl xl:text-5xl">Human Resources Dashboard</h1><p className="mt-4 max-w-2xl text-base leading-7 text-blue-50 sm:text-lg">Support our people, track timesheets and keep HR work moving.</p></div>
+          <div><h1 className="text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl xl:text-5xl">Human Resources Dashboard</h1><p className="mt-4 max-w-2xl text-base leading-7 text-blue-50 sm:text-lg">Support our people, track timesheets and keep HR work moving.</p></div>
           <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">Stronger people<br />Stronger teams</p>
         </div>
       </section>

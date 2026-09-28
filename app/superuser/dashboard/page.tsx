@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   Activity, ArrowRight, Building2, Database, Globe2, Landmark,
@@ -67,19 +66,15 @@ export default function SuperuserDashboard() {
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#f1f7ff_100%)] text-[#142542]">
       <main className="mx-auto max-w-[1500px] space-y-5 px-5 py-5 md:px-8">
-        <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#143960_0%,#10447e_55%,#0e5195_100%)] px-7 pb-8 pt-14 text-white shadow-sm md:px-10 md:pb-9 md:pt-12">
-          <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 right-0 h-80 w-[65%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_36px_rgba(255,255,255,0.025),0_0_0_85px_rgba(255,255,255,0.018)]" />
+        <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 pb-9 pt-16 text-white shadow-sm sm:min-h-[238px] sm:px-10 sm:pb-10 sm:pt-14">
+          <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
           <div className="absolute right-7 top-4 z-10 flex items-center gap-2 md:right-9"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-[10px] font-semibold text-white" aria-label="SuperUser account">SU</span><span className="text-xs font-medium text-white">SuperUser</span></div>
           <div className="relative flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-100">GSLA SuperUser</p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">Organisation Dashboard</h1>
-              <p className="mt-3 text-base leading-snug text-blue-50 md:text-lg">Four departments. One connected platform.<br />Supporting safer venues, stronger people and a thriving sporting community.</p>
+              <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Organisation Overview</h1>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-blue-50 sm:text-lg">Four departments. One connected platform.<br />Supporting safer venues, stronger people and a thriving sporting community.</p>
             </div>
-            <div className="flex shrink-0 flex-col items-start gap-1 md:items-end">
-              <Image src="/gsla-white.png" alt="GSLA" width={600} height={279} sizes="(min-width: 768px) 208px, 176px" className="h-auto w-36 object-contain md:w-44" />
-              <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100 md:text-right">People<br />Facilities<br />Opportunities<br />Stronger together</p>
-            </div>
+            <p className="text-xs font-semibold uppercase leading-6 tracking-[0.16em] text-blue-100">People<br />Facilities<br />Opportunities<br />Stronger together</p>
           </div>
         </section>
 
