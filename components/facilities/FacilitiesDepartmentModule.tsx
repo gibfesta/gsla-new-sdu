@@ -28,7 +28,7 @@ type ModuleProps = {
 
 export default function FacilitiesDepartmentModule({ title, description, icon: Icon, statusLabel, emptyMessage, venueAction, venueTab, tabs }: ModuleProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const [view, setView] = useState<"cards" | "list">("cards");
+  const [view, setView] = useState<"cards" | "list">("list");
   const sections = tabs?.length ? tabs : [{ label: "All Venues", description: "The six demonstration venues from the Facilities Directory.", emptyMessage, venueAction: venueAction ?? "Open venue", venueTab: venueTab ?? "" }];
   const section = sections[activeTab];
   const venueHref = (id: string) => `/facilities/facilities-directory/${id}${section.venueTab ? `?tab=${section.venueTab}` : ""}`;

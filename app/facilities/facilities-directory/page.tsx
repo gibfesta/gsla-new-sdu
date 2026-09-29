@@ -149,7 +149,7 @@ function typeIcon(type: FacilityType) {
 export default function FacilitiesPage() {
   const router = useRouter();
   const [selectedFacilityId, setSelectedFacilityId] = useState("");
-  const [view, setView] = useState<"cards" | "list">("cards");
+  const [view, setView] = useState<"cards" | "list">("list");
 
   return (
     <div className="space-y-8">
