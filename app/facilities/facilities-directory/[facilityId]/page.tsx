@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OtherVenueWorkspace from "@/components/facilities/OtherVenueWorkspace";
 import VenueViewControls, { venueTabs, type VenueView } from "@/components/facilities/VenueViewControls";
+import VenueBanner from "@/components/facilities/VenueBanner";
 import { eventExamples } from "@/components/facilities/eventExamples";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,7 +14,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   ShieldAlert,
-  Pencil,
   ClipboardList,
   BellRing,
   CircleDot,
@@ -34,7 +34,6 @@ import {
   Upload,
   X,
   Lock,
-  UserCog,
   ExternalLink,
 } from "lucide-react";
 
@@ -589,7 +588,7 @@ function FacilityPageContent() {
     const validTabs: TabKey[] = venueTabs.map(({ key }) => key);
     setActiveTab(requested && validTabs.includes(requested as TabKey) ? requested as TabKey : "handover");
   }, [searchParams]);
-  const [role, setRole] = useState<Role>("Centre Manager");
+  const role: Role = "Centre Manager";
 
   const [timeline, setTimeline] = useState(initialTimeline);
   const [updateText, setUpdateText] = useState("");
@@ -824,8 +823,8 @@ function FacilityPageContent() {
 
   return (
     <div className="space-y-8" data-venue-view={view}>
-      <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
-        <div className="px-6 py-8 md:px-8">
+      <VenueBanner>
+        <div className="px-6 pb-8 pt-16 md:px-8 md:pt-14">
           <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
             <div className="max-w-4xl">
               <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -868,42 +867,9 @@ function FacilityPageContent() {
               </p>
             </div>
 
-            <div className="flex flex-col gap-3">
-              <div className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 ring-1 ring-white/15">
-                <UserCog size={16} />
-                <span className="text-sm font-medium">View as</span>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as Role)}
-                  className="rounded-lg bg-white px-2 py-1 text-sm text-slate-900 outline-none"
-                >
-                  <option>Centre Manager</option>
-                  <option>Facilities Manager</option>
-                  <option>GSLA Admin</option>
-                </select>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={() => router.push(`/facilities/facilities-directory/${facility.id}/edit`)}
-                  className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0C2F57] transition hover:brightness-95"
-                >
-                  <Pencil size={16} />
-                  Edit Facility
-                </button>
-
-                <button
-                  onClick={() => router.push(`/facilities/facilities-directory/${facility.id}/issues`)}
-                  className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition hover:bg-white/15"
-                >
-                  <ClipboardList size={16} />
-                  Open Issues Page
-                </button>
-              </div>
-            </div>
           </div>
         </div>
-      </section>
+      </VenueBanner>
 
       <VenueViewControls venueId={facility.id} activeTab={activeTab} view={view} onViewChange={setView} />
 

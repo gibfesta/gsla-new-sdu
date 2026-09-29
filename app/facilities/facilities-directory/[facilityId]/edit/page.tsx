@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import VenueDetailNotice from "@/components/facilities/VenueDetailNotice";
 import { Card, CardContent } from "@/components/ui/card";
+import VenueBanner from "@/components/facilities/VenueBanner";
 import {
   ArrowLeft,
   Save,
@@ -147,8 +148,8 @@ function EuropaEditFacilityPage() {
 
   return (
     <div className="space-y-8">
-      <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
-        <div className="px-6 py-8 md:px-8">
+      <VenueBanner>
+        <div className="px-6 pb-8 pt-16 md:px-8 md:pt-14">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-3xl">
               <button
@@ -204,7 +205,7 @@ function EuropaEditFacilityPage() {
             </div>
           </div>
         </div>
-      </section>
+      </VenueBanner>
 
       {saveMessage ? (
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">

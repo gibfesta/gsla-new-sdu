@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import VenueDetailNotice from "@/components/facilities/VenueDetailNotice";
+import VenueBanner from "@/components/facilities/VenueBanner";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowLeft,
@@ -243,8 +244,8 @@ function EuropaIssuesPage() {
 
   return (
     <div className="space-y-8">
-      <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
-        <div className="px-6 py-8 md:px-8">
+      <VenueBanner>
+        <div className="px-6 pb-8 pt-16 md:px-8 md:pt-14">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-3xl">
               <button
@@ -272,14 +273,6 @@ function EuropaIssuesPage() {
 
             <div className="flex flex-wrap gap-3">
               <button
-                onClick={() => router.push(`/facilities/facilities-directory/${facility.id}/edit`)}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition hover:bg-white/15"
-              >
-                <Wrench size={16} />
-                Edit Facility
-              </button>
-
-              <button
                 className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0C2F57] transition hover:brightness-95"
               >
                 <Plus size={16} />
@@ -288,7 +281,7 @@ function EuropaIssuesPage() {
             </div>
           </div>
         </div>
-      </section>
+      </VenueBanner>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard

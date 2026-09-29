@@ -6,7 +6,6 @@ import HeaderBar from "./HeaderBar";
 import Sidebar from "./Sidebar";
 import FacilitiesSidebar from "@/components/facilities/FacilitiesSidebar";
 import FacilitiesDepartmentSidebar from "@/components/facilities/FacilitiesDepartmentSidebar";
-import FacilitiesHeader from "@/components/facilities/FacilitiesHeader";
 import SportsDevelopmentSidebar from "@/components/sports-development/SportsDevelopmentSidebar";
 import HumanResourcesSidebar from "@/components/human-resources/HumanResourcesSidebar";
 import FinanceSidebar from "@/components/finance/FinanceSidebar";
@@ -32,7 +31,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
         {venueArea ? <Suspense fallback={<aside className="w-full shrink-0 bg-[#0d2d52] lg:w-[286px]" />}><FacilitiesSidebar /></Suspense> : <FacilitiesDepartmentSidebar />}
         <div className="min-w-0 flex-1">
-          {venueArea && <FacilitiesHeader />}
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">
             {children}
           </main>
