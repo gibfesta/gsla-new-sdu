@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
@@ -8,6 +9,7 @@ import {
   MapPin,
   Building2,
   Pencil,
+  Archive,
   ArrowRight,
   CheckCircle2,
   AlertTriangle,
@@ -144,6 +146,7 @@ function typeIcon(type: FacilityType) {
 
 export default function FacilitiesPage() {
   const router = useRouter();
+  const [selectedFacilityId, setSelectedFacilityId] = useState("");
 
   return (
     <div className="space-y-8">
@@ -152,7 +155,16 @@ export default function FacilitiesPage() {
       <section>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-slate-500">{MOCK_FACILITIES.length} facilities</p>
-          <button onClick={() => router.push("/facilities/facilities-directory/new")} className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"><Plus size={16} aria-hidden="true" />Add Facility</button>
+          <div className="flex flex-wrap items-center gap-2">
+            <label htmlFor="facility-action-selection" className="sr-only">Select a facility to edit or archive</label>
+            <select id="facility-action-selection" value={selectedFacilityId} onChange={(event) => setSelectedFacilityId(event.target.value)} className="min-h-10 max-w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-800" aria-label="Select a facility to edit or archive">
+              <option value="">Select a facility</option>
+              {MOCK_FACILITIES.map((facility) => <option key={facility.id} value={facility.id}>{facility.name}</option>)}
+            </select>
+            <button type="button" onClick={() => router.push("/facilities/facilities-directory/new")} className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"><Plus size={16} aria-hidden="true" />Create Facility</button>
+            <button type="button" disabled={!selectedFacilityId} onClick={() => router.push(`/facilities/facilities-directory/${selectedFacilityId}/edit`)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#b8d4f5] bg-white px-4 py-2.5 text-sm font-semibold text-[#155ca7] hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"><Pencil size={16} aria-hidden="true" />Edit Facility</button>
+            <button type="button" disabled={!selectedFacilityId} onClick={() => router.push(`/facilities/facilities-directory/${selectedFacilityId}/archive`)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-rose-200 bg-white px-4 py-2.5 text-sm font-semibold text-rose-700 hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"><Archive size={16} aria-hidden="true" />Archive Facility</button>
+          </div>
         </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -246,15 +258,6 @@ export default function FacilitiesPage() {
                         <ArrowRight size={16} />
                       </button>
 
-                      <button
-                        onClick={() =>
-                          router.push(`/facilities/facilities-directory/${facility.id}`)
-                        }
-                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-                      >
-                        <Pencil size={16} />
-                        Edit
-                      </button>
                     </div>
                   </CardContent>
                 </Card>

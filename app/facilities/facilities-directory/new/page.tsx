@@ -94,7 +94,7 @@ export default function AdminFacilityNewPage() {
             Back to Facilities
           </button>
           <h1 className="mt-4 text-3xl font-extrabold text-[#0C2F57]">
-            Add Facility
+            Create Facility
           </h1>
           <p className="mt-1 text-sm text-slate-600">
             Fill out all fields and create a new facility.
