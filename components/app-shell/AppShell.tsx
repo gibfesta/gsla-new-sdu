@@ -18,7 +18,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const noSidebar = ["/", "/organisation/home", "/organisation/health"].includes(pathname);
   const ownHeader = ["/organisation/home", "/organisation/health"].includes(pathname);
   const facilitiesArea = pathname.startsWith("/facilities");
-  const venueArea = /^\/facilities\/facilities\/fac-[0-9]{3}(?:\/|$)/.test(pathname);
+  const venueArea = /^\/facilities\/facilities-directory\/fac-[0-9]{3}(?:\/|$)/.test(pathname);
   const sportsDevelopmentArea = pathname.startsWith("/sports-development");
   const humanResourcesArea = pathname.startsWith("/human-resources");
   const financeArea = pathname.startsWith("/finance");

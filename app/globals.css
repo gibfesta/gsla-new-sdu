@@ -56,3 +56,19 @@ html, body {
   padding: 0.75rem;
   vertical-align: middle;
 }
+
+/* Venue record collections share a list-first switch across every section. */
+[data-venue-view="cards"] .venue-records {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  align-items: stretch;
+  gap: 1rem;
+}
+[data-venue-view="list"] .venue-records {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+[data-venue-view="list"] .venue-records > * {
+  width: 100%;
+}

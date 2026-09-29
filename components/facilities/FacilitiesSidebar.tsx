@@ -43,7 +43,7 @@ const groups: NavGroup[] = [
 export default function FacilitiesSidebar() {
   const pathname = usePathname();
   const selectedTab = useSearchParams().get("tab");
-  const venueId = pathname.match(/^\/facilities\/facilities\/([^/]+)/)?.[1];
+  const venueId = pathname.match(/^\/facilities\/facilities-directory\/(fac-[0-9]{3})(?:\/|$)/)?.[1];
   const venue = facilitiesVenues.find((item) => item.id === venueId);
   const venueHref = venueId ? `/facilities/facilities-directory/${venueId}` : "/facilities/home";
 

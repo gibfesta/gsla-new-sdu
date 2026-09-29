@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OtherVenueWorkspace from "@/components/facilities/OtherVenueWorkspace";
+import VenueViewControls, { venueTabs, type VenueView } from "@/components/facilities/VenueViewControls";
 import { eventExamples } from "@/components/facilities/eventExamples";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -616,9 +617,10 @@ function FacilityPageContent() {
   const searchParams = useSearchParams();
 
   const [activeTab, setActiveTab] = useState<TabKey>("handover");
+  const [view, setView] = useState<VenueView>("list");
   useEffect(() => {
     const requested = searchParams.get("tab");
-    const validTabs: TabKey[] = ["handover", "information", "issues", "timeline", "events", "bookings", "procedures", "weekly", "monthly", "documents", "photos", "compliance", "audit"];
+    const validTabs: TabKey[] = venueTabs.map(({ key }) => key);
     setActiveTab(requested && validTabs.includes(requested as TabKey) ? requested as TabKey : "handover");
   }, [searchParams]);
   const [role, setRole] = useState<Role>("Centre Manager");
@@ -855,7 +857,7 @@ function FacilityPageContent() {
   const closingDone = closingChecklist.filter((s) => s.done).length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" data-venue-view={view}>
       <section className="overflow-hidden rounded-[28px] bg-gradient-to-r from-[#0C2F57] to-[#174A84] text-white shadow-sm">
         <div className="px-6 py-8 md:px-8">
           <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
@@ -936,6 +938,8 @@ function FacilityPageContent() {
           </div>
         </div>
       </section>
+
+      <VenueViewControls venueId={facility.id} activeTab={activeTab} view={view} onViewChange={setView} />
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
         <StatCard
@@ -1239,7 +1243,7 @@ function FacilityPageContent() {
                     description="Important context visible to both local and remote managers."
                   />
 
-                  <div className="mt-5 space-y-3">
+                  <div className="venue-records mt-5 space-y-3">
                     {facility.notes.map((note) => (
                       <div
                         key={note}
@@ -1262,7 +1266,7 @@ function FacilityPageContent() {
                   description="Open and recent issues affecting day-to-day facility operations."
                 />
 
-                <div className="mt-5 space-y-4">
+                <div className="venue-records mt-5 space-y-4">
                   {initialIssues.map((issue) => (
                     <div
                       key={issue.id}
@@ -1327,7 +1331,7 @@ function FacilityPageContent() {
                   description="A running log of operational activity, issue updates, and notable events."
                 />
 
-                <div className="mt-6 space-y-5">
+                <div className="venue-records mt-6 space-y-5">
                   {timeline.map((item) => (
                     <div key={item.id} className="flex gap-4">
                       <div className="flex flex-col items-center">
@@ -1371,7 +1375,7 @@ function FacilityPageContent() {
                 </div>
                 <h3 className="mt-6 text-base font-bold text-[#112d56]">Department example records for this venue</h3>
                 <p className="mt-1 text-xs text-[#60799f]">Historical demonstration records from 2025–26, not live scheduled events.</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <div className="venue-records mt-3 grid gap-2 sm:grid-cols-2">
                   {eventExamples.filter((event) => event.venueId === facility.id).map((event) => (
                     <div key={event.id} className="rounded-xl border border-[#d5e4f6] bg-white p-4">
                       <strong className="block text-sm">{event.name}</strong>
@@ -1383,7 +1387,7 @@ function FacilityPageContent() {
                 <h3 className="mt-6 text-base font-bold text-[#112d56]">Local activity examples</h3>
                 <p className="mt-1 text-xs text-[#60799f]">Past sample sessions shown for venue operations only. Manage event decisions in Facilities Department.</p>
 
-                <div className="mt-4 space-y-4">
+                <div className="venue-records mt-4 space-y-4">
                   {events.map((event) => (
                     <div
                       key={`${event.title}-${event.date}-${event.time}`}
@@ -1451,7 +1455,7 @@ function FacilityPageContent() {
                     }
                   />
 
-                  <div className="mt-5 space-y-4">
+                  <div className="venue-records mt-5 space-y-4">
                     {bookingItems.map((item) => (
                       <div
                         key={item.id}
@@ -1513,7 +1517,7 @@ function FacilityPageContent() {
                     }
                   />
 
-                  <div className="mt-5 space-y-3">
+                  <div className="venue-records mt-5 space-y-3">
                     {openingChecklist.map((step, index) => (
                       <button
                         key={step.id}
@@ -1550,7 +1554,7 @@ function FacilityPageContent() {
                     }
                   />
 
-                  <div className="mt-5 space-y-3">
+                  <div className="venue-records mt-5 space-y-3">
                     {closingChecklist.map((step, index) => (
                       <button
                         key={step.id}
@@ -1596,7 +1600,7 @@ function FacilityPageContent() {
                   description="Routine weekly actions that support safe and consistent operations."
                 />
 
-                <div className="mt-5 space-y-4">
+                <div className="venue-records mt-5 space-y-4">
                   {weeklyTasks.map((item) => (
                     <button
                       key={item.id}
@@ -1646,7 +1650,7 @@ function FacilityPageContent() {
                   description="Longer-cycle tasks for maintenance, compliance, and management oversight."
                 />
 
-                <div className="mt-5 space-y-4">
+                <div className="venue-records mt-5 space-y-4">
                   {monthlyTasks.map((item) => (
                     <button
                       key={item.id}
@@ -1713,7 +1717,7 @@ function FacilityPageContent() {
                     }
                   />
 
-                  <div className="mt-5 space-y-4">
+                  <div className="venue-records mt-5 space-y-4">
                     {documents.map((doc) => (
                       <div
                         key={doc.id}
@@ -1780,7 +1784,7 @@ function FacilityPageContent() {
                     }
                   />
 
-                  <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                  <div className="venue-records mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
                     {photos.map((photo) => (
                       <div
                         key={photo.id}
@@ -1880,7 +1884,7 @@ function FacilityPageContent() {
                     }
                   />
 
-                  <div className="mt-5 space-y-4">
+                  <div className="venue-records mt-5 space-y-4">
                     {complianceSeed.map((item) => {
                       const AreaIcon =
                         item.area === "Fire Safety"
@@ -1936,7 +1940,7 @@ function FacilityPageContent() {
                   description="Mock history of who changed what and when across the facility workspace."
                 />
 
-                <div className="mt-6 space-y-4">
+                <div className="venue-records mt-6 space-y-4">
                   {audit.map((item) => (
                     <div
                       key={item.id}
