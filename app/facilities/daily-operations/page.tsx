@@ -11,12 +11,12 @@ import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepart
 // Illustrative states for the visual preview only. Venue checklists are currently
 // local page state, so no department-wide status can be calculated from them yet.
 const exampleDay = [
-  { id: "fac-001", opening: "Complete · 08:05", openingTone: "good", handover: "Received", closing: "Not started", attention: "None" },
-  { id: "fac-002", opening: "Complete · 08:12", openingTone: "good", handover: "Received", closing: "Not started", attention: "None" },
-  { id: "fac-003", opening: "Complete · 08:20", openingTone: "good", handover: "Awaiting", closing: "Not started", attention: "Handover due" },
-  { id: "fac-004", opening: "Check outstanding", openingTone: "alert", handover: "Received", closing: "Not started", attention: "Pool plant check" },
-  { id: "fac-005", opening: "Complete · 08:18", openingTone: "good", handover: "Received", closing: "Not started", attention: "None" },
-  { id: "fac-006", opening: "Scheduled · 09:00", openingTone: "waiting", handover: "Not due", closing: "Not started", attention: "None" },
+  { id: "fac-001", opening: "Complete · 08:05", openingTone: "good", amHandover: "Received", pmHandover: "Not due", closing: "Not started", attention: "None" },
+  { id: "fac-002", opening: "Complete · 08:12", openingTone: "good", amHandover: "Received", pmHandover: "Not due", closing: "Not started", attention: "None" },
+  { id: "fac-003", opening: "Complete · 08:20", openingTone: "good", amHandover: "Awaiting", pmHandover: "Not due", closing: "Not started", attention: "AM handover due" },
+  { id: "fac-004", opening: "Check outstanding", openingTone: "alert", amHandover: "Received", pmHandover: "Not due", closing: "Not started", attention: "Pool plant check" },
+  { id: "fac-005", opening: "Complete · 08:18", openingTone: "good", amHandover: "Received", pmHandover: "Not due", closing: "Not started", attention: "None" },
+  { id: "fac-006", opening: "Scheduled · 09:00", openingTone: "waiting", amHandover: "Not due", pmHandover: "Not due", closing: "Not started", attention: "None" },
 ] as const;
 
 const tones = {
@@ -38,7 +38,7 @@ export default function FacilitiesDailyOperationsPage() {
 
       <section aria-labelledby="venue-status-heading">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-          <div><h2 id="venue-status-heading" className="text-xl font-bold">Opening, handover &amp; closing</h2><p className="mt-1 text-sm text-[#60799f]">One venue per record; Centre Managers will complete actual checks in their venue workspace once connected.</p></div>
+          <div><h2 id="venue-status-heading" className="text-xl font-bold">Opening, AM &amp; PM handovers, closing</h2><p className="mt-1 text-sm text-[#60799f]">One venue per record; Centre Managers will complete actual checks in their venue workspace once connected.</p></div>
           <div className="flex items-center gap-1" role="group" aria-label="Daily Operations view">
             <button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${view === "cards" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}><LayoutGrid size={16} aria-hidden="true" />Card view</button>
             <button type="button" aria-pressed={view === "list"} onClick={() => setView("list")} className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${view === "list" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}><List size={16} aria-hidden="true" />List view</button>
@@ -53,29 +53,31 @@ export default function FacilitiesDailyOperationsPage() {
                 <h3 className="text-lg font-bold">{venue.name}</h3><p className="mt-1 text-sm text-[#60799f]">{venue.type}</p>
                 <dl className="mt-4 space-y-3 border-t border-[#e5edf8] pt-4 text-sm">
                   <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Opening</dt><dd className={`rounded-lg px-2.5 py-1 text-xs font-semibold ${tones[example.openingTone]}`}>{example.opening}</dd></div>
-                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Handover</dt><dd className="font-medium text-[#35557f]">{example.handover}</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">AM handover</dt><dd className="font-medium text-[#35557f]">{example.amHandover}</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">PM handover</dt><dd className="font-medium text-[#35557f]">{example.pmHandover}</dd></div>
                   <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Closing</dt><dd className="font-medium text-[#35557f]">{example.closing}</dd></div>
                   <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Attention</dt><dd className={example.attention === "None" ? "text-[#60799f]" : "font-semibold text-rose-700"}>{example.attention}</dd></div>
                 </dl>
-                <Link href={`/facilities/facilities-directory/${venue.id}?tab=procedures`} className="mt-5 inline-flex items-center gap-1 self-start font-semibold text-[#155ca7] hover:underline">Open venue <ArrowRight size={15} aria-hidden="true" /></Link>
+                <Link href={`/facilities/facilities-directory/${venue.id}?tab=handover`} className="mt-5 inline-flex items-center gap-1 self-start font-semibold text-[#155ca7] hover:underline">Open handovers <ArrowRight size={15} aria-hidden="true" /></Link>
               </article>;
             })}
           </div>
         ) : (
         <div className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[850px] text-left text-sm">
-            <thead className="bg-[#eef5fd] text-xs text-[#35557f]"><tr><th scope="col" className="px-5 py-3">Venue</th><th scope="col" className="px-4 py-3">Opening</th><th scope="col" className="px-4 py-3">Handover</th><th scope="col" className="px-4 py-3">Closing</th><th scope="col" className="px-4 py-3">Attention</th><th scope="col" className="px-4 py-3">Venue view</th></tr></thead>
+          <table className="w-full min-w-[980px] text-left text-sm">
+            <thead className="bg-[#eef5fd] text-xs text-[#35557f]"><tr><th scope="col" className="px-5 py-3">Venue</th><th scope="col" className="px-4 py-3">Opening</th><th scope="col" className="px-4 py-3">AM handover</th><th scope="col" className="px-4 py-3">PM handover</th><th scope="col" className="px-4 py-3">Closing</th><th scope="col" className="px-4 py-3">Attention</th><th scope="col" className="px-4 py-3">Venue view</th></tr></thead>
             <tbody>{facilitiesVenues.map((venue) => {
               const example = exampleDay.find((item) => item.id === venue.id);
               if (!example) return null;
               return <tr key={venue.id} className="border-t border-[#e5edf8]">
                 <td className="px-5 py-4 font-semibold">{venue.name}<span className="mt-1 block text-xs font-normal text-[#60799f]">{venue.type}</span></td>
                 <td className="px-4 py-4"><span className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-semibold ${tones[example.openingTone]}`}>{example.opening}</span></td>
-                <td className="px-4 py-4 text-[#526f98]">{example.handover}</td>
+                <td className="px-4 py-4 text-[#526f98]">{example.amHandover}</td>
+                <td className="px-4 py-4 text-[#526f98]">{example.pmHandover}</td>
                 <td className="px-4 py-4 text-[#526f98]">{example.closing}</td>
                 <td className={`px-4 py-4 ${example.attention === "None" ? "text-[#60799f]" : "font-semibold text-rose-700"}`}>{example.attention}</td>
-                <td className="px-4 py-4"><Link href={`/facilities/facilities-directory/${venue.id}?tab=procedures`} className="inline-flex items-center gap-1 font-semibold text-[#155ca7] hover:underline">Open venue <ArrowRight size={15} aria-hidden="true" /></Link></td>
+                <td className="px-4 py-4"><Link href={`/facilities/facilities-directory/${venue.id}?tab=handover`} className="inline-flex items-center gap-1 font-semibold text-[#155ca7] hover:underline">Open handovers <ArrowRight size={15} aria-hidden="true" /></Link></td>
               </tr>;
             })}</tbody>
           </table>

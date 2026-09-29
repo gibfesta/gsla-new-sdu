@@ -626,16 +626,23 @@ function FacilityPageContent() {
   const [timeline, setTimeline] = useState(initialTimeline);
   const [updateText, setUpdateText] = useState("");
 
-  const [handover, setHandover] = useState({
-    shiftSummary:
-      "Morning checks completed. Main pitch open. Floodlight issue remains in progress. Evening training still expected to go ahead.",
-    risks:
-      "Loose barrier near spectator area still needs monitoring until permanent fix is confirmed.",
-    actionsRequired:
-      "Confirm maintenance ETA for floodlight. Recheck barrier before first evening session.",
-    managerMessage:
-      "Please make sure any change to the evening schedule is logged here before 16:00.",
+  const [handoverPeriod, setHandoverPeriod] = useState<"AM" | "PM">("AM");
+  const [handovers, setHandovers] = useState({
+    AM: {
+      shiftSummary: "Morning checks completed. Main pitch open. Floodlight issue remains in progress. Evening training still expected to go ahead.",
+      risks: "Loose barrier near spectator area still needs monitoring until permanent fix is confirmed.",
+      actionsRequired: "Confirm maintenance ETA for floodlight. Recheck barrier before first evening session.",
+      managerMessage: "Please make sure any change to the evening schedule is logged here before 16:00.",
+    },
+    PM: { shiftSummary: "", risks: "", actionsRequired: "", managerMessage: "" },
   });
+  const handover = handovers[handoverPeriod];
+  function updateHandover(field: keyof typeof handover, value: string) {
+    setHandovers((previous) => ({
+      ...previous,
+      [handoverPeriod]: { ...previous[handoverPeriod], [field]: value },
+    }));
+  }
 
   const [openingChecklist, setOpeningChecklist] = useState(
     openingStepsSeed.map((step, i) => ({
@@ -969,8 +976,8 @@ function FacilityPageContent() {
               <Card className="rounded-2xl border-slate-200 shadow-sm">
                 <CardContent className="p-6">
                   <SectionTitle
-                    title="Daily Handover"
-                    description="The main communication space between centre managers and facilities managers."
+                    title="Daily Handovers"
+                    description="Record AM and PM shift information separately for centre and facilities managers."
                     action={
                       canEdit ? (
                         <button
@@ -989,6 +996,13 @@ function FacilityPageContent() {
                     }
                   />
 
+                  <div className="mt-5 flex items-center gap-2" role="group" aria-label="Handover shift">
+                    {(["AM", "PM"] as const).map((period) => (
+                      <button key={period} type="button" aria-pressed={handoverPeriod === period} onClick={() => setHandoverPeriod(period)} className={`rounded-xl px-4 py-2 text-sm font-semibold ${handoverPeriod === period ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}>{period} Handover</button>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-xs text-slate-500">{handoverPeriod} shift notes are separate. This example form is not yet connected to saved venue records.</p>
+
                   <div className="mt-5 grid grid-cols-1 gap-4">
                     <div className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
                       <label className="text-sm font-semibold text-slate-900">
@@ -997,10 +1011,7 @@ function FacilityPageContent() {
                       <textarea
                         value={handover.shiftSummary}
                         onChange={(e) =>
-                          setHandover((prev) => ({
-                            ...prev,
-                            shiftSummary: e.target.value,
-                          }))
+                          updateHandover("shiftSummary", e.target.value)
                         }
                         rows={4}
                         disabled={!canEdit}
@@ -1017,10 +1028,7 @@ function FacilityPageContent() {
                         <textarea
                           value={handover.risks}
                           onChange={(e) =>
-                            setHandover((prev) => ({
-                              ...prev,
-                              risks: e.target.value,
-                            }))
+                            updateHandover("risks", e.target.value)
                           }
                           rows={5}
                           disabled={!canEdit}
@@ -1036,10 +1044,7 @@ function FacilityPageContent() {
                         <textarea
                           value={handover.actionsRequired}
                           onChange={(e) =>
-                            setHandover((prev) => ({
-                              ...prev,
-                              actionsRequired: e.target.value,
-                            }))
+                            updateHandover("actionsRequired", e.target.value)
                           }
                           rows={5}
                           disabled={!canEdit}
@@ -1056,10 +1061,7 @@ function FacilityPageContent() {
                       <textarea
                         value={handover.managerMessage}
                         onChange={(e) =>
-                          setHandover((prev) => ({
-                            ...prev,
-                            managerMessage: e.target.value,
-                          }))
+                          updateHandover("managerMessage", e.target.value)
                         }
                         rows={3}
                         disabled={!canEdit}

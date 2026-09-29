@@ -6,7 +6,7 @@ import { ArrowRight, Building2, CalendarDays, ClipboardCheck, Info, TriangleAler
 import { facilitiesVenues } from "./venues";
 
 const tabNames: Record<string, string> = {
-  handover: "Daily Handover", information: "Information", issues: "Issues", timeline: "Timeline",
+  handover: "Daily Handovers", information: "Information", issues: "Issues", timeline: "Timeline",
   events: "Venue Events", bookings: "Bookings / Calendar", procedures: "Opening / Closing",
   weekly: "Weekly Tasks", monthly: "Monthly Tasks", documents: "Documents / SOPs",
   photos: "Photo Log", compliance: "Compliance", audit: "Audit Trail",
@@ -16,7 +16,7 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
   const searchParams = useSearchParams();
   const venue = facilitiesVenues.find((item) => item.id === venueId);
   const tab = searchParams.get("tab") ?? "handover";
-  const section = tabNames[tab] ?? "Daily Handover";
+  const section = tabNames[tab] ?? "Daily Handovers";
   if (!venue) return <div className="rounded-xl border border-[#d5e4f6] bg-white p-6 text-[#112d56]"><h1 className="text-2xl font-bold">Venue not found</h1><Link href="/facilities/facilities-directory" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7]">Open Facilities Directory <ArrowRight size={16} /></Link></div>;
 
   return <div className="space-y-4 text-[#112d56]">
@@ -26,7 +26,15 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
       { label: "Open Issues", icon: TriangleAlert }, { label: "Today’s Events", icon: CalendarDays },
       { label: "Weekly Tasks", icon: ClipboardCheck }, { label: "Venue Status", icon: Building2 },
     ].map(({ label, icon: Icon }) => <article key={label} className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm"><Icon size={25} className="text-[#174a84]" aria-hidden="true" /><h2 className="mt-3 text-sm font-semibold">{label}</h2><p className="mt-1 text-3xl font-bold">—</p><p className="text-xs text-[#637da2]">Venue data not connected</p></article>)}</section>
-    {tab === "events" ? (
+    {tab === "handover" ? (
+      <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading">
+        <h2 id="venue-section-heading" className="text-xl font-bold">Daily Handovers</h2>
+        <p className="mt-1 text-sm text-[#60799f]">AM and PM handovers for {venue.name} will appear when its operational records are connected.</p>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          {(["AM", "PM"] as const).map((period) => <div key={period} className="rounded-xl border border-dashed border-[#cadcf2] bg-[#f8fbff] px-5 py-6"><h3 className="font-semibold">{period} Handover</h3><p className="mt-2 text-sm text-[#637da2]">No connected handover record yet.</p></div>)}
+        </div>
+      </section>
+    ) : tab === "events" ? (
       <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading">
         <h2 id="venue-section-heading" className="text-xl font-bold">Events at {venue.name}</h2>
         <p className="mt-1 text-sm text-[#60799f]">This venue will see its assigned events, preparation and on-site delivery tasks here. Records for this venue are not connected yet.</p>
