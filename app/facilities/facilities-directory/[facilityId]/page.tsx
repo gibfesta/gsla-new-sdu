@@ -871,7 +871,7 @@ function FacilityPageContent() {
         </div>
       </VenueBanner>
 
-      <VenueViewControls venueId={facility.id} activeTab={activeTab} view={view} onViewChange={setView} />
+      <VenueViewControls view={view} onViewChange={setView} />
 
       <section>
           {activeTab === "handover" && (
