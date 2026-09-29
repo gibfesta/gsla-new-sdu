@@ -910,7 +910,7 @@ function FacilityPageContent() {
 
               <div className="flex flex-wrap gap-3">
                 <button
-                  onClick={() => router.push(`/facilities/facilities/${facility.id}/edit`)}
+                  onClick={() => router.push(`/facilities/facilities-directory/${facility.id}/edit`)}
                   className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0C2F57] transition hover:brightness-95"
                 >
                   <Pencil size={16} />
@@ -918,7 +918,7 @@ function FacilityPageContent() {
                 </button>
 
                 <button
-                  onClick={() => router.push(`/facilities/facilities/${facility.id}/issues`)}
+                  onClick={() => router.push(`/facilities/facilities-directory/${facility.id}/issues`)}
                   className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition hover:bg-white/15"
                 >
                   <ClipboardList size={16} />
@@ -1303,7 +1303,7 @@ function FacilityPageContent() {
 
                         <button
                           onClick={() =>
-                            router.push(`/facilities/facilities/${facility.id}/issues`)
+                            router.push(`/facilities/facilities-directory/${facility.id}/issues`)
                           }
                           className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         >
@@ -1365,7 +1365,7 @@ function FacilityPageContent() {
                 />
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] p-4 text-sm text-[#35557f]">
                   <p>Need to review an event request or change its status? Use the department Events Control page.</p>
-                  <Link href="/facilities/events" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link>
+                  <Link href="/facilities/events-control" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link>
                 </div>
                 <h3 className="mt-6 text-base font-bold text-[#112d56]">Department example records for this venue</h3>
                 <p className="mt-1 text-xs text-[#60799f]">Historical demonstration records from 2025–26, not live scheduled events.</p>
@@ -1374,7 +1374,7 @@ function FacilityPageContent() {
                     <div key={event.id} className="rounded-xl border border-[#d5e4f6] bg-white p-4">
                       <strong className="block text-sm">{event.name}</strong>
                       <p className="mt-1 text-xs text-[#60799f]">{event.date} · {event.impact} · {event.status}</p>
-                      <Link href={`/facilities/events/${event.id}`} className="mt-3 inline-block text-xs font-semibold text-[#155ca7] hover:underline">View department record →</Link>
+                      <Link href={`/facilities/events-control/${event.id}`} className="mt-3 inline-block text-xs font-semibold text-[#155ca7] hover:underline">View department record →</Link>
                     </div>
                   ))}
                 </div>

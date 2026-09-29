@@ -20,7 +20,7 @@ const departments: Department[] = [
   {
     name: "Facilities",
     description: "Manage venues, events, maintenance and compliance.",
-    href: "/facilities/dashboard",
+    href: "/facilities/home",
     action: "View Facilities",
     icon: Building2,
     iconStyle: "bg-blue-50 text-blue-700",

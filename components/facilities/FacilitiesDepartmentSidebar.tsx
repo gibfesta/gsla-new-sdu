@@ -12,25 +12,25 @@ import {
 type Item = { label: string; href: string; icon: LucideIcon };
 const groups: { title: string; items: Item[] }[] = [
   { title: "Overview", items: [
-    { label: "All Facilities Overview", href: "/facilities/dashboard", icon: LayoutDashboard },
-    { label: "Facilities Directory", href: "/facilities/facilities", icon: Building2 },
+    { label: "All Facilities Overview", href: "/facilities/home", icon: LayoutDashboard },
+    { label: "Facilities Directory", href: "/facilities/facilities-directory", icon: Building2 },
     { label: "Daily Operations", href: "/facilities/daily-operations", icon: ClipboardCheck },
   ] },
   { title: "Planning & Events", items: [
     { label: "Shared Calendar", href: "/facilities/shared-calendar", icon: CalendarDays },
-    { label: "Events Control", href: "/facilities/events", icon: CalendarCheck2 },
+    { label: "Events Control", href: "/facilities/events-control", icon: CalendarCheck2 },
   ] },
   { title: "Venue Oversight", items: [
-    { label: "Maintenance & Issues", href: "/facilities/maintenance", icon: Wrench },
+    { label: "Maintenance & Issues", href: "/facilities/maintenance-&-issues", icon: Wrench },
     { label: "Compliance", href: "/facilities/compliance", icon: ShieldCheck },
-    { label: "Procedures & SOPs", href: "/facilities/procedures", icon: FileText },
+    { label: "Procedures & SOPs", href: "/facilities/procedures-&-sop", icon: FileText },
   ] },
   { title: "Staffing & Cover", items: [
     { label: "Duty Team", href: "/facilities/duty-team", icon: UsersRound },
     { label: "Centre Manager Assignments", href: "/facilities/cm-assignments", icon: UserRoundCog },
   ] },
   { title: "Reporting", items: [
-    { label: "Reports & History", href: "/facilities/reports", icon: BarChart3 },
+    { label: "Reports & History", href: "/facilities/reports-&-history", icon: BarChart3 },
   ] },
 ];
 
@@ -39,7 +39,7 @@ export default function FacilitiesDepartmentSidebar() {
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
       <div className="flex min-h-full flex-col px-4 py-5 lg:px-5">
-        <Link href="/facilities/dashboard" className="inline-flex w-fit items-center" aria-label="GSLA Facilities department home"><Image src="/gsla-white.png" alt="GSLA" width={600} height={279} className="h-auto w-[180px]" priority /></Link>
+        <Link href="/facilities/home" className="inline-flex w-fit items-center" aria-label="GSLA Facilities department home"><Image src="/gsla-white.png" alt="GSLA" width={600} height={279} className="h-auto w-[180px]" priority /></Link>
         <p className="mt-2 text-base font-semibold">Facilities Department</p>
         <p className="mt-0.5 text-xs text-blue-200">All venues · Department view</p>
         <nav aria-label="Facilities department navigation" className="mt-6 space-y-4">

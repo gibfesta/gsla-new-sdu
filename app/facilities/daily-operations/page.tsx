@@ -61,7 +61,7 @@ export default function FacilitiesDailyOperationsPage() {
                 <td className="px-4 py-4 text-[#526f98]">{example.handover}</td>
                 <td className="px-4 py-4 text-[#526f98]">{example.closing}</td>
                 <td className={`px-4 py-4 ${example.attention === "None" ? "text-[#60799f]" : "font-semibold text-rose-700"}`}>{example.attention}</td>
-                <td className="px-4 py-4"><Link href={`/facilities/facilities/${venue.id}?tab=procedures`} className="inline-flex items-center gap-1 font-semibold text-[#155ca7] hover:underline">Open venue <ArrowRight size={15} aria-hidden="true" /></Link></td>
+                <td className="px-4 py-4"><Link href={`/facilities/facilities-directory/${venue.id}?tab=procedures`} className="inline-flex items-center gap-1 font-semibold text-[#155ca7] hover:underline">Open venue <ArrowRight size={15} aria-hidden="true" /></Link></td>
               </tr>;
             })}</tbody>
           </table>
@@ -70,7 +70,7 @@ export default function FacilitiesDailyOperationsPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <section className="rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm"><div className="flex items-center gap-2"><ClipboardCheck size={21} className="text-[#155ca7]" aria-hidden="true" /><h2 className="text-lg font-bold">What this page will flag</h2></div><p className="mt-3 text-sm leading-6 text-[#60799f]">Overdue opening or closing checks, missing handovers and exceptions that need department attention. These alerts require connected records and agreed permissions.</p></section>
-        <section className="rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm"><div className="flex items-center gap-2"><FileText size={21} className="text-[#155ca7]" aria-hidden="true" /><h2 className="text-lg font-bold">Procedures are separate</h2></div><p className="mt-3 text-sm leading-6 text-[#60799f]">The department keeps the approved instructions and templates; each venue completes the daily checklist.</p><Link href="/facilities/procedures" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#155ca7] hover:underline">View Procedures &amp; SOPs <ArrowRight size={15} aria-hidden="true" /></Link></section>
+        <section className="rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm"><div className="flex items-center gap-2"><FileText size={21} className="text-[#155ca7]" aria-hidden="true" /><h2 className="text-lg font-bold">Procedures are separate</h2></div><p className="mt-3 text-sm leading-6 text-[#60799f]">The department keeps the approved instructions and templates; each venue completes the daily checklist.</p><Link href="/facilities/procedures-&-sop" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#155ca7] hover:underline">View Procedures &amp; SOPs <ArrowRight size={15} aria-hidden="true" /></Link></section>
       </div>
       <p className="flex items-center gap-2 text-xs text-[#60799f]"><Clock3 size={14} aria-hidden="true" />Live timestamps will appear once venue updates are stored and shared.</p>
     </div>

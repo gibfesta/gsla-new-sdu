@@ -109,7 +109,7 @@ const summary = [
     value: 2,
     icon: Building2,
     tone: "danger" as const,
-    href: "/facilities/facilities",
+    href: "/facilities/facilities-directory",
   },
   {
     key: "eventsToday",
@@ -132,7 +132,7 @@ const domainQueues = [
     href: "/organisation/system/manage",
     items: [
       { label: "New association requests", value: 2, tone: "danger" as QueueTone, href: "/organisation/system/manage" },
-      { label: "Facility issues reported", value: 2, tone: "danger" as QueueTone, href: "/facilities/facilities" },
+      { label: "Facility issues reported", value: 2, tone: "danger" as QueueTone, href: "/facilities/facilities-directory" },
       { label: "Profile updates pending", value: 3, tone: "warn" as QueueTone, href: "/profile" },
     ],
   },
@@ -179,7 +179,7 @@ type ScheduleType = "Course" | "Match" | "Facility" | "Governance";
 const todayItems: Array<{ label: string; type: ScheduleType; icon: any; href: string }> = [
   { label: "First Aid Course (10:00)", type: "Course", icon: GraduationCap, href: "/organisation/system/reminders" },
   { label: "League Match — Hockey", type: "Match", icon: Trophy, href: "/facilities/shared-calendar" },
-  { label: "Facility Inspection", type: "Facility", icon: Building2, href: "/facilities/facilities" },
+  { label: "Facility Inspection", type: "Facility", icon: Building2, href: "/facilities/facilities-directory" },
 ];
 
 const weekItems: Array<{ label: string; type: ScheduleType; icon: any; href: string }> = [
@@ -199,7 +199,7 @@ const pulse = [
 const quickActions = [
   { label: "Add Sport", icon: Plus, href: "/organisation/system/manage" },
   { label: "Add Association", icon: Building2, href: "/organisation/system/manage" },
-  { label: "Add Facility", icon: Building2, href: "/facilities/facilities" },
+  { label: "Add Facility", icon: Building2, href: "/facilities/facilities-directory" },
   { label: "Review Users", icon: Users, href: "/organisation/system/manage" },
   { label: "Form A", icon: ClipboardList, href: "/sports-development/associations/forms" },
   { label: "Form B", icon: ClipboardList, href: "/sports-development/associations/forms" },

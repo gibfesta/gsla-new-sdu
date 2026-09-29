@@ -17,7 +17,7 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
   const venue = facilitiesVenues.find((item) => item.id === venueId);
   const tab = searchParams.get("tab") ?? "handover";
   const section = tabNames[tab] ?? "Daily Handover";
-  if (!venue) return <div className="rounded-xl border border-[#d5e4f6] bg-white p-6 text-[#112d56]"><h1 className="text-2xl font-bold">Venue not found</h1><Link href="/facilities/facilities" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7]">Open Facilities Directory <ArrowRight size={16} /></Link></div>;
+  if (!venue) return <div className="rounded-xl border border-[#d5e4f6] bg-white p-6 text-[#112d56]"><h1 className="text-2xl font-bold">Venue not found</h1><Link href="/facilities/facilities-directory" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7]">Open Facilities Directory <ArrowRight size={16} /></Link></div>;
 
   return <div className="space-y-4 text-[#112d56]">
     <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 py-9 text-white shadow-sm sm:px-9"><h1 className="text-3xl font-extrabold sm:text-4xl">{venue.name}</h1><p className="mt-3 max-w-2xl text-base text-blue-50">A dedicated working space for this venue&apos;s Centre Managers.</p></section>
@@ -30,7 +30,7 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
       <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading">
         <h2 id="venue-section-heading" className="text-xl font-bold">Events at {venue.name}</h2>
         <p className="mt-1 text-sm text-[#60799f]">This venue will see its assigned events, preparation and on-site delivery tasks here. Records for this venue are not connected yet.</p>
-        <div className="mt-5 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-4 text-sm leading-6 text-[#35557f]">Facilities Department controls event requests, approvals and cross-venue decisions. <Link href="/facilities/events" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link></div>
+        <div className="mt-5 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-4 text-sm leading-6 text-[#35557f]">Facilities Department controls event requests, approvals and cross-venue decisions. <Link href="/facilities/events-control" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link></div>
       </section>
     ) : (
       <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading"><h2 id="venue-section-heading" className="text-xl font-bold">{section}</h2><p className="mt-1 text-sm text-[#60799f]">{venue.name}</p><p className="mt-5 rounded-xl border border-dashed border-[#cadcf2] bg-[#f8fbff] px-5 py-8 text-sm text-[#637da2]">{section} for this venue will appear when its records and permissions are connected.</p></section>

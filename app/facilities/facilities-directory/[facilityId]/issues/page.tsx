@@ -248,7 +248,7 @@ function EuropaIssuesPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-3xl">
               <button
-                onClick={() => router.push(`/facilities/facilities/${facility.id}`)}
+                onClick={() => router.push(`/facilities/facilities-directory/${facility.id}`)}
                 className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15"
               >
                 <ArrowLeft size={16} />
@@ -272,7 +272,7 @@ function EuropaIssuesPage() {
 
             <div className="flex flex-wrap gap-3">
               <button
-                onClick={() => router.push(`/facilities/facilities/${facility.id}/edit`)}
+                onClick={() => router.push(`/facilities/facilities-directory/${facility.id}/edit`)}
                 className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition hover:bg-white/15"
               >
                 <Wrench size={16} />

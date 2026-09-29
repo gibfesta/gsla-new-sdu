@@ -24,7 +24,7 @@ export default function FacilitiesDashboard() {
               <h2 id="venues-heading" className="text-xl font-bold sm:text-2xl">All Facilities Overview</h2>
               <p className="mt-1 text-sm text-[#5e78a2]">The six demonstration venues from the Facilities Directory.</p>
             </div>
-            <Link href="/facilities/facilities" className="inline-flex items-center gap-2 rounded-xl border border-[#d5e4f6] bg-[#f5f9ff] px-3 py-2 text-sm font-semibold text-[#155ca7] hover:bg-blue-50">
+            <Link href="/facilities/facilities-directory" className="inline-flex items-center gap-2 rounded-xl border border-[#d5e4f6] bg-[#f5f9ff] px-3 py-2 text-sm font-semibold text-[#155ca7] hover:bg-blue-50">
               <Building2 size={17} aria-hidden="true" /> View Facilities Directory
             </Link>
           </div>
@@ -43,7 +43,7 @@ export default function FacilitiesDashboard() {
                   <td className="border-b border-[#e5edf8] px-3 py-3 text-[#7890ad]" title="Not connected">—</td>
                   <td className="border-b border-[#e5edf8] px-3 py-3 text-[#7890ad]" title="Not connected">—</td>
                   <td className="border-b border-[#e5edf8] px-3 py-3">
-                    <Link href={venue.id === "fac-001" ? `/facilities/facilities/${venue.id}` : "/facilities/facilities"} className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-[#b8d4f5] px-3 py-2 text-xs font-semibold text-[#155ca7] hover:bg-blue-50">
+                    <Link href={venue.id === "fac-001" ? `/facilities/facilities-directory/${venue.id}` : "/facilities/facilities-directory"} className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-[#b8d4f5] px-3 py-2 text-xs font-semibold text-[#155ca7] hover:bg-blue-50">
                       {venue.id === "fac-001" ? "Open Facility" : "View Directory"} <ArrowRight size={15} aria-hidden="true" />
                     </Link>
                   </td>

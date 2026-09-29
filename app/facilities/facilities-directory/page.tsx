@@ -152,7 +152,7 @@ export default function FacilitiesPage() {
       <section>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-slate-500">{MOCK_FACILITIES.length} facilities</p>
-          <button onClick={() => router.push("/facilities/facilities/new")} className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"><Plus size={16} aria-hidden="true" />Add Facility</button>
+          <button onClick={() => router.push("/facilities/facilities-directory/new")} className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"><Plus size={16} aria-hidden="true" />Add Facility</button>
         </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -238,7 +238,7 @@ export default function FacilitiesPage() {
                     <div className="mt-5 flex flex-wrap items-center gap-2">
                       <button
                         onClick={() =>
-                          router.push(`/facilities/facilities/${facility.id}`)
+                          router.push(`/facilities/facilities-directory/${facility.id}`)
                         }
                         className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
                       >
@@ -248,7 +248,7 @@ export default function FacilitiesPage() {
 
                       <button
                         onClick={() =>
-                          router.push(`/facilities/facilities/${facility.id}`)
+                          router.push(`/facilities/facilities-directory/${facility.id}`)
                         }
                         className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                       >

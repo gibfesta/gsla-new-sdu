@@ -26,10 +26,10 @@ const navigation: Record<string, { title: string; links: NavLink[]; subsection?:
   facilities: {
     title: "Facilities Department",
     links: [
-      { href: "/facilities/dashboard", label: "Facilities Dashboard", icon: Building2 },
-      { href: "/facilities/facilities", label: "Facilities Directory", icon: Building2 },
+      { href: "/facilities/home", label: "Facilities Dashboard", icon: Building2 },
+      { href: "/facilities/facilities-directory", label: "Facilities Directory", icon: Building2 },
       { href: "/facilities/bookings", label: "Bookings", icon: Calendar },
-      { href: "/facilities/events", label: "Community / Cultural Events", icon: Calendar },
+      { href: "/facilities/events-control", label: "Community / Cultural Events", icon: Calendar },
     ],
   },
   "human-resources": {

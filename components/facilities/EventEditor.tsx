@@ -31,7 +31,7 @@ export default function EventEditor({ mode, values = {} }: { mode: "new" | "edit
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[#e5edf8] pt-5">
           <button type="button" disabled className="cursor-not-allowed rounded-xl bg-[#7c9cbe] px-5 py-2.5 text-sm font-semibold text-white" title="Saving is not connected">{edit ? "Save changes" : "Create event"} — not connected</button>
-          <Link href="/facilities/events" className="inline-flex items-center gap-2 rounded-xl border border-[#cfdff2] px-4 py-2.5 text-sm font-semibold text-[#155ca7] hover:bg-blue-50"><ArrowLeft size={16} aria-hidden="true" />Back to Events Control</Link>
+          <Link href="/facilities/events-control" className="inline-flex items-center gap-2 rounded-xl border border-[#cfdff2] px-4 py-2.5 text-sm font-semibold text-[#155ca7] hover:bg-blue-50"><ArrowLeft size={16} aria-hidden="true" />Back to Events Control</Link>
         </div>
       </section>
     </div>

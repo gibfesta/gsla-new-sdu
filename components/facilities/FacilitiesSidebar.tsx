@@ -45,7 +45,7 @@ export default function FacilitiesSidebar() {
   const selectedTab = useSearchParams().get("tab");
   const venueId = pathname.match(/^\/facilities\/facilities\/([^/]+)/)?.[1];
   const venue = facilitiesVenues.find((item) => item.id === venueId);
-  const venueHref = venueId ? `/facilities/facilities/${venueId}` : "/facilities/dashboard";
+  const venueHref = venueId ? `/facilities/facilities-directory/${venueId}` : "/facilities/home";
 
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
@@ -74,7 +74,7 @@ export default function FacilitiesSidebar() {
           ))}
         </nav>
         <div className="mt-4 border-t border-blue-300/30 pt-3">
-          <Link href="/facilities/facilities" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
+          <Link href="/facilities/facilities-directory" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
           <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><HelpCircle size={19} aria-hidden="true" />Help</span>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><Settings size={19} aria-hidden="true" />Settings</span>

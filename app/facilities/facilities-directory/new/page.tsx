@@ -72,7 +72,7 @@ export default function AdminFacilityNewPage() {
       if (!res.ok) throw new Error(await res.text());
 
       // Back to list after create
-      router.push("/facilities/facilities");
+      router.push("/facilities/facilities-directory");
       router.refresh();
     } catch (e: any) {
       console.error(e);
@@ -87,7 +87,7 @@ export default function AdminFacilityNewPage() {
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <button
-            onClick={() => router.push("/facilities/facilities")}
+            onClick={() => router.push("/facilities/facilities-directory")}
             className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
           >
             <ArrowLeft size={16} />

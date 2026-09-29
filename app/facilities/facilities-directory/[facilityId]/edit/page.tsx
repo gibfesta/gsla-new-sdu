@@ -152,7 +152,7 @@ function EuropaEditFacilityPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-3xl">
               <button
-                onClick={() => router.push(`/facilities/facilities/${form.id}`)}
+                onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)}
                 className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15"
               >
                 <ArrowLeft size={16} />
@@ -188,7 +188,7 @@ function EuropaEditFacilityPage() {
 
             <div className="flex flex-wrap gap-3">
               <button
-                onClick={() => router.push(`/facilities/facilities/${form.id}`)}
+                onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)}
                 className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition hover:bg-white/15"
               >
                 Cancel
@@ -580,7 +580,7 @@ function EuropaEditFacilityPage() {
                 </button>
 
                 <button
-                  onClick={() => router.push(`/facilities/facilities/${form.id}`)}
+                  onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)}
                   className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   <span>Return to facility page</span>

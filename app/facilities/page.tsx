@@ -1,2 +1,2 @@
 import { redirect } from "next/navigation";
-export default function FacilitiesHome() { redirect("/facilities/dashboard"); }
+export default function FacilitiesHome() { redirect("/facilities/home"); }

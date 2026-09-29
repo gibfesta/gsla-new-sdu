@@ -26,8 +26,8 @@ Folders marked `Planned area` reserve ownership; they do not expose a page or pr
 
 | Previous URL | New URL / owner |
 | --- | --- |
-| `/admin/facilities/...` | `/facilities/facilities/...` |
-| `/admin/bookings`, `/admin/calendar`, `/admin/events/...` | `/facilities/bookings`, `/facilities/shared-calendar`, `/facilities/events/...` |
+| `/admin/facilities/...` | `/facilities/facilities-directory/...` |
+| `/admin/bookings`, `/admin/calendar`, `/admin/events/...` | `/facilities/bookings`, `/facilities/shared-calendar`, `/facilities/events-control/...` |
 | `/admin/hr/...`, `/admin/human-resources/...` | `/human-resources/...` (home redirects to `/human-resources/dashboard`) |
 | `/admin/sports-development-unit/[sport]`, `/admin/sports/[sport]` | `/sports-development/sports/[sport]` |
 | `/admin/association/registration`, `/admin/forms`, `/admin/form-b`, `/admin/form-c` | `/sports-development/associations/...` |
