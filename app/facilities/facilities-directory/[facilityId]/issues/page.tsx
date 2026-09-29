@@ -244,44 +244,11 @@ function EuropaIssuesPage() {
 
   return (
     <div className="space-y-8">
-      <VenueBanner>
-        <div className="px-6 pb-8 pt-16 md:px-8 md:pt-14">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <div className="max-w-3xl">
-              <button
-                onClick={() => router.push(`/facilities/facilities-directory/${facility.id}`)}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15"
-              >
-                <ArrowLeft size={16} />
-                Back to Facility
-              </button>
-
-              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/15">
-                <ClipboardList size={14} />
-                Facility Issues
-              </div>
-
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-                {facility.name}
-              </h1>
-
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-white/80 md:text-base">
-                Review, filter, and track all reported issues associated with
-                this facility.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <button
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0C2F57] transition hover:brightness-95"
-              >
-                <Plus size={16} />
-                Report New Issue
-              </button>
-            </div>
-          </div>
-        </div>
-      </VenueBanner>
+      <VenueBanner title={facility.name} description="Review, filter, and track all reported issues associated with this facility." eyebrow="Facility issues" />
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button onClick={() => router.push(`/facilities/facilities-directory/${facility.id}`)} className="inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7] hover:underline"><ArrowLeft size={16} aria-hidden="true" />Back to Facility</button>
+        <button className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110"><Plus size={16} aria-hidden="true" />Report New Issue</button>
+      </div>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard

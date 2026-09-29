@@ -148,64 +148,14 @@ function EuropaEditFacilityPage() {
 
   return (
     <div className="space-y-8">
-      <VenueBanner>
-        <div className="px-6 pb-8 pt-16 md:px-8 md:pt-14">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <div className="max-w-3xl">
-              <button
-                onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/15"
-              >
-                <ArrowLeft size={16} />
-                Back to Facility
-              </button>
-
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/15">
-                  <Building2 size={14} />
-                  Edit Facility
-                </span>
-
-                <span
-                  className={classNames(
-                    "inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold ring-1",
-                    status.className
-                  )}
-                >
-                  <StatusIcon size={14} />
-                  {form.status}
-                </span>
-              </div>
-
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-                {form.name}
-              </h1>
-
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-white/80 md:text-base">
-                Update facility details, contact information, supported sports,
-                and notes for this location.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition hover:bg-white/15"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={saveFacility}
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0C2F57] transition hover:brightness-95"
-              >
-                <Save size={16} />
-                Save Changes
-              </button>
-            </div>
-          </div>
+      <VenueBanner title={form.name} description="Update facility details, contact information, supported sports, and notes for this location." eyebrow="Edit Facility" details={<span>{form.status}</span>} />
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)} className="inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7] hover:underline"><ArrowLeft size={16} aria-hidden="true" />Back to Facility</button>
+        <div className="flex flex-wrap gap-3">
+          <button onClick={() => router.push(`/facilities/facilities-directory/${form.id}`)} className="rounded-xl border border-[#b8d4f5] bg-white px-4 py-2.5 text-sm font-semibold text-[#155ca7] hover:bg-blue-50">Cancel</button>
+          <button onClick={saveFacility} className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110"><Save size={16} aria-hidden="true" />Save Changes</button>
         </div>
-      </VenueBanner>
+      </div>
 
       {saveMessage ? (
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">

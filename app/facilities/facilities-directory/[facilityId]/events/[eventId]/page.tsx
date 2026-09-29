@@ -13,11 +13,7 @@ export default async function VenueEventPage({ params }: { params: Promise<{ fac
 
   const venueEvents = `/facilities/facilities-directory/${facilityId}?tab=events`;
   return <div className="space-y-5 text-[#112d56]">
-    <VenueBanner className="px-6 pb-8 pt-16 sm:px-8 sm:pt-14">
-      <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-100">Venue event · {venue.name}</p>
-      <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl">{event.name}</h1>
-      <p className="mt-3 text-blue-100">On-site event information for the Centre Manager workspace.</p>
-    </VenueBanner>
+    <VenueBanner title={event.name} description="On-site event information for the Centre Manager workspace." eyebrow={`Venue event · ${venue.name}`} />
 
     <Link href={venueEvents} className="inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7] hover:underline"><ArrowLeft size={16} aria-hidden="true" />Back to {venue.name} Events</Link>
 

@@ -15,7 +15,6 @@ import {
   AlertTriangle,
   ShieldAlert,
   ClipboardList,
-  BellRing,
   CircleDot,
   Plus,
   Send,
@@ -823,53 +822,16 @@ function FacilityPageContent() {
 
   return (
     <div className="space-y-8" data-venue-view={view}>
-      <VenueBanner>
-        <div className="px-6 pb-8 pt-16 md:px-8 md:pt-14">
-          <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
-            <div className="max-w-4xl">
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/15">
-                  <Building2 size={14} />
-                  {facility.type}
-                </span>
-
-                <span
-                  className={classNames(
-                    "inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold ring-1",
-                    status.className
-                  )}
-                >
-                  <StatusIcon size={14} />
-                  {facility.status}
-                </span>
-
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/15">
-                  <BellRing size={14} />
-                  Operations Workspace
-                </span>
-              </div>
-
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-                {facility.name}
-              </h1>
-
-              <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-white/85">
-                <span className="inline-flex items-center gap-2">
-                  <MapPin size={16} />
-                  {facility.address}
-                </span>
-                <span className="opacity-60">•</span>
-                <span>{facility.suburb}</span>
-              </div>
-
-              <p className="mt-4 max-w-3xl text-sm leading-6 text-white/80 md:text-base">
-                {facility.description}
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </VenueBanner>
+      <VenueBanner
+        title={facility.name}
+        description={facility.description}
+        eyebrow="Venue workspace"
+        details={<>
+          <span className="inline-flex items-center gap-1"><Building2 size={15} aria-hidden="true" />{facility.type}</span>
+          <span className="inline-flex items-center gap-1"><StatusIcon size={15} aria-hidden="true" />{facility.status}</span>
+          <span className="inline-flex items-center gap-1"><MapPin size={15} aria-hidden="true" />{facility.address}</span>
+        </>}
+      />
 
       <VenueViewControls view={view} onViewChange={setView} />
 

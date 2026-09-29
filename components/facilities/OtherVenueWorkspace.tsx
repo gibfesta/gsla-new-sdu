@@ -25,7 +25,7 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
   if (!venue) return <div className="rounded-xl border border-[#d5e4f6] bg-white p-6 text-[#112d56]"><h1 className="text-2xl font-bold">Venue not found</h1><Link href="/facilities/facilities-directory" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#155ca7]">Open Facilities Directory <ArrowRight size={16} /></Link></div>;
 
   return <div className="space-y-4 text-[#112d56]" data-venue-view={view}>
-    <VenueBanner><div className="px-7 pb-9 pt-16 sm:px-9 sm:pt-14"><h1 className="text-3xl font-extrabold sm:text-4xl">{venue.name}</h1><p className="mt-3 max-w-2xl text-base text-blue-50">A dedicated working space for this venue&apos;s Centre Managers.</p></div></VenueBanner>
+    <VenueBanner title={venue.name} description="A dedicated working space for this venue's Centre Managers." eyebrow="Venue workspace" details={<span>{venue.type}</span>} />
     <VenueViewControls view={view} onViewChange={setView} />
     <div className="rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]"><Info size={18} className="mr-2 inline text-[#155ca7]" aria-hidden="true" />This venue is listed in the demonstration directory. Operational records for {venue.name} are not connected yet. Europa Sports Complex has the detailed demonstration workspace.</div>
     {tab === "handover" ? (
