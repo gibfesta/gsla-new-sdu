@@ -29,7 +29,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (facilitiesArea) {
     return (
       <div className="min-h-screen bg-[#f5f9ff] lg:flex">
-        {venueArea ? <Suspense fallback={<aside className="w-full shrink-0 bg-[#0d2d52] lg:w-[286px]" />}><FacilitiesSidebar /></Suspense> : <FacilitiesDepartmentSidebar />}
+        {venueArea ? <Suspense fallback={<aside className="w-full shrink-0 border-r border-[#d5e4f6] bg-white lg:w-[286px]" />}><FacilitiesSidebar /></Suspense> : <FacilitiesDepartmentSidebar />}
         <div className="min-w-0 flex-1">
           <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 sm:px-6 lg:px-6">
             {children}

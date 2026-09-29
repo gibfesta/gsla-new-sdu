@@ -49,22 +49,22 @@ export default function FacilitiesSidebar() {
   const venueEventArea = /^\/facilities\/facilities-directory\/fac-[0-9]{3}\/events\//.test(pathname);
 
   return (
-    <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
+    <aside className="w-full shrink-0 border-r border-[#d5e4f6] bg-white text-[#0C2F57] lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
       <div className="px-4 py-5 lg:px-5">
-        <Link href={venueHref} className="inline-flex w-fit items-center" aria-label="GSLA venue home"><Image src="/gsla-white.png" alt="GSLA" width={600} height={279} className="h-auto w-[180px]" priority /></Link>
+        <Link href={venueHref} className="inline-flex w-fit items-center" aria-label="GSLA venue home"><Image src="/gsla-transp-logo.png" alt="GSLA" width={1600} height={1200} className="h-20 w-[200px] object-cover object-center" priority /></Link>
         <h2 className="mt-1 text-lg font-bold">{venue?.name ?? "Venue Workspace"}</h2>
-        <p className="mt-1 text-sm text-blue-100">Centre Manager Workspace</p>
-        <p className="mt-1 text-xs leading-5 text-blue-200">Less typing. Faster navigation.<br />More time in venues.</p>
+        <p className="mt-1 text-sm text-[#35557f]">Centre Manager Workspace</p>
+        <p className="mt-1 text-xs leading-5 text-[#60799f]">Less typing. Faster navigation.<br />More time in venues.</p>
         <nav aria-label="Venue operations navigation" className="mt-5 space-y-4">
           {groups.map((group) => (
             <div key={group.title}>
-              <h3 className="mb-1 px-2 text-[11px] font-bold uppercase tracking-[0.16em] text-blue-200">{group.title}</h3>
+              <h3 className="mb-1 px-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#60799f]">{group.title}</h3>
               <div className="space-y-0.5">
                 {group.entries.map((entry) => {
                   const href = entry.tab && venueId ? `${venueHref}?tab=${entry.tab}` : entry.dashboard ? venueHref : undefined;
                   const Icon = entry.icon;
                   const active = entry.tab ? selectedTab === entry.tab || (entry.tab === "events" && venueEventArea) : !!entry.dashboard && pathname === venueHref && !selectedTab;
-                  const className = `flex min-h-9 items-center gap-3 rounded-lg px-3 py-1.5 text-sm transition ${active ? "bg-[#245d9b] font-semibold text-white" : href ? "text-blue-50 hover:bg-white/10" : "text-blue-200/65"}`;
+                  const className = `flex min-h-9 items-center gap-3 rounded-lg px-3 py-1.5 text-sm transition ${active ? "bg-[#0C2F57] font-semibold text-white" : href ? "text-[#16365f] hover:bg-[#eaf2fc]" : "text-[#7890ad]"}`;
                   const content = <><Icon size={19} className="shrink-0" aria-hidden="true" /><span className="leading-5">{entry.label}</span></>;
                   return href
                     ? <Link key={entry.label} href={href} className={className} aria-current={active ? "page" : undefined}>{content}</Link>
@@ -74,15 +74,15 @@ export default function FacilitiesSidebar() {
             </div>
           ))}
         </nav>
-        <div className="mt-4 border-t border-blue-300/30 pt-3">
-          {venueEventArea ? <Link href={`${venueHref}?tab=events`} className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Venue Events</Link> : <>
-            <Link href="/facilities/facilities-directory" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
-            <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
+        <div className="mt-4 border-t border-[#d5e4f6] pt-3">
+          {venueEventArea ? <Link href={`${venueHref}?tab=events`} className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-[#16365f] hover:bg-[#eaf2fc]"><ArrowLeft size={19} aria-hidden="true" />Back to Venue Events</Link> : <>
+            <Link href="/facilities/facilities-directory" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-[#16365f] hover:bg-[#eaf2fc]"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
+            <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-[#16365f] hover:bg-[#eaf2fc]"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
           </>}
-          <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><HelpCircle size={19} aria-hidden="true" />Help</span>
-          <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><Settings size={19} aria-hidden="true" />Settings</span>
+          <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-[#7890ad]" title="Coming soon"><HelpCircle size={19} aria-hidden="true" />Help</span>
+          <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-[#7890ad]" title="Coming soon"><Settings size={19} aria-hidden="true" />Settings</span>
         </div>
-        <p className="mt-3 flex gap-2 rounded-xl border border-blue-300/20 bg-[#194c80] p-3 text-xs leading-4 text-blue-100">
+        <p className="mt-3 flex gap-2 rounded-xl border border-[#d5e4f6] bg-[#eef5fd] p-3 text-xs leading-4 text-[#35557f]">
           <LockKeyhole size={16} className="shrink-0" aria-hidden="true" />
           This menu covers this venue only. Department-wide access will follow account permissions.
         </p>
