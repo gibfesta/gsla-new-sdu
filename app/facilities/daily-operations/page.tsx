@@ -1,7 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowRight, Building2, CheckCircle2, ClipboardCheck,
-  Clock3, FileText, Info, TriangleAlert,
+  ArrowRight, ClipboardCheck, Clock3, FileText, Info, LayoutGrid, List,
 } from "lucide-react";
 import { facilitiesVenues } from "@/components/facilities/venues";
 import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
@@ -24,6 +26,7 @@ const tones = {
 } as const;
 
 export default function FacilitiesDailyOperationsPage() {
+  const [view, setView] = useState<"cards" | "list">("list");
   return (
     <div className="space-y-4 text-[#112d56]">
       <FacilitiesDepartmentBanner title="Daily Operations" description="See which venues have opened, what needs attention and whether handovers and closing checks are on track." />
@@ -33,22 +36,33 @@ export default function FacilitiesDailyOperationsPage() {
         <p><strong>Illustrative day — not a live status board.</strong> The times and statuses below are examples, not today&apos;s venue reports. Venue checklists and handovers are not yet connected to this department view.</p>
       </div>
 
-      <section aria-label="Example day summary" className="grid gap-3 sm:grid-cols-3">
-        {[
-          { icon: Building2, label: "Venues in view", value: "6", detail: "Example directory" },
-          { icon: CheckCircle2, label: "Opening complete", value: "4", detail: "Illustrative statuses" },
-          { icon: TriangleAlert, label: "Needs attention", value: "2", detail: "Illustrative exceptions" },
-        ].map(({ icon: Icon, label, value, detail }) => <div key={label} className="rounded-xl border border-[#d5e4f6] bg-white p-4 shadow-sm">
-          <div className="flex items-start justify-between"><p className="text-sm font-semibold text-[#35557f]">{label}</p><Icon size={23} className="text-[#155ca7]" aria-hidden="true" /></div>
-          <p className="mt-2 text-3xl font-bold text-[#102b59]">{value}</p><p className="mt-1 text-xs text-[#617796]">{detail}</p>
-        </div>)}
-      </section>
-
-      <section className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white shadow-sm" aria-labelledby="venue-status-heading">
-        <div className="flex flex-wrap items-start justify-between gap-3 p-5">
-          <div><h2 id="venue-status-heading" className="text-xl font-bold">Opening, handover &amp; closing</h2><p className="mt-1 text-sm text-[#60799f]">One line per venue; Centre Managers will complete actual checks in their venue workspace once connected.</p></div>
-          <span className="rounded-lg bg-[#eef5fd] px-3 py-2 text-xs font-semibold text-[#35557f]">Example day preview</span>
+      <section aria-labelledby="venue-status-heading">
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div><h2 id="venue-status-heading" className="text-xl font-bold">Opening, handover &amp; closing</h2><p className="mt-1 text-sm text-[#60799f]">One venue per record; Centre Managers will complete actual checks in their venue workspace once connected.</p></div>
+          <div className="flex items-center gap-1" role="group" aria-label="Daily Operations view">
+            <button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${view === "cards" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}><LayoutGrid size={16} aria-hidden="true" />Card view</button>
+            <button type="button" aria-pressed={view === "list"} onClick={() => setView("list")} className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${view === "list" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}><List size={16} aria-hidden="true" />List view</button>
+          </div>
         </div>
+        {view === "cards" ? (
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {facilitiesVenues.map((venue) => {
+              const example = exampleDay.find((item) => item.id === venue.id);
+              if (!example) return null;
+              return <article key={venue.id} className="flex flex-col rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm">
+                <h3 className="text-lg font-bold">{venue.name}</h3><p className="mt-1 text-sm text-[#60799f]">{venue.type}</p>
+                <dl className="mt-4 space-y-3 border-t border-[#e5edf8] pt-4 text-sm">
+                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Opening</dt><dd className={`rounded-lg px-2.5 py-1 text-xs font-semibold ${tones[example.openingTone]}`}>{example.opening}</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Handover</dt><dd className="font-medium text-[#35557f]">{example.handover}</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Closing</dt><dd className="font-medium text-[#35557f]">{example.closing}</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-[#60799f]">Attention</dt><dd className={example.attention === "None" ? "text-[#60799f]" : "font-semibold text-rose-700"}>{example.attention}</dd></div>
+                </dl>
+                <Link href={`/facilities/facilities-directory/${venue.id}?tab=procedures`} className="mt-5 inline-flex items-center gap-1 self-start font-semibold text-[#155ca7] hover:underline">Open venue <ArrowRight size={15} aria-hidden="true" /></Link>
+              </article>;
+            })}
+          </div>
+        ) : (
+        <div className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[850px] text-left text-sm">
             <thead className="bg-[#eef5fd] text-xs text-[#35557f]"><tr><th scope="col" className="px-5 py-3">Venue</th><th scope="col" className="px-4 py-3">Opening</th><th scope="col" className="px-4 py-3">Handover</th><th scope="col" className="px-4 py-3">Closing</th><th scope="col" className="px-4 py-3">Attention</th><th scope="col" className="px-4 py-3">Venue view</th></tr></thead>
@@ -66,6 +80,8 @@ export default function FacilitiesDailyOperationsPage() {
             })}</tbody>
           </table>
         </div>
+        </div>
+        )}
       </section>
 
       <div className="grid gap-4 md:grid-cols-2">
