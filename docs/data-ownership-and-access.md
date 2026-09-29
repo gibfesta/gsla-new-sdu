@@ -48,7 +48,7 @@ Create one entry per record type, and split sensitive fields or distinct workflo
 
 Facilities: venues; Centre Manager assignments; events and calendar; maintenance/issues; compliance; procedures/SOPs; reports/history. SDU: associations and sports directory; events; compliance. HR: personnel and employment data. Finance: financial data. Health Dashboard: monitoring data. Confirm and refine this inventory against the actual schema and page flows.
 
-Candidate roles for review include SuperUser, Facilities Manager, Centre Manager, and department-specific SDU, HR, and Finance roles. Their exact privileges, exceptions, and assignment timing remain **to decide**.
+Candidate roles for review include Organisation Admin, Facilities Manager, Centre Manager, and department-specific SDU, HR, and Finance roles. Their exact privileges, exceptions, and assignment timing remain **to decide**.
 
 ## Implementation rule once approved
 

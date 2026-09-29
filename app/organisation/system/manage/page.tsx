@@ -1,17 +1,17 @@
-// app/superuser/system/manage/page.tsx
+// app/organisation/system/manage/page.tsx
 
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 
 /*
 |--------------------------------------------------------------------------
-| PAGE: Admin — Super User Management
+| PAGE: Admin — Organisation Admin Management
 |--------------------------------------------------------------------------
 | Route:
-| - /superuser/system/manage
+| - /organisation/system/manage
 |
 | Purpose:
-| - Central management hub for Super Users
+| - Central management hub for Organisation Admins
 | - Clearly separates structure, operations, people, and governance
 |--------------------------------------------------------------------------
 */
@@ -98,7 +98,7 @@ export default function ManagePage() {
 
     const addHref =
       x === "Users"
-        ? "/superuser/users/add"
+        ? "/organisation/users/add"
         : x === "Create a Team"
         ? "/sports-development/teams/add"
         : x === "Create a League or Competition"
@@ -107,7 +107,7 @@ export default function ManagePage() {
 
     const editHref =
       x === "Users"
-        ? "/superuser/users"
+        ? "/organisation/users"
         : x === "Create a Team"
         ? "/sports-development/teams"
         : x === "Create a League or Competition"
@@ -179,7 +179,7 @@ export default function ManagePage() {
     <div>
       {/* PAGE HEADER */}
       <h1 className="text-4xl font-extrabold text-[#0C2F57]">
-        Super User – Management
+        Organisation Admin – Management
       </h1>
 
       <p className="mt-2 text-slate-600">
@@ -238,7 +238,7 @@ export default function ManagePage() {
           Administration & Governance
         </h2>
         <p className="mt-1 text-sm text-slate-600">
-          Super User–only governance, compliance, and official forms.
+          Organisation Admin–only governance, compliance, and official forms.
         </p>
 
         <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">

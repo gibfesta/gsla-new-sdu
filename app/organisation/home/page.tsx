@@ -63,14 +63,14 @@ const systems = [
   { name: "Services", icon: Server },
 ];
 
-export default function SuperuserDashboard() {
+export default function OrganisationOverview() {
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#f1f7ff_100%)] text-[#142542]">
       <main className="mx-auto max-w-[1500px] space-y-5 px-5 py-5 md:px-8">
         <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 pb-9 pt-16 text-white shadow-sm sm:min-h-[238px] sm:px-10 sm:pb-10 sm:pt-14">
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
           <Image src="/gsla-white.png" alt="GSLA" width={600} height={279} sizes="208px" className="pointer-events-none absolute left-[70%] top-1/2 hidden h-auto w-52 -translate-x-1/2 -translate-y-1/2 object-contain xl:block" priority />
-          <div className="absolute right-7 top-4 z-10 flex items-center gap-2 md:right-9"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-[10px] font-semibold text-white" aria-label="SuperUser account">SU</span><span className="text-xs font-medium text-white">SuperUser</span></div>
+          <div className="absolute right-7 top-4 z-10 flex items-center gap-2 md:right-9"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-[10px] font-semibold text-white" aria-label="Organisation account">OA</span><span className="text-xs font-medium text-white">Organisation</span></div>
           <div className="relative flex flex-wrap items-end justify-between gap-5">
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Organisation Overview</h1>
@@ -109,7 +109,7 @@ export default function SuperuserDashboard() {
           </div>
           <div className="mt-5 flex flex-wrap items-stretch gap-3">
             {systems.map(({ name, icon: Icon }) => <div key={name} className="flex min-w-[145px] flex-1 items-center gap-2 rounded-xl border border-[#dfe7f2] px-3 py-2"><Icon size={25} className="shrink-0 text-[#163b67]" aria-hidden="true" /><div><p className="text-sm font-semibold">{name}</p><p className="mt-1 text-xs text-[#69788d]">Not connected</p></div></div>)}
-            <Link href="/superuser/health" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#87b9ec] px-4 font-semibold text-[#1265b5] hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1265b5]">View System Health <ArrowRight size={18} aria-hidden="true" /></Link>
+            <Link href="/organisation/health" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#87b9ec] px-4 font-semibold text-[#1265b5] hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1265b5]">View System Health <ArrowRight size={18} aria-hidden="true" /></Link>
           </div>
         </section>
 

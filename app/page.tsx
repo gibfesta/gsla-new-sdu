@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  redirect("/superuser/dashboard");
+  redirect("/organisation/home");
 }

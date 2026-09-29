@@ -3,7 +3,7 @@
 /**
  * -------------------------------------------------------------------------------------
  * PAGE: Admin — Mail & Messages
- * Route: /superuser/system/mail
+ * Route: /organisation/system/mail
  *
  * GOAL (Realism upgrade)
  * - Chat feels like chat (bubbles + quick reply)

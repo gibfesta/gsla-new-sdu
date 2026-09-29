@@ -52,15 +52,15 @@ const navigation: Record<string, { title: string; links: NavLink[]; subsection?:
     subsection: { title: "Sports", links: [{ href: "/sports-development/sports/hockey", label: "Hockey", icon: Trophy }] },
   },
   finance: { title: "Finance & Accounts Department", links: [{ href: "/finance/dashboard", label: "Finance Dashboard", icon: Landmark }] },
-  superuser: {
-    title: "Superuser Privileges",
+  organisation: {
+    title: "Organisation Admin Privileges",
     links: [
-      { href: "/superuser/system/reminders", label: "Reminders", icon: Bell },
-      { href: "/superuser/system/manage", label: "Superuser Tools", icon: Settings },
-      { href: "/superuser/users", label: "Users", icon: Users },
-      { href: "/superuser/reports/operations", label: "Operations Dashboard", icon: ShieldCheck },
-      { href: "/superuser/system/info", label: "Information", icon: Info },
-      { href: "/superuser/system/import-export", label: "Import / Export", icon: ArrowLeftRight },
+      { href: "/organisation/system/reminders", label: "Reminders", icon: Bell },
+      { href: "/organisation/system/manage", label: "Organisation Admin Tools", icon: Settings },
+      { href: "/organisation/users", label: "Users", icon: Users },
+      { href: "/organisation/reports/operations", label: "Operations Dashboard", icon: ShieldCheck },
+      { href: "/organisation/system/info", label: "Information", icon: Info },
+      { href: "/organisation/system/import-export", label: "Import / Export", icon: ArrowLeftRight },
     ],
   },
 };

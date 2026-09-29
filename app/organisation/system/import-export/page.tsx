@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
  * ImportExportPage
  * ----------------
  * Admin utility page for bulk data movement in and out of the system.
- * Intended for super users / admins managing large datasets
+ * Intended for organisation administrators managing large datasets
  * (sports, associations, members, etc).
  *
  * NOTE:

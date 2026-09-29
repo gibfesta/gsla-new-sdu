@@ -2,19 +2,19 @@
 
 /*
 |--------------------------------------------------------------------------
-| PAGE: Admin — Manage (Superuser Create Profile / User Intake) (UI-only)
+| PAGE: Admin — Manage (Organisation Admin Create Profile / User Intake) (UI-only)
 |--------------------------------------------------------------------------
 | Route:
-| - /superuser/system/manage
+| - /organisation/system/manage
 |
 | What this page is:
-| - GSLA staff (superuser) intake wizard to create a user identity/profile.
+| - GSLA staff (organisation admin) intake wizard to create a user identity/profile.
 | - Optionally assigns an initial membership (admin override) without approval.
 |
 | Why this exists:
 | - Supports your intended system flow:
 |   - Public creates profile + join request (pending approval)
-|   - Superuser can create/repair records and assign memberships immediately
+|   - Organisation Admin can create/repair records and assign memberships immediately
 |
 | Current behavior (UI-only):
 | - Draft autosaves to localStorage under `DRAFT_KEY`
@@ -377,7 +377,7 @@ export default function Page() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-4xl font-extrabold text-[#0C2F57]">Manage</h1>
-          <p className="mt-2 text-slate-600">Superuser intake: create identity + optional membership assignment.</p>
+          <p className="mt-2 text-slate-600">Organisation Admin intake: create identity + optional membership assignment.</p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <Pill>Status: {state.status}</Pill>
             {state.assignMembershipNow ? <Pill>Membership: will be created</Pill> : <Pill>No membership assignment</Pill>}

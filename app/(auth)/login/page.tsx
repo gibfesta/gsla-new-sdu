@@ -34,7 +34,7 @@ export default function LoginPage() {
     // This helps ensure cookies are set and middleware can see them
     router.refresh();
 
-    router.replace("/superuser/dashboard");
+    router.replace("/organisation/home");
   }
 
   return (

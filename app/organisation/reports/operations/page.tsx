@@ -43,7 +43,7 @@ const tiles = [
   {
     title: "Information Pages",
     desc: "Manage information pages and records",
-    href: "/superuser/system/info",
+    href: "/organisation/system/info",
     icon: Info,
     tint: "bg-slate-100",
     iconColor: "text-slate-700",
@@ -57,9 +57,9 @@ const tiles = [
     iconColor: "text-[#B45309]",
   },
   {
-    title: "Superuser Tools",
+    title: "Organisation Admin Tools",
     desc: "Manage users, records, and admin controls",
-    href: "/superuser/system/manage",
+    href: "/organisation/system/manage",
     icon: Settings,
     tint: "bg-slate-100",
     iconColor: "text-slate-700",
@@ -67,7 +67,7 @@ const tiles = [
   {
     title: "Import / Export",
     desc: "Upload or download CSV / Excel files",
-    href: "/superuser/system/import-export",
+    href: "/organisation/system/import-export",
     icon: ArrowLeftRight,
     tint: "bg-cyan-100/40",
     iconColor: "text-cyan-700",
@@ -75,7 +75,7 @@ const tiles = [
   {
     title: "Reminders",
     desc: "Certification renewals, deadlines and alerts",
-    href: "/superuser/system/reminders",
+    href: "/organisation/system/reminders",
     icon: Bell,
     tint: "bg-[#D81E27]/10",
     iconColor: "text-[#D81E27]",
@@ -93,7 +93,7 @@ const summary = [
     value: 7,
     icon: ClipboardCheck,
     tone: "danger" as const,
-    href: "/superuser/system/manage",
+    href: "/organisation/system/manage",
   },
   {
     key: "complianceRisks",
@@ -101,7 +101,7 @@ const summary = [
     value: 6,
     icon: ShieldCheck,
     tone: "warn" as const,
-    href: "/superuser/system/reminders",
+    href: "/organisation/system/reminders",
   },
   {
     key: "facilityIssues",
@@ -129,9 +129,9 @@ const domainQueues = [
     title: "Core Structure",
     subtitle: "Sports, associations, facilities",
     icon: Building2,
-    href: "/superuser/system/manage",
+    href: "/organisation/system/manage",
     items: [
-      { label: "New association requests", value: 2, tone: "danger" as QueueTone, href: "/superuser/system/manage" },
+      { label: "New association requests", value: 2, tone: "danger" as QueueTone, href: "/organisation/system/manage" },
       { label: "Facility issues reported", value: 2, tone: "danger" as QueueTone, href: "/facilities/facilities" },
       { label: "Profile updates pending", value: 3, tone: "warn" as QueueTone, href: "/profile" },
     ],
@@ -141,10 +141,10 @@ const domainQueues = [
     title: "Competition & Leagues",
     subtitle: "Leagues, teams, fixtures",
     icon: Trophy,
-    href: "/superuser/system/manage",
+    href: "/organisation/system/manage",
     items: [
-      { label: "League approvals", value: 3, tone: "warn" as QueueTone, href: "/superuser/system/manage" },
-      { label: "Team registrations", value: 5, tone: "neutral" as QueueTone, href: "/superuser/system/manage" },
+      { label: "League approvals", value: 3, tone: "warn" as QueueTone, href: "/organisation/system/manage" },
+      { label: "Team registrations", value: 5, tone: "neutral" as QueueTone, href: "/organisation/system/manage" },
       { label: "Fixture conflicts", value: 1, tone: "danger" as QueueTone, href: "/facilities/shared-calendar" },
     ],
   },
@@ -153,9 +153,9 @@ const domainQueues = [
     title: "People & Roles",
     subtitle: "Users, coaches, volunteers",
     icon: Users,
-    href: "/superuser/system/manage",
+    href: "/organisation/system/manage",
     items: [
-      { label: "Role change requests", value: 3, tone: "danger" as QueueTone, href: "/superuser/system/manage" },
+      { label: "Role change requests", value: 3, tone: "danger" as QueueTone, href: "/organisation/system/manage" },
       { label: "Coach onboarding", value: 4, tone: "warn" as QueueTone, href: "/sports-development/associations/forms" },
       { label: "Volunteer intake", value: 2, tone: "neutral" as QueueTone, href: "/sports-development/associations/forms" },
     ],
@@ -167,8 +167,8 @@ const domainQueues = [
     icon: ClipboardSignature,
     href: "/sports-development/associations/forms",
     items: [
-      { label: "Safeguarding checks due", value: 2, tone: "danger" as QueueTone, href: "/superuser/system/reminders" },
-      { label: "Certifications expiring", value: 6, tone: "warn" as QueueTone, href: "/superuser/system/reminders" },
+      { label: "Safeguarding checks due", value: 2, tone: "danger" as QueueTone, href: "/organisation/system/reminders" },
+      { label: "Certifications expiring", value: 6, tone: "warn" as QueueTone, href: "/organisation/system/reminders" },
       { label: "Forms A/B/C submissions", value: 5, tone: "neutral" as QueueTone, href: "/sports-development/associations/forms" },
     ],
   },
@@ -177,14 +177,14 @@ const domainQueues = [
 type ScheduleType = "Course" | "Match" | "Facility" | "Governance";
 
 const todayItems: Array<{ label: string; type: ScheduleType; icon: any; href: string }> = [
-  { label: "First Aid Course (10:00)", type: "Course", icon: GraduationCap, href: "/superuser/system/reminders" },
+  { label: "First Aid Course (10:00)", type: "Course", icon: GraduationCap, href: "/organisation/system/reminders" },
   { label: "League Match — Hockey", type: "Match", icon: Trophy, href: "/facilities/shared-calendar" },
   { label: "Facility Inspection", type: "Facility", icon: Building2, href: "/facilities/facilities" },
 ];
 
 const weekItems: Array<{ label: string; type: ScheduleType; icon: any; href: string }> = [
   { label: "Away Tournament", type: "Match", icon: Trophy, href: "/facilities/shared-calendar" },
-  { label: "Safeguarding Seminar", type: "Governance", icon: ShieldCheck, href: "/superuser/system/reminders" },
+  { label: "Safeguarding Seminar", type: "Governance", icon: ShieldCheck, href: "/organisation/system/reminders" },
   { label: "Volunteer Intake Session", type: "Course", icon: UserCheck, href: "/sports-development/associations/forms" },
 ];
 
@@ -197,14 +197,14 @@ const pulse = [
 ];
 
 const quickActions = [
-  { label: "Add Sport", icon: Plus, href: "/superuser/system/manage" },
-  { label: "Add Association", icon: Building2, href: "/superuser/system/manage" },
+  { label: "Add Sport", icon: Plus, href: "/organisation/system/manage" },
+  { label: "Add Association", icon: Building2, href: "/organisation/system/manage" },
   { label: "Add Facility", icon: Building2, href: "/facilities/facilities" },
-  { label: "Review Users", icon: Users, href: "/superuser/system/manage" },
+  { label: "Review Users", icon: Users, href: "/organisation/system/manage" },
   { label: "Form A", icon: ClipboardList, href: "/sports-development/associations/forms" },
   { label: "Form B", icon: ClipboardList, href: "/sports-development/associations/forms" },
   { label: "Form C", icon: ClipboardList, href: "/sports-development/associations/forms" },
-  { label: "View Alerts", icon: AlertTriangle, href: "/superuser/system/reminders" },
+  { label: "View Alerts", icon: AlertTriangle, href: "/organisation/system/reminders" },
   { label: "Reports", icon: BarChart, href: "/sports-development/reports" },
 ];
 
@@ -273,7 +273,7 @@ function SectionTitle({
 /* Page                                                                        */
 /* -------------------------------------------------------------------------- */
 
-export default function SuperuserDashboardPage() {
+export default function OrganisationOperationsPage() {
   return (
     <div className="space-y-6">
       {/* Hero */}
@@ -306,13 +306,13 @@ export default function SuperuserDashboardPage() {
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <Link
-              href="/superuser/system/manage"
+              href="/organisation/system/manage"
               className="rounded-2xl bg-[#0C2F57] px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:opacity-95"
             >
               Review Queue
             </Link>
             <Link
-              href="/superuser/system/reminders"
+              href="/organisation/system/reminders"
               className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 ring-1 ring-slate-200 transition hover:bg-slate-50"
             >
               Open Alerts
@@ -324,7 +324,7 @@ export default function SuperuserDashboardPage() {
               View Calendar
             </Link>
             <Link
-              href="/superuser/system/import-export"
+              href="/organisation/system/import-export"
               className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 ring-1 ring-slate-200 transition hover:bg-slate-50"
             >
               Export Data
@@ -365,7 +365,7 @@ export default function SuperuserDashboardPage() {
               title="Queues by Domain"
               action={
                 <Link
-                  href="/superuser/system/manage"
+                  href="/organisation/system/manage"
                   className="text-sm font-semibold text-[#0C2F57] hover:underline"
                 >
                   Open Manage →
@@ -491,7 +491,7 @@ export default function SuperuserDashboardPage() {
               <SectionTitle icon={AlertTriangle} title="Priority Alerts" />
               <div className="mt-4 space-y-3">
                 <Link
-                  href="/superuser/system/reminders"
+                  href="/organisation/system/reminders"
                   className="block rounded-2xl border border-red-200 bg-red-50 p-4 transition hover:bg-red-100"
                 >
                   <div className="text-sm font-bold text-red-700">2 urgent facility issues</div>
@@ -499,7 +499,7 @@ export default function SuperuserDashboardPage() {
                 </Link>
 
                 <Link
-                  href="/superuser/system/reminders"
+                  href="/organisation/system/reminders"
                   className="block rounded-2xl border border-amber-200 bg-amber-50 p-4 transition hover:bg-amber-100"
                 >
                   <div className="text-sm font-bold text-amber-700">6 certifications expiring</div>
@@ -507,7 +507,7 @@ export default function SuperuserDashboardPage() {
                 </Link>
 
                 <Link
-                  href="/superuser/system/manage"
+                  href="/organisation/system/manage"
                   className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
                 >
                   <div className="text-sm font-bold text-slate-900">7 items awaiting approval</div>

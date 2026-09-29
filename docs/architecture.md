@@ -12,7 +12,7 @@ app/
   sports-development/      dashboard, sports, associations, leagues, teams, reports
   human-resources/         dashboard, employees, leave, timesheets
   finance/                 dashboard; other workflows planned
-  superuser/               dashboard, health, users, system, reports
+  organisation/           home, health, users, system, reports
   api/                     existing facilities and profile endpoints
 components/                shell, UI, shared, department components
 lib/                       Prisma, Supabase, future auth and validation
@@ -32,8 +32,8 @@ Folders marked `Planned area` reserve ownership; they do not expose a page or pr
 | `/admin/sports-development-unit/[sport]`, `/admin/sports/[sport]` | `/sports-development/sports/[sport]` |
 | `/admin/association/registration`, `/admin/forms`, `/admin/form-b`, `/admin/form-c` | `/sports-development/associations/...` |
 | `/admin/manage/leagues/...`, `/admin/manage/teams/...`, `/admin/statistics` | `/sports-development/leagues/...`, `/sports-development/teams/...`, `/sports-development/reports` |
-| `/admin/manage/users/...`, `/admin/users/new` | `/superuser/users/...` |
-| `/admin/superuser-dashboard`, `/admin/manage`, `/admin/mail`, `/admin/reminders` | `/superuser/dashboard`, `/superuser/system/manage`, `/superuser/system/mail`, `/superuser/system/reminders` |
+| `/admin/manage/users/...`, `/admin/users/new` | `/organisation/users/...` |
+| `/admin`, `/admin/manage`, `/admin/mail`, `/admin/reminders` | `/organisation/home`, `/organisation/system/manage`, `/organisation/system/mail`, `/organisation/system/reminders` |
 | `/admin/profile`, `/auth/callback` | `/profile`, `/callback` |
 
 Compatibility redirects in `next.config.ts` keep prior bookmarks usable during migration. New pages should link to canonical URLs.

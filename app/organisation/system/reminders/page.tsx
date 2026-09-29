@@ -1,4 +1,4 @@
-// app/superuser/system/reminders/page.tsx
+// app/organisation/system/reminders/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";

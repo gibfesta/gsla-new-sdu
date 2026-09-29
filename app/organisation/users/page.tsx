@@ -1,13 +1,13 @@
 "use client";
 
-// app/superuser/users/page.tsx
+// app/organisation/users/page.tsx
 
 /*
 |--------------------------------------------------------------------------
 | PAGE: Admin — Manage → Users (UI-only)
 |--------------------------------------------------------------------------
 | Route:
-| - /superuser/users
+| - /organisation/users
 |
 | Purpose:
 | - List/search all user profiles in the system
@@ -73,7 +73,7 @@ export default function UsersPage() {
           </p>
         </div>
 
-        <Link href="/superuser/users/add">
+        <Link href="/organisation/users/add">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Add User
@@ -113,7 +113,7 @@ export default function UsersPage() {
                   <div className="flex flex-wrap items-center gap-3">
                     <Badge>{u.status}</Badge>
 
-                    <Link href={`/superuser/users/${u.id}`}>
+                    <Link href={`/organisation/users/${u.id}`}>
                       <button className="rounded-xl border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
                         View
                       </button>

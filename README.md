@@ -1,6 +1,6 @@
 # GSLA WebApp
 
-One Next.js application with separate areas for Facilities, Sports Development, Human Resources, Finance and Superuser. See [architecture and route migration](docs/architecture.md).
+One Next.js application with separate areas for Facilities, Sports Development, Human Resources, Finance and Organisation. See [architecture and route migration](docs/architecture.md).
 
 ## Run locally
 

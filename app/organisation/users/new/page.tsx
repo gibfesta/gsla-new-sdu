@@ -2,10 +2,10 @@
 
 /*
 |--------------------------------------------------------------------------
-| PAGE: Admin — Create User/Profile (Superuser Intake) (UI-only)
+| PAGE: Admin — Create User/Profile (Organisation Admin Intake) (UI-only)
 |--------------------------------------------------------------------------
 | What this page is:
-| - GSLA staff (superuser) intake wizard to create a user identity/profile.
+| - GSLA staff (organisation admin) intake wizard to create a user identity/profile.
 | - Can also create the user's "initial membership assignment" (optional),
 |   bypassing association approval (admin override).
 |

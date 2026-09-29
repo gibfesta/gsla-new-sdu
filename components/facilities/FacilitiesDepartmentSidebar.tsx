@@ -52,7 +52,7 @@ export default function FacilitiesDepartmentSidebar() {
           </div>)}
         </nav>
         <div className="mt-6 border-t border-blue-300/30 pt-3 lg:mt-auto">
-          <Link href="/superuser/dashboard" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
+          <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
         </div>
       </div>
     </aside>

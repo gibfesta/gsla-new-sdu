@@ -10,7 +10,7 @@
 | - /sports-development/leagues/add
 |
 | Purpose:
-| - Superuser/admin UI for creating a new League record (UI-only for now).
+| - Organisation Admin/admin UI for creating a new League record (UI-only for now).
 | - This is the first step toward managing leagues/registrations/teams properly.
 |
 | Rules:
@@ -261,7 +261,7 @@ export default function Page() {
         {/* TOP ACTIONS */}
         <div className="flex flex-wrap items-center gap-2">
           <Link
-            href="/superuser/system/manage"
+            href="/organisation/system/manage"
             className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             <ArrowLeft className="h-4 w-4" />
