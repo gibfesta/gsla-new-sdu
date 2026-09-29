@@ -498,7 +498,7 @@ export default function ParticipantsPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-[980px] w-full text-sm">
+          <table className="gsla-data-table min-w-[980px] w-full text-sm">
             {/* Table header: column labels */}
             <thead className="bg-slate-50 text-slate-700">
               <tr className="text-left">

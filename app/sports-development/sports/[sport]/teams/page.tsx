@@ -205,7 +205,7 @@ export default function TeamsPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-[980px] w-full text-sm">
+          <table className="gsla-data-table min-w-[980px] w-full text-sm">
             <thead className="bg-slate-50 text-slate-700">
               <tr className="text-left">
                 <th className="px-6 py-3 font-bold">Team</th>

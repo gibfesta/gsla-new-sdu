@@ -173,7 +173,7 @@ export default function FacilitiesPage() {
         {view === "list" ? (
           <div className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white p-4 shadow-sm sm:p-5">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] border-separate border-spacing-0 text-left text-sm">
+              <table className="gsla-data-table w-full min-w-[760px] border-separate border-spacing-0 text-left text-sm">
                 <thead className="bg-[#eef5fd] text-xs font-semibold text-[#35557f]"><tr>
                   <th scope="col" className="rounded-l-lg px-3 py-3">Select</th><th scope="col" className="px-3 py-3">Facility</th><th scope="col" className="px-3 py-3">Status</th><th scope="col" className="px-3 py-3">Location</th><th scope="col" className="px-3 py-3">Sports</th><th scope="col" className="rounded-r-lg px-3 py-3">Actions</th>
                 </tr></thead>

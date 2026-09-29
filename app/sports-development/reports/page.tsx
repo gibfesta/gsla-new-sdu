@@ -490,7 +490,7 @@ export default function StatsPage() {
             </div>
 
             <div className="mt-4 overflow-auto rounded-2xl border border-slate-200">
-              <table className="min-w-[900px] w-full text-left text-sm">
+              <table className="gsla-data-table min-w-[900px] w-full text-left text-sm">
                 <thead className="bg-slate-50">
                   <tr className="text-xs font-semibold text-slate-600">
                     <th className="px-4 py-3">Sport</th>

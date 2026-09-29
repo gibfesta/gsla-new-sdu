@@ -65,7 +65,7 @@ export default function FacilitiesDailyOperationsPage() {
         ) : (
         <div className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[980px] text-left text-sm">
+          <table className="gsla-data-table w-full min-w-[980px] text-left text-sm">
             <thead className="bg-[#eef5fd] text-xs text-[#35557f]"><tr><th scope="col" className="px-5 py-3">Venue</th><th scope="col" className="px-4 py-3">Opening</th><th scope="col" className="px-4 py-3">AM handover</th><th scope="col" className="px-4 py-3">PM handover</th><th scope="col" className="px-4 py-3">Closing</th><th scope="col" className="px-4 py-3">Attention</th><th scope="col" className="px-4 py-3">Venue view</th></tr></thead>
             <tbody>{facilitiesVenues.map((venue) => {
               const example = exampleDay.find((item) => item.id === venue.id);

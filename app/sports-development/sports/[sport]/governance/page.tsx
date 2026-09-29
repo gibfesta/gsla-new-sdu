@@ -278,7 +278,7 @@ export default function GovernancePage() {
 
         {/* Horizontal scroll container for smaller screens. */}
         <div className="overflow-x-auto">
-          <table className="min-w-[980px] w-full text-sm">
+          <table className="gsla-data-table min-w-[980px] w-full text-sm">
             {/* Column headers: update labels/order here if governance fields change. */}
             <thead className="bg-slate-50 text-slate-700">
               <tr className="text-left">

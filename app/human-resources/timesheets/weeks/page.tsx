@@ -132,7 +132,7 @@ export default async function TimesheetWeeksPage() {
           </div>
 
           <div className="overflow-auto">
-            <table className="w-full min-w-[860px] border-collapse">
+            <table className="gsla-data-table w-full min-w-[860px] border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 text-left text-xs font-semibold text-slate-600">
                   <th className="px-5 py-3">Facility</th>
