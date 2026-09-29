@@ -157,23 +157,18 @@ export default function FacilitiesPage() {
 
       <section>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-500">{MOCK_FACILITIES.length} facilities</p>
+          <div className="flex items-center gap-1" role="group" aria-label="Directory view">
+            <button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "cards" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><LayoutGrid size={16} aria-hidden="true" />Card view</button>
+            <button type="button" aria-pressed={view === "list"} onClick={() => setView("list")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "list" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><List size={16} aria-hidden="true" />List view</button>
+          </div>
           <div className="flex flex-wrap items-center gap-2">
-            <label htmlFor="facility-action-selection" className="sr-only">Select a facility to edit or archive</label>
-            <select id="facility-action-selection" value={selectedFacilityId} onChange={(event) => setSelectedFacilityId(event.target.value)} className="min-h-10 max-w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-800" aria-label="Select a facility to edit or archive">
-              <option value="">Select a facility</option>
-              {MOCK_FACILITIES.map((facility) => <option key={facility.id} value={facility.id}>{facility.name}</option>)}
-            </select>
             <button type="button" onClick={() => router.push("/facilities/facilities-directory/new")} className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"><Plus size={16} aria-hidden="true" />Create Facility</button>
             <button type="button" disabled={!selectedFacilityId} onClick={() => router.push(`/facilities/facilities-directory/${selectedFacilityId}/edit`)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#b8d4f5] bg-white px-4 py-2.5 text-sm font-semibold text-[#155ca7] hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"><Pencil size={16} aria-hidden="true" />Edit Facility</button>
             <button type="button" disabled={!selectedFacilityId} onClick={() => router.push(`/facilities/facilities-directory/${selectedFacilityId}/archive`)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-rose-200 bg-white px-4 py-2.5 text-sm font-semibold text-rose-700 hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"><Archive size={16} aria-hidden="true" />Archive Facility</button>
           </div>
         </div>
 
-        <div className="mb-4 flex items-center justify-end gap-1" role="group" aria-label="Directory view">
-          <button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "cards" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><LayoutGrid size={16} aria-hidden="true" />Card view</button>
-          <button type="button" aria-pressed={view === "list"} onClick={() => setView("list")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "list" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><List size={16} aria-hidden="true" />List view</button>
-        </div>
+        <p className="mb-4 text-sm text-slate-500">{MOCK_FACILITIES.length} facilities · {selectedFacilityId ? `${MOCK_FACILITIES.find((facility) => facility.id === selectedFacilityId)?.name} selected` : "Select a facility below to edit or archive"}</p>
 
         {view === "list" ? (
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" role="list" aria-label="Facilities">
@@ -182,12 +177,13 @@ export default function FacilitiesPage() {
               const StatusIcon = status.icon;
               const TypeIcon = typeIcon(facility.type);
               return (
-                <div key={facility.id} role="listitem" className="flex flex-wrap items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-b-0 hover:bg-slate-50/70">
+                <div key={facility.id} role="listitem" onClick={() => setSelectedFacilityId(facility.id)} className={classNames("flex flex-wrap items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-b-0 hover:bg-slate-50/70", selectedFacilityId === facility.id && "bg-blue-50 ring-2 ring-inset ring-[#155ca7]") }>
+                  <input type="radio" name="selected-facility-list" value={facility.id} checked={selectedFacilityId === facility.id} onChange={() => setSelectedFacilityId(facility.id)} aria-label={`Select ${facility.name}`} className="h-4 w-4 accent-[#155ca7]" />
                   <span className="rounded-xl bg-slate-100 p-2.5 text-slate-700"><TypeIcon size={20} aria-hidden="true" /></span>
                   <div className="min-w-[210px] flex-1"><h3 className="font-bold text-slate-900">{facility.name}</h3><p className="mt-1 text-sm text-slate-500">{facility.type} · {facility.suburb}</p></div>
                   <p className="flex min-w-[180px] flex-1 items-center gap-2 text-sm text-slate-600"><MapPin size={16} className="shrink-0 text-slate-400" aria-hidden="true" />{facility.address}</p>
                   <span className={classNames("inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ring-1", status.className)}><StatusIcon size={14} aria-hidden="true" />{facility.status}</span>
-                  <button type="button" onClick={() => router.push(`/facilities/facilities-directory/${facility.id}`)} className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#0C2F57] px-4 text-sm font-semibold text-white hover:brightness-110">Open Facility <ArrowRight size={16} aria-hidden="true" /></button>
+                  <button type="button" onClick={(event) => { event.stopPropagation(); router.push(`/facilities/facilities-directory/${facility.id}`); }} className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#0C2F57] px-4 text-sm font-semibold text-white hover:brightness-110">Open Facility <ArrowRight size={16} aria-hidden="true" /></button>
                 </div>
               );
             })}
@@ -200,13 +196,14 @@ export default function FacilitiesPage() {
               const TypeIcon = typeIcon(facility.type);
 
               return (
+                <div key={facility.id} onClick={() => setSelectedFacilityId(facility.id)}>
                 <Card
-                  key={facility.id}
-                  className="group rounded-2xl border-slate-200 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  className={classNames("group cursor-pointer rounded-2xl border-slate-200 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md", selectedFacilityId === facility.id && "border-[#155ca7] ring-2 ring-[#155ca7]")}
                 >
                   <CardContent className="p-5">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-start gap-3">
+                        <input type="radio" name="selected-facility-card" value={facility.id} checked={selectedFacilityId === facility.id} onChange={() => setSelectedFacilityId(facility.id)} aria-label={`Select ${facility.name}`} className="mt-4 h-4 w-4 shrink-0 accent-[#155ca7]" />
                         <div className="rounded-2xl bg-slate-100 p-3 text-slate-700">
                           <TypeIcon size={20} />
                         </div>
@@ -275,9 +272,7 @@ export default function FacilitiesPage() {
 
                     <div className="mt-5 flex flex-wrap items-center gap-2">
                       <button
-                        onClick={() =>
-                          router.push(`/facilities/facilities-directory/${facility.id}`)
-                        }
+                        onClick={(event) => { event.stopPropagation(); router.push(`/facilities/facilities-directory/${facility.id}`); }}
                         className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
                       >
                         Open Facility
@@ -287,6 +282,7 @@ export default function FacilitiesPage() {
                     </div>
                   </CardContent>
                 </Card>
+                </div>
               );
             })}
           </div>
