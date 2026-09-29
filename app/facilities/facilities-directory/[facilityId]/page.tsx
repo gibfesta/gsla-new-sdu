@@ -129,9 +129,6 @@ const facility = {
     name: "Facilities Manager",
     email: "facilities.manager@gov.gi",
   },
-  summary: {
-    urgentItems: 2,
-  },
   sportsSupported: ["Football", "Athletics", "Training", "Community Use"],
   notes: [
     "Main outdoor sports complex for football and athletics activity.",
@@ -516,37 +513,6 @@ function roleCanManageCompliance(role: Role) {
 
 function roleCanEditDocuments(role: Role) {
   return role === "Facilities Manager" || role === "GSLA Admin";
-}
-
-function StatCard({
-  title,
-  value,
-  subtitle,
-  tone = "slate",
-}: {
-  title: string;
-  value: string | number;
-  subtitle: string;
-  tone?: "slate" | "emerald" | "amber" | "rose";
-}) {
-  const toneCls =
-    tone === "emerald"
-      ? "bg-emerald-50 ring-emerald-200"
-      : tone === "amber"
-        ? "bg-amber-50 ring-amber-200"
-        : tone === "rose"
-          ? "bg-rose-50 ring-rose-200"
-          : "bg-white ring-slate-200";
-
-  return (
-    <Card className={classNames("rounded-2xl shadow-sm ring-1", toneCls)}>
-      <CardContent className="p-5">
-        <div className="text-sm font-medium text-slate-500">{title}</div>
-        <div className="mt-2 text-3xl font-bold text-slate-900">{value}</div>
-        <div className="mt-1 text-xs text-slate-500">{subtitle}</div>
-      </CardContent>
-    </Card>
-  );
 }
 
 function SectionTitle({
@@ -940,39 +906,6 @@ function FacilityPageContent() {
       </section>
 
       <VenueViewControls venueId={facility.id} activeTab={activeTab} view={view} onViewChange={setView} />
-
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
-        <StatCard
-          title="Open Issues"
-          value={openIssueCount}
-          subtitle="Current operational concerns"
-          tone="rose"
-        />
-        <StatCard
-          title="Today's Events"
-          value={events.filter((e) => e.date === "11 Apr 2026").length}
-          subtitle="Sessions and scheduled usage"
-          tone="emerald"
-        />
-        <StatCard
-          title="Weekly Tasks Due"
-          value={weeklyDue}
-          subtitle="Tasks awaiting completion"
-          tone="amber"
-        />
-        <StatCard
-          title="Monthly Tasks Due"
-          value={monthlyDue}
-          subtitle="Longer-cycle responsibilities"
-          tone="amber"
-        />
-        <StatCard
-          title="Urgent Items"
-          value={facility.summary.urgentItems}
-          subtitle="Need manager visibility"
-          tone="rose"
-        />
-      </section>
 
       <section>
           {activeTab === "handover" && (
