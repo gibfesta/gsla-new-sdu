@@ -6,7 +6,7 @@ import { facilitiesVenues } from "./venues";
 
 export default function FacilitiesHeader() {
   const pathname = usePathname();
-  const venueId = pathname.match(/^\/facilities\/facilities\/(fac-[0-9]{3})(?:\/|$)/)?.[1];
+  const venueId = pathname.match(/^\/facilities\/facilities-directory\/(fac-[0-9]{3})(?:\/|$)/)?.[1];
   const venue = facilitiesVenues.find((item) => item.id === venueId);
   return (
     <header className="px-4 pt-3 sm:px-6">

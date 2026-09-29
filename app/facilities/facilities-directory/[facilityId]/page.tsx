@@ -1369,18 +1369,14 @@ function FacilityPageContent() {
                   title="Events at Europa Sports Complex"
                   description="Venue-side preparation and on-site delivery. Facilities Department owns event records, approvals and cross-venue changes."
                 />
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] p-4 text-sm text-[#35557f]">
-                  <p>Need to review an event request or change its status? Use the department Events Control page.</p>
-                  <Link href="/facilities/events-control" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link>
-                </div>
-                <h3 className="mt-6 text-base font-bold text-[#112d56]">Department example records for this venue</h3>
+                <h3 className="mt-6 text-base font-bold text-[#112d56]">Event records for this venue</h3>
                 <p className="mt-1 text-xs text-[#60799f]">Historical demonstration records from 2025–26, not live scheduled events.</p>
                 <div className="venue-records mt-3 grid gap-2 sm:grid-cols-2">
                   {eventExamples.filter((event) => event.venueId === facility.id).map((event) => (
                     <div key={event.id} className="rounded-xl border border-[#d5e4f6] bg-white p-4">
                       <strong className="block text-sm">{event.name}</strong>
                       <p className="mt-1 text-xs text-[#60799f]">{event.date} · {event.impact} · {event.status}</p>
-                      <Link href={`/facilities/events-control/${event.id}`} className="mt-3 inline-block text-xs font-semibold text-[#155ca7] hover:underline">View department record →</Link>
+                      <Link href={`/facilities/facilities-directory/${facility.id}/events/${event.id}`} className="mt-3 inline-block text-xs font-semibold text-[#155ca7] hover:underline">Open venue event →</Link>
                     </div>
                   ))}
                 </div>

@@ -43,7 +43,7 @@ export default function OtherVenueWorkspace({ venueId }: { venueId: string }) {
       <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading">
         <h2 id="venue-section-heading" className="text-xl font-bold">Events at {venue.name}</h2>
         <p className="mt-1 text-sm text-[#60799f]">This venue will see its assigned events, preparation and on-site delivery tasks here. Records for this venue are not connected yet.</p>
-        <div className="mt-5 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-4 text-sm leading-6 text-[#35557f]">Facilities Department controls event requests, approvals and cross-venue decisions. <Link href="/facilities/events-control" className="font-semibold text-[#155ca7] hover:underline">Open Events Control →</Link></div>
+        <div className="mt-5 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-4 text-sm leading-6 text-[#35557f]">Facilities Department controls event requests and cross-venue decisions. This venue will display its own assigned events here once records are connected.</div>
       </section>
     ) : (
       <section className="rounded-xl border border-[#d5e4f6] bg-white p-5 shadow-sm" aria-labelledby="venue-section-heading"><h2 id="venue-section-heading" className="text-xl font-bold">{section}</h2><p className="mt-1 text-sm text-[#60799f]">{venue.name}</p><p className="mt-5 rounded-xl border border-dashed border-[#cadcf2] bg-[#f8fbff] px-5 py-8 text-sm text-[#637da2]">{section} for this venue will appear when its records and permissions are connected.</p></section>

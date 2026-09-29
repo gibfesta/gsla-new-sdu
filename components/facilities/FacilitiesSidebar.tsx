@@ -46,6 +46,7 @@ export default function FacilitiesSidebar() {
   const venueId = pathname.match(/^\/facilities\/facilities-directory\/(fac-[0-9]{3})(?:\/|$)/)?.[1];
   const venue = facilitiesVenues.find((item) => item.id === venueId);
   const venueHref = venueId ? `/facilities/facilities-directory/${venueId}` : "/facilities/home";
+  const venueEventArea = /^\/facilities\/facilities-directory\/fac-[0-9]{3}\/events\//.test(pathname);
 
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
@@ -62,7 +63,7 @@ export default function FacilitiesSidebar() {
                 {group.entries.map((entry) => {
                   const href = entry.tab && venueId ? `${venueHref}?tab=${entry.tab}` : entry.dashboard ? venueHref : undefined;
                   const Icon = entry.icon;
-                  const active = entry.tab ? selectedTab === entry.tab : !!entry.dashboard && pathname === venueHref && !selectedTab;
+                  const active = entry.tab ? selectedTab === entry.tab || (entry.tab === "events" && venueEventArea) : !!entry.dashboard && pathname === venueHref && !selectedTab;
                   const className = `flex min-h-9 items-center gap-3 rounded-lg px-3 py-1.5 text-sm transition ${active ? "bg-[#245d9b] font-semibold text-white" : href ? "text-blue-50 hover:bg-white/10" : "text-blue-200/65"}`;
                   const content = <><Icon size={19} className="shrink-0" aria-hidden="true" /><span className="leading-5">{entry.label}</span></>;
                   return href
@@ -74,8 +75,10 @@ export default function FacilitiesSidebar() {
           ))}
         </nav>
         <div className="mt-4 border-t border-blue-300/30 pt-3">
-          <Link href="/facilities/facilities-directory" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
-          <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
+          {venueEventArea ? <Link href={`${venueHref}?tab=events`} className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Venue Events</Link> : <>
+            <Link href="/facilities/facilities-directory" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Facilities Directory</Link>
+            <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
+          </>}
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><HelpCircle size={19} aria-hidden="true" />Help</span>
           <span className="flex items-center gap-3 px-3 py-1.5 text-sm text-blue-200/65" title="Coming soon"><Settings size={19} aria-hidden="true" />Settings</span>
         </div>
