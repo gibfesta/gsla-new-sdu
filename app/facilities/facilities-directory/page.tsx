@@ -10,6 +10,8 @@ import {
   Building2,
   Pencil,
   Archive,
+  LayoutGrid,
+  List,
   ArrowRight,
   CheckCircle2,
   AlertTriangle,
@@ -147,6 +149,7 @@ function typeIcon(type: FacilityType) {
 export default function FacilitiesPage() {
   const router = useRouter();
   const [selectedFacilityId, setSelectedFacilityId] = useState("");
+  const [view, setView] = useState<"cards" | "list">("cards");
 
   return (
     <div className="space-y-8">
@@ -167,6 +170,29 @@ export default function FacilitiesPage() {
           </div>
         </div>
 
+        <div className="mb-4 flex items-center justify-end gap-1" role="group" aria-label="Directory view">
+          <button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "cards" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><LayoutGrid size={16} aria-hidden="true" />Card view</button>
+          <button type="button" aria-pressed={view === "list"} onClick={() => setView("list")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "list" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><List size={16} aria-hidden="true" />List view</button>
+        </div>
+
+        {view === "list" ? (
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" role="list" aria-label="Facilities">
+            {MOCK_FACILITIES.map((facility) => {
+              const status = statusStyles(facility.status);
+              const StatusIcon = status.icon;
+              const TypeIcon = typeIcon(facility.type);
+              return (
+                <div key={facility.id} role="listitem" className="flex flex-wrap items-center gap-4 border-b border-slate-100 px-5 py-4 last:border-b-0 hover:bg-slate-50/70">
+                  <span className="rounded-xl bg-slate-100 p-2.5 text-slate-700"><TypeIcon size={20} aria-hidden="true" /></span>
+                  <div className="min-w-[210px] flex-1"><h3 className="font-bold text-slate-900">{facility.name}</h3><p className="mt-1 text-sm text-slate-500">{facility.type} · {facility.suburb}</p></div>
+                  <p className="flex min-w-[180px] flex-1 items-center gap-2 text-sm text-slate-600"><MapPin size={16} className="shrink-0 text-slate-400" aria-hidden="true" />{facility.address}</p>
+                  <span className={classNames("inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ring-1", status.className)}><StatusIcon size={14} aria-hidden="true" />{facility.status}</span>
+                  <button type="button" onClick={() => router.push(`/facilities/facilities-directory/${facility.id}`)} className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#0C2F57] px-4 text-sm font-semibold text-white hover:brightness-110">Open Facility <ArrowRight size={16} aria-hidden="true" /></button>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {MOCK_FACILITIES.map((facility) => {
               const status = statusStyles(facility.status);
@@ -264,6 +290,7 @@ export default function FacilitiesPage() {
               );
             })}
           </div>
+        )}
       </section>
     </div>
   );
