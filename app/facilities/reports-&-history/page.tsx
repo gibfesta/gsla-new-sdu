@@ -1,3 +1,5 @@
+"use client";
+
 import { BarChart3 } from "lucide-react";
 import FacilitiesDepartmentModule from "@/components/facilities/FacilitiesDepartmentModule";
 
