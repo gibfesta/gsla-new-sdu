@@ -6,5 +6,5 @@ export default function VenueBanner({ title, description, eyebrow, details }: {
   eyebrow?: string;
   details?: React.ReactNode;
 }) {
-  return <FacilitiesDepartmentBanner title={title} description={description} eyebrow={eyebrow} details={details} />;
+  return <FacilitiesDepartmentBanner title={title} description={description} eyebrow={eyebrow} details={details} tone="light" />;
 }
