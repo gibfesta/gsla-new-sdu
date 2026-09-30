@@ -18,6 +18,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { FacilityFormBlueprint } from "@/components/facilities/FacilityFormBlueprint";
 import {
   Building2,
   CalendarDays,
@@ -895,6 +896,7 @@ export default function AdminBookingsPage() {
           </div>
         ) : null}
       </Drawer>
+      <div className="mt-8"><FacilityFormBlueprint sections={["bookings"]} /></div>
     </div>
   );
 }

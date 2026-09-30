@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 import { useSavedFacilities } from "@/components/facilities/useSavedFacilities";
+import { FacilityFormBlueprint } from "@/components/facilities/FacilityFormBlueprint";
 
 export default function FacilitiesDailyOperationsPage() {
   const { facilities, loading, error } = useSavedFacilities();
@@ -21,5 +22,6 @@ export default function FacilitiesDailyOperationsPage() {
         ? <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">{facilities.map((venue) => <article key={venue.id} className="rounded-xl border border-[#d5e4f6] p-5"><h3 className="font-bold">{venue.name}</h3><p className="text-sm text-[#60799f]">{venue.type}</p><p className="mt-4 text-sm">Daily records not connected</p><Link className="mt-4 inline-flex items-center gap-1 font-semibold text-[#155ca7]" href={`/facilities/facilities-directory/${venue.id}?tab=handover`}>Open handovers <ArrowRight size={15} /></Link></article>)}</div>
         : <div className="mt-5 overflow-x-auto"><table className="gsla-data-table w-full text-left text-sm"><thead><tr><th className="p-3">Venue</th><th className="p-3">Opening</th><th className="p-3">Handovers</th><th className="p-3">Closing</th><th className="p-3">Venue view</th></tr></thead><tbody>{facilities.map((venue) => <tr key={venue.id} className="border-t"><td className="p-3 font-semibold">{venue.name}</td><td className="p-3">—</td><td className="p-3">—</td><td className="p-3">—</td><td className="p-3"><Link className="font-semibold text-[#155ca7]" href={`/facilities/facilities-directory/${venue.id}?tab=handover`}>Open handovers</Link></td></tr>)}</tbody></table></div>)}
     </section>
+    <FacilityFormBlueprint sections={["handover", "procedures", "weekly", "monthly"]} />
   </div>;
 }

@@ -53,6 +53,18 @@ export default function FacilitiesDashboard() {
           )}
           <p className="mt-4 flex items-center gap-2 text-xs text-[#657da5]"><Info size={15} aria-hidden="true" />Operational counts will appear when issues, events and tasks are connected.</p>
       </section>
+      <section className="rounded-2xl border border-[#d5e4f6] bg-white p-5" aria-labelledby="forms-heading">
+        <h2 id="forms-heading" className="text-xl font-bold text-[#0C2F57]">Forms &amp; workflows to design</h2>
+        <p className="mt-1 text-sm text-[#60799f]">Open the planning cards to see the fields needed. These are layouts, with no fictional records.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{[
+          { label: "Maintenance & Issues", href: "/facilities/maintenance-&-issues", detail: "Issue reports, work requests and updates" },
+          { label: "Daily Operations", href: "/facilities/daily-operations", detail: "Opening, closing and handovers" },
+          { label: "Compliance", href: "/facilities/compliance", detail: "Checks, evidence and follow-up actions" },
+          { label: "Procedures & SOPs", href: "/facilities/procedures-&-sop", detail: "Checklists and documents" },
+          { label: "Reports & History", href: "/facilities/reports-&-history", detail: "Timeline and audit entries" },
+          { label: "Events Control", href: "/facilities/events-control", detail: "Existing examples and Event form" },
+        ].map((item) => <Link key={item.label} href={item.href} className="rounded-xl border border-[#d5e4f6] p-4 transition hover:bg-blue-50"><h3 className="font-semibold text-[#153763]">{item.label}</h3><p className="mt-1 text-sm text-[#60799f]">{item.detail}</p><span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#155ca7]">View cards <ArrowRight size={15} /></span></Link>)}</div>
+      </section>
     </div>
   );
 }
