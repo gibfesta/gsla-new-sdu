@@ -16,7 +16,6 @@ const groups: { title: string; items: Item[] }[] = [
     { label: "Facilities Directory", href: "/facilities/facilities-directory", icon: Building2 },
     { label: "Daily Operations", href: "/facilities/daily-operations", icon: ClipboardCheck },
     { label: "Forms & Procedures", href: "/facilities/forms-and-procedures", icon: FileText },
-    { label: "Form Previewer", href: "/facilities/forms", icon: FileText },
   ] },
   { title: "Planning & Events", items: [
     { label: "Shared Calendar", href: "/facilities/shared-calendar", icon: CalendarDays },
