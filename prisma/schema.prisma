@@ -26,6 +26,7 @@ model Facilities_Table {
   facilities_manager_name String   @default("")
   facilities_manager_email String  @default("")
   supported_activities    String[] @default([])
+  opening_schedule Json? @db.JsonB
   notes         String
   created__at   DateTime @map("created _at") @db.Timestamp(6)
   updated_at    DateTime @db.Timestamp(6)

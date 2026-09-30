@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseFacilitySchedule } from "@/lib/facilitySchedule";
 
 /**
  * GET /api/facilities
@@ -26,14 +27,16 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     if (!body || typeof body !== "object" || typeof body.name !== "string" || !body.name.trim() ||
-        typeof body.address !== "string" || !body.address.trim() ||
-        typeof body.area !== "string" || !body.area.trim()) {
-      return NextResponse.json({ error: "Name, address and area are required" }, { status: 400 });
+        typeof body.address !== "string" || !body.address.trim()) {
+      return NextResponse.json({ error: "Name and address are required" }, { status: 400 });
     }
     const optionalText = (value: unknown) => typeof value === "string" ? value.trim() : "";
     const supportedActivities = Array.isArray(body.supported_activities)
       ? body.supported_activities.filter((value: unknown): value is string => typeof value === "string").map((value: string) => value.trim()).filter(Boolean)
       : [];
+    let schedule;
+    try { schedule = parseFacilitySchedule(body.opening_schedule); }
+    catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid opening schedule" }, { status: 400 }); }
     const now = new Date();
 
     const created = await prisma.facilities_Table.create({
@@ -42,7 +45,7 @@ export async function POST(req: Request) {
         type: optionalText(body.type) || "Grounds",
         status: optionalText(body.status) || "Operational",
         address: body.address.trim(),
-        area: body.area.trim(),
+        area: optionalText(body.area),
         description: optionalText(body.description),
         contact_email: optionalText(body.contact_email),
         contact_phone: optionalText(body.contact_phone),
@@ -54,6 +57,7 @@ export async function POST(req: Request) {
         facilities_manager_email: optionalText(body.facilities_manager_email),
         supported_activities: supportedActivities,
         notes: optionalText(body.notes),
+        opening_schedule: schedule,
 
         // REQUIRED by your DB schema
         created__at: now,

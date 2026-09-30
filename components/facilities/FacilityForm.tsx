@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Save } from "lucide-react";
+import FacilityScheduleEditor from "@/components/facilities/FacilityScheduleEditor";
+import { emptyFacilitySchedule, parseFacilitySchedule } from "@/lib/facilitySchedule";
 
 type FacilityStatus = "Operational" | "Limited" | "Closed";
 type FacilityType =
@@ -41,7 +43,6 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const [type, setType] = useState<FacilityType>("Grounds");
   const [status, setStatus] = useState<FacilityStatus>("Operational");
   const [address, setAddress] = useState("");
-  const [area, setArea] = useState("");
   const [description, setDescription] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
@@ -53,6 +54,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const [facilitiesManagerEmail, setFacilitiesManagerEmail] = useState("");
   const [supportedActivities, setSupportedActivities] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
+  const [openingSchedule, setOpeningSchedule] = useState(emptyFacilitySchedule);
   const [activitySearch, setActivitySearch] = useState("");
   const filteredActivities = ACTIVITY_OPTIONS.filter((activity) =>
     activity.label.toLowerCase().includes(activitySearch.trim().toLowerCase())
@@ -73,7 +75,6 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         setType(record.type);
         setStatus(record.status);
         setAddress(record.address);
-        setArea(record.area);
         setDescription(record.description);
         setContactEmail(record.contact_email);
         setContactPhone(record.contact_phone);
@@ -85,6 +86,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         setFacilitiesManagerEmail(record.facilities_manager_email);
         setSupportedActivities([...new Set<string>(record.supported_activities.map(normalizeActivity))]);
         setNotes(record.notes);
+        setOpeningSchedule(parseFacilitySchedule(record.opening_schedule));
       })
       .catch(() => { if (!controller.signal.aborted) { setLoadFailed(true); setError("Facility details could not be loaded. Saving is disabled; reload when the database connection is available."); } })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
@@ -101,10 +103,10 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
       setError("Address is required.");
       return;
     }
-    if (!area.trim()) {
-      setError("Area is required.");
-      return;
-    }
+
+    let schedule;
+    try { schedule = parseFacilitySchedule(openingSchedule); }
+    catch (error) { setError(error instanceof Error ? error.message : "Invalid opening schedule."); return; }
 
     setSaving(true);
     setError(null);
@@ -118,7 +120,6 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
           type,
           status,
           address: address.trim(),
-          area: area.trim(),
           description: description.trim(),
           contact_email: contactEmail.trim() || null,
           contact_phone: contactPhone.trim() || null,
@@ -132,6 +133,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
           } : {}),
           supported_activities: supportedActivities,
           notes: notes.trim(),
+          opening_schedule: schedule,
         }),
       });
 
@@ -240,19 +242,14 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
               />
             </div>
 
-            <div>
-              <label htmlFor="facility-area" className="text-xs font-semibold text-slate-600">Area / suburb *</label>
-              <input id="facility-area" value={area} onChange={(e) => setArea(e.target.value)}
-                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none"
-                placeholder="Area or suburb" />
-            </div>
-
             <div className="lg:col-span-2">
               <label htmlFor="facility-description" className="text-xs font-semibold text-slate-600">Facility description</label>
               <textarea id="facility-description" value={description} onChange={(e) => setDescription(e.target.value)}
                 className="mt-2 w-full rounded-xl border border-slate-200 bg-white p-3 text-sm outline-none"
                 rows={3} placeholder="Short introduction shown in the venue banner" />
             </div>
+
+            <FacilityScheduleEditor value={openingSchedule} onChange={setOpeningSchedule} />
 
             <h2 className="lg:col-span-2 border-t border-slate-200 pt-5 text-lg font-bold text-[#0C2F57]">Facility contact</h2>
 
