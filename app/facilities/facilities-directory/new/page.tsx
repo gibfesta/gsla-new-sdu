@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Save } from "lucide-react";
+import { directoryAssociations } from "@/components/sports-development/associationsDirectory";
 
 type FacilityStatus = "Operational" | "Limited" | "Closed";
 type FacilityType =
@@ -24,10 +25,9 @@ const FACILITY_TYPES: FacilityType[] = [
 ];
 
 const FACILITY_STATUSES: FacilityStatus[] = ["Operational", "Limited", "Closed"];
-const ACTIVITIES = [
-  "Football", "Athletics", "Swimming", "Basketball", "Volleyball", "Futsal",
-  "Training", "Training Sessions", "Community Use", "Outdoor Recreation",
-];
+const ACTIVITY_OPTIONS = directoryAssociations
+  .map(({ slug, name }) => ({ id: slug, label: name }))
+  .sort((a, b) => a.label.localeCompare(b.label));
 
 export default function AdminFacilityNewPage() {
   const router = useRouter();
@@ -52,6 +52,10 @@ export default function AdminFacilityNewPage() {
   const [facilitiesManagerEmail, setFacilitiesManagerEmail] = useState("");
   const [supportedActivities, setSupportedActivities] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
+  const [activitySearch, setActivitySearch] = useState("");
+  const filteredActivities = ACTIVITY_OPTIONS.filter((activity) =>
+    activity.label.toLowerCase().includes(activitySearch.trim().toLowerCase())
+  );
 
   async function onCreate() {
     // Minimal validation
@@ -253,18 +257,27 @@ export default function AdminFacilityNewPage() {
 
             <div className="lg:col-span-2 border-t border-slate-200 pt-5">
               <h2 className="text-lg font-bold text-[#0C2F57]">Supported activities</h2>
-              <p className="mt-1 text-sm text-slate-500">Select all sports and activities associated with this venue.</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {ACTIVITIES.map((activity) => {
+              <p className="mt-1 text-sm text-slate-500">Select all sports and leisure associations associated with this venue.</p>
+              <label htmlFor="activity-search" className="mt-4 block text-xs font-semibold text-slate-600">Search sports and associations</label>
+              <input id="activity-search" type="search" value={activitySearch}
+                onChange={(e) => setActivitySearch(e.target.value)}
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none"
+                placeholder="Search by sport or association name" />
+              <p className="mt-2 text-xs text-slate-500" aria-live="polite">{supportedActivities.length} selected · {filteredActivities.length} of {ACTIVITY_OPTIONS.length} shown</p>
+              <div className="mt-3 grid grid-cols-1 gap-2 lg:grid-cols-2">
+                {filteredActivities.map(({ id, label: activity }) => {
                   const selected = supportedActivities.includes(activity);
-                  return <button key={activity} type="button" aria-pressed={selected}
-                    onClick={() => setSupportedActivities((current) => selected
-                      ? current.filter((item) => item !== activity) : [...current, activity])}
-                    className={`rounded-full border px-3 py-2 text-sm ${selected ? "border-[#0C2F57] bg-[#0C2F57] text-white" : "border-slate-200 bg-white text-slate-700"}`}>
-                    {activity}
-                  </button>;
+                  return <label key={id}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3 py-3 text-sm ${selected ? "border-[#0C2F57] bg-slate-50 text-[#0C2F57]" : "border-slate-200 bg-white text-slate-700"}`}>
+                    <input type="checkbox" checked={selected}
+                      onChange={(e) => setSupportedActivities((current) => e.target.checked
+                        ? [...current, activity] : current.filter((item) => item !== activity))}
+                      className="mt-0.5 h-4 w-4 shrink-0 accent-[#0C2F57]" />
+                    <span>{activity}</span>
+                  </label>;
                 })}
               </div>
+              {!filteredActivities.length && <p className="mt-3 text-sm text-slate-500">No matching sports or associations.</p>}
             </div>
 
             <div className="lg:col-span-2">
