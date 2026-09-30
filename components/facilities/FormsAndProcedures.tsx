@@ -12,7 +12,7 @@ const outline = "rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm f
 export default function FormsAndProcedures() {
  const { data, notice } = useCatalogue();
  const { facilities, loading, error } = useSavedFacilities();
- const [view, setView] = useState<"cards" | "list">("cards");
+ const [view, setView] = useState<"cards" | "list">("list");
  const [editor, setEditor] = useState<CatalogueForm | null>(null);
  const [previewing, setPreviewing] = useState<CatalogueForm | null>(null);
  const [assigning, setAssigning] = useState<CatalogueForm | null>(null);
