@@ -15,7 +15,8 @@ const cards: Record<FacilityFormSection, FormCard[]> = {
     { title: "Maintenance Update", purpose: "Record progress and completion.", icon: ClipboardList, fields: ["Work order", "Assigned to", "Status", "Target date", "Work completed", "Completion date", "Evidence / photos"] },
   ],
   handover: [
-    { title: "Daily Handover", purpose: "Pass operational information between shifts.", icon: ClipboardList, fields: ["Facility", "Date & shift", "Shift summary", "Actions required", "Manager message / notes", "Submitted by"] },
+    { title: "Afternoon Handover", purpose: "Pass operational information to the afternoon shift.", icon: ClipboardList, fields: ["Facility", "Date & shift", "Shift summary", "Risks / concerns", "Actions required", "Manager message / notes", "Submitted by"] },
+    { title: "Night Handover", purpose: "Pass operational information to the night shift.", icon: ClipboardList, fields: ["Facility", "Date & shift", "Shift summary", "Risks / concerns", "Actions required", "Manager message / notes", "Submitted by"] },
     { title: "Quick Update", purpose: "Record an update for the venue timeline.", icon: Clock3, fields: ["Date & time", "Update type", "Message", "Recorded by"] },
   ],
   procedures: [
@@ -37,12 +38,12 @@ const cards: Record<FacilityFormSection, FormCard[]> = {
 
 export function FacilityFormBlueprint({ sections, showHeading = true }: { sections: FacilityFormSection[]; showHeading?: boolean }) {
   return <section className="space-y-4" aria-label="Forms to design">
-    {showHeading && <div><h2 className="text-xl font-bold text-[#0C2F57]">Forms to design</h2><p className="mt-1 text-sm text-[#60799f]">These cards preserve the workflow and fields for planning. No example records are loaded or saved.</p></div>}
+    {showHeading && <div><h2 className="text-xl font-bold text-[#0C2F57]">Form designs</h2><p className="mt-1 text-sm text-[#60799f]">Open a form to try the design. Test completions stay in your browser.</p></div>}
     <div className="grid gap-4 md:grid-cols-2">{sections.flatMap((section) => cards[section].map((card) => <article key={`${section}-${card.title}`} className="rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm">
       <div className="flex items-start gap-3"><span className="rounded-xl bg-[#eaf2fc] p-2 text-[#155ca7]"><card.icon size={21} /></span><div><h3 className="font-bold text-[#0C2F57]">{card.title}</h3><p className="mt-1 text-sm text-[#60799f]">{card.purpose}</p></div></div>
       <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-[#526f98]">Fields to confirm</p>
       <ul className="mt-2 flex flex-wrap gap-2">{card.fields.map((field) => <li key={field} className="rounded-lg border border-[#d5e4f6] bg-[#f8fbff] px-2.5 py-1.5 text-xs text-[#35557f]">{field}</li>)}</ul>
-      <p className="mt-4 text-xs text-[#60799f]">Form design reference · data entry not connected</p>
+      {["issues", "maintenance", "handover", "procedures", "weekly", "monthly", "compliance", "documents"].includes(section) ? <Link className="mt-4 inline-block rounded-xl bg-[#0C2F57] px-3 py-2 text-sm font-semibold text-white" href={`/facilities/forms?section=${section === "issues" ? "issues" : section === "compliance" ? "compliance" : section === "documents" ? "sop" : ["handover", "procedures"].includes(section) ? "daily" : "maintenance"}`}>Open form designs</Link> : <p className="mt-4 text-xs text-[#60799f]">Form design reference · data entry not connected</p>}
     </article>))}</div>
     <Link href="/facilities/events-control" className="inline-block text-xs font-semibold text-[#155ca7] hover:underline">Events examples remain in Events Control</Link>
   </section>;

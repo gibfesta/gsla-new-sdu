@@ -12,6 +12,7 @@ export default function FacilitiesDailyOperationsPage() {
   const [view, setView] = useState<"cards" | "list">("list");
   return <div className="space-y-4 text-[#112d56]">
     <FacilitiesDepartmentBanner title="Daily Operations" description="See opening, handovers and closing checks across venues." />
+    <div className="flex flex-wrap gap-3 rounded-2xl border border-[#d5e4f6] bg-white p-5"><Link className="rounded-xl bg-[#0C2F57] px-4 py-2 text-sm font-semibold text-white" href="/facilities/forms?section=daily">Manage opening, closing & handover templates</Link><Link className="rounded-xl border px-4 py-2 text-sm font-semibold" href="/facilities/forms?section=daily&role=cm&mode=complete">Try Centre Manager forms</Link></div>
     <p className="rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm text-[#35557f]">Daily check and handover records are not connected yet. No operational status is inferred from the facility directory.</p>
     <section className="rounded-2xl border border-[#d5e4f6] bg-white p-5">
       <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-bold">Opening, handovers and closing</h2><div className="flex gap-1" role="group" aria-label="Daily Operations view"><button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className="rounded-lg border px-3 py-2">Card view</button><button type="button" aria-pressed={view === "list"} onClick={() => setView("list")} className="rounded-lg border px-3 py-2">List view</button></div></div>

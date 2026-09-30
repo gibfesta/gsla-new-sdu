@@ -38,6 +38,7 @@ export default function FacilitiesDepartmentModule({ title, description, icon: I
 
   return <div className="space-y-4 text-[#112d56]">
     <FacilitiesDepartmentBanner title={title} description={description} />
+    {formSections.some(item => ["issues", "maintenance", "compliance", "procedures", "documents"].includes(item)) && <div className="flex flex-wrap gap-3 rounded-2xl border border-[#d5e4f6] bg-white p-5"><Link className="rounded-xl bg-[#0C2F57] px-4 py-2 text-sm font-semibold text-white" href={`/facilities/forms?section=${title === "Compliance" ? "compliance" : title === "Procedures & SOPs" ? "sop" : "maintenance"}`}>Manage form templates</Link><Link className="rounded-xl border px-4 py-2 text-sm font-semibold" href={`/facilities/forms?section=${title === "Compliance" ? "compliance" : title === "Procedures & SOPs" ? "sop" : "issues"}&role=cm&mode=complete`}>Try Centre Manager forms</Link>{title === "Maintenance & Issues" && <Link className="rounded-xl border px-4 py-2 text-sm font-semibold" href="/facilities/forms?section=issues&mode=complete">Report an issue as FM</Link>}</div>}
     <div className="flex items-start gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]"><Info size={18} className="mt-0.5 shrink-0 text-[#155ca7]" aria-hidden="true" /><p><strong>{statusLabel}.</strong> {emptyMessage}</p></div>
 
     <div className="flex flex-wrap items-center justify-between gap-3">
