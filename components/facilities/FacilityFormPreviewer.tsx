@@ -35,7 +35,7 @@ function examples(form: CatalogueForm): Record<string,Answer> {
 }
 function FormPreviewCard({form,scope}:{form:CatalogueForm;scope:string}) {
  const [answers,setAnswers] = useVenueDesignState(scope,"catalogue-form-" + form.id + "-v" + form.version,examples(form));
- const [meta,setMeta] = useVenueDesignState(scope,"catalogue-meta-" + form.id,{ actor:"",date:"",notes:"" });
+ const [meta,setMeta] = useVenueDesignState(scope,"catalogue-meta-" + form.id,{ actor:"",date:"",notes:"",recipient:"" });
  const notice = useVenueDesignNotice(scope); const [message,setMessage] = useState("");
  const checks = form.fields.filter(field => field.type === "checkbox");
  return <form className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={e => { e.preventDefault(); const problem = validateCompletion(form,answers); setMessage(problem || "Preview saved in this browser."); }}>
@@ -55,7 +55,7 @@ function FormPreviewCard({form,scope}:{form:CatalogueForm;scope:string}) {
     {field.help && <p className="mt-2 text-xs text-slate-500">{field.help}</p>}
    </div>;
   })}</div>
-  <div className="mt-5 grid gap-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-2"><label className="text-sm font-semibold">Completed by<input className={workflowInput} value={meta.actor} onChange={e=>setMeta(prev=>({...prev,actor:e.target.value}))}/></label><label className="text-sm font-semibold">Date & time<input type="datetime-local" className={workflowInput} value={meta.date} onChange={e=>setMeta(prev=>({...prev,date:e.target.value}))}/></label><label className="text-sm font-semibold sm:col-span-2">Notes / findings / exceptions<textarea rows={3} className={workflowInput} value={meta.notes} onChange={e=>setMeta(prev=>({...prev,notes:e.target.value}))}/></label></div>
+  <div className="mt-5 grid gap-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-2"><label className="text-sm font-semibold">{form.kind === "issue" ? "Reported by" : "Completed by"}<input className={workflowInput} value={meta.actor} onChange={e=>setMeta(prev=>({...prev,actor:e.target.value}))}/></label><label className="text-sm font-semibold">Date & time<input type="datetime-local" className={workflowInput} value={meta.date} onChange={e=>setMeta(prev=>({...prev,date:e.target.value}))}/></label>{form.kind === "issue" && <label className="text-sm font-semibold sm:col-span-2">Report to<select className={workflowInput} value={meta.recipient || ""} onChange={e=>setMeta(prev=>({...prev,recipient:e.target.value}))}><option value="">Select receiving manager</option>{["Facilities Manager 1","Facilities Manager 2","Facilities Manager 3","Head of Facilities"].map(item=><option key={item}>{item}</option>)}</select></label>}<label className="text-sm font-semibold sm:col-span-2">Notes / findings / exceptions<textarea rows={3} className={workflowInput} value={meta.notes} onChange={e=>setMeta(prev=>({...prev,notes:e.target.value}))}/></label></div>
   {notice && <p role="alert" className="mt-4 text-sm text-rose-700">{notice}</p>}{message && <p role="status" className="mt-4 text-sm text-slate-700">{message}</p>}
  </form>;
 }
