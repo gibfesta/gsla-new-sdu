@@ -25,17 +25,35 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    if (!body || typeof body !== "object" || typeof body.name !== "string" || !body.name.trim() ||
+        typeof body.address !== "string" || !body.address.trim() ||
+        typeof body.area !== "string" || !body.area.trim()) {
+      return NextResponse.json({ error: "Name, address and area are required" }, { status: 400 });
+    }
+    const optionalText = (value: unknown) => typeof value === "string" ? value.trim() : "";
+    const supportedActivities = Array.isArray(body.supported_activities)
+      ? body.supported_activities.filter((value: unknown): value is string => typeof value === "string").map((value: string) => value.trim()).filter(Boolean)
+      : [];
     const now = new Date();
 
     const created = await prisma.facilities_Table.create({
       data: {
-        name: body.name,
-        type: body.type,
-        status: body.status,
-        address: body.address,
-        contact_email: body.contact_email ?? null,
-        contact_phone: body.contact_phone ?? null,
-        notes: body.notes ?? null,
+        name: body.name.trim(),
+        type: optionalText(body.type) || "Grounds",
+        status: optionalText(body.status) || "Operational",
+        address: body.address.trim(),
+        area: body.area.trim(),
+        description: optionalText(body.description),
+        contact_email: optionalText(body.contact_email),
+        contact_phone: optionalText(body.contact_phone),
+        centre_manager_name: optionalText(body.centre_manager_name),
+        centre_manager_title: optionalText(body.centre_manager_title),
+        centre_manager_email: optionalText(body.centre_manager_email),
+        centre_manager_phone: optionalText(body.centre_manager_phone),
+        facilities_manager_name: optionalText(body.facilities_manager_name),
+        facilities_manager_email: optionalText(body.facilities_manager_email),
+        supported_activities: supportedActivities,
+        notes: optionalText(body.notes),
 
         // REQUIRED by your DB schema
         created__at: now,
