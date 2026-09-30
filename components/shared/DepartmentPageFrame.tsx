@@ -7,7 +7,7 @@ type Department = "sports-development" | "human-resources" | "finance";
 
 const descriptions: Record<Department, Record<string, [string, string]>> = {
   "sports-development": {
-    sports: ["Sports & Associations", "Explore the sports, associations and people in the GSLA workspace."],
+    sports: ["Sports & Associations", "Browse the sports and leisure associations listed in the GSLA directory."],
     reports: ["Participation Statistics", "Review participation, retention and activity across sports."],
     ranking: ["Sports Rankings", "Compare sports using a transparent development score and see how each result is calculated."],
     teams: ["Teams", "Manage association teams and their league assignments."],

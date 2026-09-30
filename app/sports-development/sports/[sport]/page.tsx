@@ -27,6 +27,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
+import AssociationDirectoryProfile from "@/components/sports-development/AssociationDirectoryProfile";
+import { directoryAssociations } from "@/components/sports-development/associationsDirectory";
 import {
   Users,
   Shield,
@@ -209,6 +211,13 @@ function Modal({
  * ------------------------------------------------------------ */
 
 export default function SportPage() {
+  const { sport } = useParams<{ sport: string }>();
+  const association = directoryAssociations.find((item) => item.slug === sport);
+  if (!association) return <section className="rounded-2xl border border-[#d5e4f6] bg-white p-6"><h1 className="text-2xl font-bold text-[#112d56]">Association not found</h1><Link href="/sports-development/sports" className="mt-4 inline-block text-sm font-semibold text-[#155ca7] hover:underline">Back to Sports &amp; Leisure Associations</Link></section>;
+  return <div className="space-y-5"><AssociationDirectoryProfile association={association} />{sport === "hockey" && <HockeyWorkspace />}</div>;
+}
+
+function HockeyWorkspace() {
   const { sport } = useParams<{ sport: string }>();
   const sportSlug = String(sport || "").toLowerCase();
   const sportName = toTitleCaseSlug(String(sport || ""));
