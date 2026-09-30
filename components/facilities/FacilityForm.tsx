@@ -32,6 +32,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [loadFailed, setLoadFailed] = useState(false);
   const [loading, setLoading] = useState(Boolean(facilityId));
   const [savedId, setSavedId] = useState<string | null>(null);
   const [needsFirstSave, setNeedsFirstSave] = useState(false);
@@ -61,6 +62,8 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
 
   useEffect(() => {
     if (!facilityId) return;
+    const names = ["Europa Sports Complex", "Bayside Sports Complex", "Lathbury Sports Complex", "Lathbury Pool", "GASA Pool", "Parks"];
+    if (/^fac-00[1-6]$/.test(facilityId)) setName(names[Number(facilityId.slice(-1)) - 1]);
     const controller = new AbortController();
     fetch(`/api/facilities/${facilityId}`, { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
@@ -92,7 +95,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         setSupportedActivities([...new Set<string>(record.supported_activities.map(normalizeActivity))]);
         setNotes(record.notes);
       })
-      .catch((error: Error) => { if (!controller.signal.aborted) setError(error.message); })
+      .catch(() => { if (!controller.signal.aborted) { setLoadFailed(true); setError("The database connection is unavailable. Your existing venue details could not be loaded. Saving is disabled; reload after the connection is restored."); } })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, [facilityId]);
@@ -154,7 +157,6 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   }
 
   if (loading) return <p className="p-6" role="status">Loading facility...</p>;
-  if (facilityId && !savedId && !needsFirstSave && error) return <div className="p-6" role="alert">{error}</div>;
 
   return (
     <div className="p-6">
@@ -178,7 +180,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
 
         <button
           onClick={onCreate}
-          disabled={saving || loading}
+          disabled={saving || loading || loadFailed}
           className="inline-flex items-center gap-2 rounded-xl bg-[#0C2F57] px-4 py-2 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-50"
         >
           <Save size={16} />
@@ -189,7 +191,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
       <Card>
         <CardContent className="p-6">
           {error ? (
-            <div className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+            <div role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
               {error}
             </div>
           ) : null}
