@@ -100,105 +100,10 @@ const overlaps = (aStart: Date, aEnd: Date, bStart: Date, bEnd: Date) => aStart 
 const minutesDiff = (a: Date, b: Date) => Math.floor((a.getTime() - b.getTime()) / 60000);
 
 /* ---------------- data ---------------- */
-const facilities: Facility[] = [
-  { id: "fac_1", name: "Lathbury Leisure Centre" },
-  { id: "fac_2", name: "GASA" },
-];
-
-const resources: Resource[] = [
-  { id: "res_lp", facilityId: "fac_1", name: "Lathbury Pool", kind: "Pool" },
-  { id: "res_gp", facilityId: "fac_2", name: "GASA Pool", kind: "Pool" },
-  { id: "res_sq1", facilityId: "fac_1", name: "Squash Court 1", kind: "Squash" },
-  { id: "res_pc1", facilityId: "fac_1", name: "Padel Court 1", kind: "Padel" },
-  { id: "res_pc2", facilityId: "fac_1", name: "Padel Court 2", kind: "Padel" },
-  { id: "res_pc3", facilityId: "fac_1", name: "Padel Court 3", kind: "Padel" },
-];
-
-const POOL_CAPACITY_BY_RESOURCE: Record<string, number> = {
-  res_lp: 24,
-  res_gp: 12,
-};
-
-/* ------------ realistic seed helpers ------------ */
-const D = "2025-12-19";
-const t = (hm: string) => `${D}T${hm}`;
-
-function people4(
-  a: [string, boolean],
-  b: [string, boolean],
-  c: [string, boolean],
-  d: [string, boolean]
-): Participant[] {
-  const mk = (name: string, confirmed: boolean) => ({ name, initial: name.trim().slice(0, 1).toUpperCase(), confirmed });
-  return [mk(a[0], a[1]), mk(b[0], b[1]), mk(c[0], c[1]), mk(d[0], d[1])];
-}
-
-function players4(
-  p1: [string, boolean],
-  p2: [string, boolean],
-  p3: [string, boolean],
-  p4: [string, boolean]
-): Participant[] {
-  const mk = (name: string, confirmed: boolean, fallback: string) => ({
-    name,
-    initial: name.includes(" ") ? name.split(" ")[0].slice(0, 1) : fallback || name.slice(0, 1),
-    confirmed,
-  });
-  return [mk(p1[0], p1[1], "1"), mk(p2[0], p2[1], "2"), mk(p3[0], p3[1], "3"), mk(p4[0], p4[1], "4")];
-}
-
-const seedBookings: Booking[] = [
-  // POOL
-  { id: "lp1", resourceId: "res_lp", title: "Public Swim", bookedBy: "Leisure Ops", start: t("08:00"), end: t("10:00"), kind: "Pool", units: 6 },
-  { id: "lp2", resourceId: "res_lp", title: "School Swim", bookedBy: "Education", start: t("10:15"), end: t("12:15"), kind: "Pool", units: 10 },
-  { id: "lp3", resourceId: "res_lp", title: "Lane Swim", bookedBy: "Leisure Ops", start: t("12:30"), end: t("14:30"), kind: "Pool", units: 8 },
-  { id: "lp4", resourceId: "res_lp", title: "Club Training", bookedBy: "Swim Club", start: t("15:00"), end: t("18:00"), kind: "Pool", units: 12 },
-  { id: "gp1", resourceId: "res_gp", title: "Public Swim", bookedBy: "GASA Ops", start: t("08:00"), end: t("11:00"), kind: "Pool", units: 5 },
-  { id: "gp2", resourceId: "res_gp", title: "Lessons", bookedBy: "Coach Team", start: t("11:15"), end: t("13:15"), kind: "Pool", units: 4 },
-  { id: "gp3", resourceId: "res_gp", title: "Club Lane Booking", bookedBy: "Swim Club", start: t("16:00"), end: t("18:00"), kind: "Pool", units: 7 },
-
-  // SQUASH
-  { id: "sq_0815", resourceId: "res_sq1", title: "Pay & Play", bookedBy: "Front Desk", start: t("08:15"), end: t("09:15"), kind: "Squash", createdAt: t("07:50"), participants: people4(["Member A", true], ["Member B", false], ["Member C", false], ["Member D", true]) },
-  { id: "sq_0930", resourceId: "res_sq1", title: "Lunchtime Ladder", bookedBy: "Squash Desk", start: t("09:30"), end: t("10:30"), kind: "Squash", createdAt: t("09:05"), participants: people4(["Member E", true], ["Member F", true], ["Member G", false], ["Member H", false]) },
-  { id: "sq_1045", resourceId: "res_sq1", title: "Coaching (1:1)", bookedBy: "Coach", start: t("10:45"), end: t("11:45"), kind: "Squash", participants: people4(["Coach", true], ["Member J", true], ["—", true], ["—", true]) },
-  { id: "sq_1200", resourceId: "res_sq1", title: "Open Court", bookedBy: "Member Booking", start: t("12:00"), end: t("13:00"), kind: "Squash", createdAt: t("11:40"), participants: people4(["Member K", true], ["Member L", true], ["Member M", true], ["Member N", true]) },
-  { id: "sq_1315", resourceId: "res_sq1", title: "League Match", bookedBy: "League", start: t("13:15"), end: t("14:15"), kind: "Squash", createdAt: t("12:58"), participants: people4(["Member P", true], ["Member Q", false], ["Member R", false], ["Member S", false]) },
-  { id: "sq_1430", resourceId: "res_sq1", title: "Junior Coaching", bookedBy: "Coach", start: t("14:30"), end: t("15:30"), kind: "Squash", participants: people4(["Junior 1", true], ["Junior 2", true], ["Coach", true], ["Junior 3", false]) },
-  { id: "sq_1545", resourceId: "res_sq1", title: "Pay & Play", bookedBy: "Public User", start: t("15:45"), end: t("16:45"), kind: "Squash", createdAt: t("15:12"), participants: people4(["Member T", true], ["Member U", false], ["Member V", false], ["Member W", true]) },
-  { id: "sq_1700", resourceId: "res_sq1", title: "Club Session", bookedBy: "Squash Club", start: t("17:00"), end: t("18:00"), kind: "Squash", participants: people4(["Member X", true], ["Member Y", true], ["Member Z", true], ["Member AA", true]) },
-  { id: "sq_1815", resourceId: "res_sq1", title: "Social Doubles", bookedBy: "Squash Club", start: t("18:15"), end: t("19:15"), kind: "Squash", createdAt: t("17:55"), participants: people4(["Member AB", true], ["Member AC", true], ["Member AD", false], ["Member AE", true]) },
-
-  // PADEL 1
-  { id: "pc1_0800", resourceId: "res_pc1", title: "Pay & Play", bookedBy: "Public User", start: t("08:00"), end: t("09:00"), kind: "Padel", createdAt: t("07:35"), participants: players4(["Alex (booker)", true], ["Jamie", false], ["Sam", false], ["Taylor", true]) },
-  { id: "pc1_0915", resourceId: "res_pc1", title: "Padel Booking", bookedBy: "Public User", start: t("09:15"), end: t("10:15"), kind: "Padel", createdAt: t("08:58"), participants: players4(["Chris (booker)", true], ["Jordan", true], ["Casey", false], ["Morgan", true]) },
-  { id: "pc1_1030", resourceId: "res_pc1", title: "Coaching Clinic", bookedBy: "Coach", start: t("10:30"), end: t("11:30"), kind: "Padel", participants: players4(["Coach", true], ["Player A", true], ["Player B", true], ["Player C", true]) },
-  { id: "pc1_1145", resourceId: "res_pc1", title: "Padel Booking", bookedBy: "Public User", start: t("11:45"), end: t("12:45"), kind: "Padel", participants: players4(["Riley (booker)", true], ["Avery", true], ["Quinn", true], ["Parker", true]) },
-  { id: "pc1_1300", resourceId: "res_pc1", title: "Lunch League", bookedBy: "League", start: t("13:00"), end: t("14:00"), kind: "Padel", createdAt: t("12:30"), participants: players4(["Team 1", true], ["Team 2", false], ["Team 3", false], ["Team 4", true]) },
-  { id: "pc1_1415", resourceId: "res_pc1", title: "Pay & Play", bookedBy: "Front Desk", start: t("14:15"), end: t("15:15"), kind: "Padel", participants: players4(["Member 1", true], ["Member 2", true], ["Member 3", false], ["Member 4", false]) },
-  { id: "pc1_1530", resourceId: "res_pc1", title: "Padel Booking", bookedBy: "Public User", start: t("15:30"), end: t("16:30"), kind: "Padel", createdAt: t("15:05"), participants: players4(["Lee (booker)", true], ["Kim", false], ["Pat", false], ["Drew", true]) },
-  { id: "pc1_1645", resourceId: "res_pc1", title: "After Work Match", bookedBy: "Member Booking", start: t("16:45"), end: t("17:45"), kind: "Padel", participants: players4(["Nina", true], ["Omar", true], ["Iris", true], ["Hugo", true]) },
-  { id: "pc1_1800", resourceId: "res_pc1", title: "Social Padel", bookedBy: "Padel Club", start: t("18:00"), end: t("19:00"), kind: "Padel", createdAt: t("17:34"), participants: players4(["Host", true], ["Guest 1", true], ["Guest 2", false], ["Guest 3", true]) },
-
-  // PADEL 2
-  { id: "pc2_0815", resourceId: "res_pc2", title: "Padel Booking", bookedBy: "Public User", start: t("08:15"), end: t("09:15"), kind: "Padel", participants: players4(["Mia (booker)", true], ["Noah", true], ["Aria", true], ["Evan", true]) },
-  { id: "pc2_0930", resourceId: "res_pc2", title: "Beginner Lesson", bookedBy: "Coach", start: t("09:30"), end: t("10:30"), kind: "Padel", participants: players4(["Coach", true], ["Student 1", true], ["Student 2", true], ["Student 3", true]) },
-  { id: "pc2_1045", resourceId: "res_pc2", title: "Padel Booking", bookedBy: "Public User", start: t("10:45"), end: t("11:45"), kind: "Padel", createdAt: t("10:20"), participants: players4(["Ben (booker)", true], ["Zoe", false], ["Max", false], ["Ella", true]) },
-  { id: "pc2_1200", resourceId: "res_pc2", title: "Padel Booking", bookedBy: "Member Booking", start: t("12:00"), end: t("13:00"), kind: "Padel", participants: players4(["Sana", true], ["Luca", true], ["Jude", true], ["Tara", true]) },
-  { id: "pc2_1315", resourceId: "res_pc2", title: "Corporate Session", bookedBy: "Corporate", start: t("13:15"), end: t("14:15"), kind: "Padel", createdAt: t("12:40"), participants: players4(["Team A", true], ["Team B", true], ["Team C", false], ["Team D", false]) },
-  { id: "pc2_1430", resourceId: "res_pc2", title: "Padel Coaching", bookedBy: "Coach", start: t("14:30"), end: t("15:30"), kind: "Padel", participants: players4(["Coach", true], ["Player D", true], ["Player E", true], ["Player F", false]) },
-  { id: "pc2_1545", resourceId: "res_pc2", title: "Padel Booking", bookedBy: "Public User", start: t("15:45"), end: t("16:45"), kind: "Padel", createdAt: t("15:10"), participants: players4(["Kaya (booker)", true], ["Ivo", false], ["Ren", false], ["Tomi", true]) },
-  { id: "pc2_1700", resourceId: "res_pc2", title: "Match Play", bookedBy: "Member Booking", start: t("17:00"), end: t("18:00"), kind: "Padel", participants: players4(["Asha", true], ["Jon", true], ["Priya", true], ["Cal", true]) },
-  { id: "pc2_1815", resourceId: "res_pc2", title: "Padel Booking", bookedBy: "Public User", start: t("18:15"), end: t("19:15"), kind: "Padel", createdAt: t("17:50"), participants: players4(["Inez (booker)", true], ["Bo", true], ["Kai", false], ["Liv", true]) },
-
-  // PADEL 3
-  { id: "pc3_0900", resourceId: "res_pc3", title: "Padel Booking", bookedBy: "Public User", start: t("09:00"), end: t("10:00"), kind: "Padel", createdAt: t("08:40"), participants: players4(["Dani (booker)", true], ["Rowan", true], ["Sky", false], ["Remy", true]) },
-  { id: "pc3_1015", resourceId: "res_pc3", title: "Intermediate Lesson", bookedBy: "Coach", start: t("10:15"), end: t("11:15"), kind: "Padel", participants: players4(["Coach", true], ["Student A", true], ["Student B", true], ["Student C", true]) },
-  { id: "pc3_1130", resourceId: "res_pc3", title: "Padel Booking", bookedBy: "Member Booking", start: t("11:30"), end: t("12:30"), kind: "Padel", participants: players4(["Mason", true], ["Isla", true], ["Theo", true], ["Sage", true]) },
-  { id: "pc3_1245", resourceId: "res_pc3", title: "Padel Booking", bookedBy: "Public User", start: t("12:45"), end: t("13:45"), kind: "Padel", createdAt: t("12:20"), participants: players4(["Aiden (booker)", true], ["Nova", false], ["Liam", false], ["Mara", true]) },
-  { id: "pc3_1500", resourceId: "res_pc3", title: "Padel Booking", bookedBy: "Public User", start: t("15:00"), end: t("16:00"), kind: "Padel", participants: players4(["Sofia", true], ["Nico", true], ["Elle", true], ["Finn", true]) },
-  { id: "pc3_1615", resourceId: "res_pc3", title: "Club Ladder", bookedBy: "Padel Club", start: t("16:15"), end: t("17:15"), kind: "Padel", createdAt: t("15:44"), participants: players4(["Host", true], ["Challenger", true], ["Pair 1", false], ["Pair 2", true]) },
-  { id: "pc3_1730", resourceId: "res_pc3", title: "Padel Booking", bookedBy: "Member Booking", start: t("17:30"), end: t("18:30"), kind: "Padel", participants: players4(["Zara", true], ["Hani", true], ["Cora", false], ["Mika", true]) },
-];
+const facilities: Facility[] = [];
+const resources: Resource[] = [];
+const POOL_CAPACITY_BY_RESOURCE: Record<string, number> = {};
+const seedBookings: Booking[] = [];
 
 /* ---------------- overlap layout ---------------- */
 function layoutOverlapsForColumn(bookings: Booking[]): Positioned[] {
@@ -460,7 +365,7 @@ export default function AdminBookingsPage() {
   const steps = totalMinutes / INC_MIN;
   const gridHeight = steps * INC_PX;
 
-  const [day, setDay] = useState<Date>(new Date(2025, 11, 19));
+  const [day, setDay] = useState<Date>(new Date());
   const [bookings, setBookings] = useState<Booking[]>(seedBookings);
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -664,7 +569,7 @@ export default function AdminBookingsPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight text-[#0C2F57]">Manage Bookings</h1>
-          <p className="mt-1 text-sm text-slate-600">Squash &amp; Padel require member confirmation (shows x/4).</p>
+          <p className="mt-1 text-sm text-slate-600">Bookings and bookable resources are not connected yet. No records are shown or saved.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -672,7 +577,7 @@ export default function AdminBookingsPage() {
             Today
           </Button>
 
-          <Button className="gap-2" onClick={openCreateDefault}>
+          <Button className="gap-2" onClick={openCreateDefault} disabled={!resources.length}>
             <Plus className="h-4 w-4" />
             Create Booking
           </Button>

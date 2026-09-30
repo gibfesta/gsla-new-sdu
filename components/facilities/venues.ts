@@ -1,5 +1,4 @@
-// These are the six demonstration locations already shown in the Facilities Directory.
-// Replace this list alongside the directory when venue data is connected.
+// Event form previews and example event records only. Other Facilities pages read saved facilities.
 export const facilitiesVenues = [
   { id: "fac-001", name: "Europa Sports Complex", type: "Sports Centre" },
   { id: "fac-002", name: "Bayside Sports Complex", type: "Sports Centre" },

@@ -35,7 +35,6 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const [loadFailed, setLoadFailed] = useState(false);
   const [loading, setLoading] = useState(Boolean(facilityId));
   const [savedId, setSavedId] = useState<string | null>(null);
-  const [needsFirstSave, setNeedsFirstSave] = useState(false);
 
   // Form fields (full page)
   const [name, setName] = useState("");
@@ -62,19 +61,11 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
 
   useEffect(() => {
     if (!facilityId) return;
-    const names = ["Europa Sports Complex", "Bayside Sports Complex", "Lathbury Sports Complex", "Lathbury Pool", "GASA Pool", "Parks"];
-    if (/^fac-00[1-6]$/.test(facilityId)) setName(names[Number(facilityId.slice(-1)) - 1]);
     const controller = new AbortController();
     fetch(`/api/facilities/${facilityId}`, { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const record = await response.json();
         if (!response.ok) {
-          if (response.status === 404 && /^fac-00[1-6]$/.test(facilityId)) {
-            const names = ["Europa Sports Complex", "Bayside Sports Complex", "Lathbury Sports Complex", "Lathbury Pool", "GASA Pool", "Parks"];
-            setName(names[Number(facilityId.slice(-1)) - 1]);
-            setNeedsFirstSave(true);
-            return;
-          }
           throw new Error(record.error || "Unable to load facility");
         }
         setSavedId(record.id);
@@ -95,7 +86,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         setSupportedActivities([...new Set<string>(record.supported_activities.map(normalizeActivity))]);
         setNotes(record.notes);
       })
-      .catch(() => { if (!controller.signal.aborted) { setLoadFailed(true); setError("The database connection is unavailable. Your existing venue details could not be loaded. Saving is disabled; reload after the connection is restored."); } })
+      .catch(() => { if (!controller.signal.aborted) { setLoadFailed(true); setError("Facility details could not be loaded. Saving is disabled; reload when the database connection is available."); } })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, [facilityId]);
@@ -160,7 +151,6 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
 
   return (
     <div className="p-6">
-      {needsFirstSave && <p className="mb-4 rounded-xl bg-blue-50 p-4 text-sm">This venue has no saved database record yet. Enter its real details below. Save Changes will create its first record.</p>}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <button
@@ -252,7 +242,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
               <label htmlFor="facility-area" className="text-xs font-semibold text-slate-600">Area / suburb *</label>
               <input id="facility-area" value={area} onChange={(e) => setArea(e.target.value)}
                 className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none"
-                placeholder="e.g. Europa Point" />
+                placeholder="Area or suburb" />
             </div>
 
             <div className="lg:col-span-2">
@@ -285,7 +275,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
             </div>
 
             <h2 className="lg:col-span-2 border-t border-slate-200 pt-5 text-lg font-bold text-[#0C2F57]">Management contacts</h2>
-            <p className="lg:col-span-2 text-sm text-slate-500">These are the contacts displayed in the current venue example. Staff assignments and access permissions will be managed separately.</p>
+            <p className="lg:col-span-2 text-sm text-slate-500">Enter the facility management contacts. Staff assignments and access permissions will be managed separately.</p>
             {([
               ["Centre manager name", centreManagerName, setCentreManagerName],
               ["Centre manager job title", centreManagerTitle, setCentreManagerTitle],

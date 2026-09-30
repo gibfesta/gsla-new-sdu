@@ -9,6 +9,7 @@ import {
   LayoutDashboard, ListChecks, LockKeyhole, Settings, ShieldCheck,
   TriangleAlert, type LucideIcon,
 } from "lucide-react";
+import { useSavedFacilities } from "./useSavedFacilities";
 import { facilitiesVenues } from "./venues";
 
 type NavEntry = { label: string; icon: LucideIcon; tab?: string; dashboard?: boolean };
@@ -43,10 +44,11 @@ const groups: NavGroup[] = [
 export default function FacilitiesSidebar() {
   const pathname = usePathname();
   const selectedTab = useSearchParams().get("tab");
-  const venueId = pathname.match(/^\/facilities\/facilities-directory\/(fac-[0-9]{3})(?:\/|$)/)?.[1];
-  const venue = facilitiesVenues.find((item) => item.id === venueId);
+  const { facilities } = useSavedFacilities();
+  const venueId = pathname.match(/^\/facilities\/facilities-directory\/([^/]+)(?:\/|$)/)?.[1];
+  const venueEventArea = /^\/facilities\/facilities-directory\/[^/]+\/events\//.test(pathname);
+  const venue = facilities.find((item) => item.id === venueId) ?? (venueEventArea ? facilitiesVenues.find((item) => item.id === venueId) : undefined);
   const venueHref = venueId ? `/facilities/facilities-directory/${venueId}` : "/facilities/home";
-  const venueEventArea = /^\/facilities\/facilities-directory\/fac-[0-9]{3}\/events\//.test(pathname);
 
   return (
     <aside className="w-full shrink-0 border-r border-[#d5e4f6] bg-white text-[#0C2F57] lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">

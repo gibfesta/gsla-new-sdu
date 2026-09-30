@@ -1,14 +1,20 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Building2, Info, UserRoundCog } from "lucide-react";
-import { facilitiesVenues } from "@/components/facilities/venues";
+import { useSavedFacilities } from "@/components/facilities/useSavedFacilities";
 import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 
 export default function CentreManagerAssignmentsPage() {
+  const { facilities: facilitiesVenues, loading, error } = useSavedFacilities();
   return (
     <div className="space-y-4 text-[#112d56]">
       <FacilitiesDepartmentBanner title="Centre Manager Assignments" description="See each venue's usual Centre Manager and arrange temporary cover when someone needs to work at another venue." />
 
-      <div className="flex items-start gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]"><Info size={18} className="mt-1 shrink-0 text-[#155ca7]" aria-hidden="true" /><p><strong>Page preview.</strong> Centre Manager records and permissions are not connected. No names or existing assignments have been inferred from demonstration venue data; no changes can be saved here yet.</p></div>
+      <div className="flex items-start gap-3 rounded-xl border border-[#cce2fc] bg-[#eef6ff] px-4 py-3 text-sm leading-6 text-[#35557f]"><Info size={18} className="mt-1 shrink-0 text-[#155ca7]" aria-hidden="true" /><p>Centre Manager assignments and permissions are not connected. No assignments can be saved here yet.</p></div>
+      {loading && <p role="status">Loading facilities...</p>}
+      {error && <p role="alert" className="text-rose-700">{error}</p>}
+      {!loading && !error && !facilitiesVenues.length && <p>No facilities have been saved yet.</p>}
 
       <section className="rounded-2xl border border-[#d5e4f6] bg-white p-5 shadow-sm sm:p-6" aria-labelledby="cover-heading">
         <div className="flex items-start gap-3"><UserRoundCog size={25} className="mt-0.5 text-[#155ca7]" aria-hidden="true" /><div><h2 id="cover-heading" className="text-xl font-bold">Arrange temporary venue cover</h2><p className="mt-1 text-sm text-[#60799f]">For example, assign a Centre Manager to cover a different venue for a defined period, then return to the usual assignment.</p></div></div>

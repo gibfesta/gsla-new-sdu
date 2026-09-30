@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { facilitiesVenues } from "@/components/facilities/venues";
 
 async function findFacility(id: string) {
-  const legacy = facilitiesVenues.find((venue) => venue.id === id);
-  if (legacy) return prisma.facilities_Table.findFirst({ where: { name: legacy.name } });
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return null;
   return prisma.facilities_Table.findFirst({ where: { id } });
 }
