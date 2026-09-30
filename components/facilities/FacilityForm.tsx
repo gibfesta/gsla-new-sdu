@@ -122,12 +122,14 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
           description: description.trim(),
           contact_email: contactEmail.trim() || null,
           contact_phone: contactPhone.trim() || null,
+          ...(savedId ? {
           centre_manager_name: centreManagerName.trim(),
           centre_manager_title: centreManagerTitle.trim(),
           centre_manager_email: centreManagerEmail.trim(),
           centre_manager_phone: centreManagerPhone.trim(),
           facilities_manager_name: facilitiesManagerName.trim(),
           facilities_manager_email: facilitiesManagerEmail.trim(),
+          } : {}),
           supported_activities: supportedActivities,
           notes: notes.trim(),
         }),
@@ -274,6 +276,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
               />
             </div>
 
+            {facilityId && <>
             <h2 className="lg:col-span-2 border-t border-slate-200 pt-5 text-lg font-bold text-[#0C2F57]">Management contacts</h2>
             <p className="lg:col-span-2 text-sm text-slate-500">Enter the facility management contacts. Staff assignments and access permissions will be managed separately.</p>
             {([
@@ -291,6 +294,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
                   className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none" />
               </div>
             ))}
+            </>}
 
             <div className="lg:col-span-2 border-t border-slate-200 pt-5">
               <h2 className="text-lg font-bold text-[#0C2F57]">Supported activities</h2>
