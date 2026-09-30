@@ -1,17 +1,18 @@
 "use client";
 import { useState } from "react";
+import { LayoutGrid, List } from "lucide-react";
 import { FormPreviewCard } from "./FacilityFormPreviewer";
 import FacilitiesDepartmentBanner from "./FacilitiesDepartmentBanner";
 import WorkflowTemplateEditor, { workflowButton, workflowInput } from "./WorkflowTemplateEditor";
 import { useSavedFacilities } from "./useSavedFacilities";
 import { eventExamples } from "./eventExamples";
-import { KIND_LABELS, WORKFLOW_KINDS, type WorkflowTemplate } from "@/lib/facilityWorkflows";
+import { KIND_LABELS, type WorkflowTemplate } from "@/lib/facilityWorkflows";
 import { useCatalogue, saveCatalogue, type CatalogueForm, type PreviewVenue } from "@/lib/facilityFormCatalogue";
 const outline = "rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50";
 export default function FormsAndProcedures() {
  const { data, notice } = useCatalogue();
  const { facilities, loading, error } = useSavedFacilities();
- const [query, setQuery] = useState(""); const [kind, setKind] = useState("all");
+ const [view, setView] = useState<"cards" | "list">("cards");
  const [editor, setEditor] = useState<CatalogueForm | null>(null);
  const [previewing, setPreviewing] = useState<CatalogueForm | null>(null);
  const [assigning, setAssigning] = useState<CatalogueForm | null>(null);
@@ -20,7 +21,6 @@ export default function FormsAndProcedures() {
  const venues = [...facilities.map(venue => ({ id: venue.id, name: venue.name })), ...data.previewVenues];
  function save(form: CatalogueForm) { saveCatalogue({ ...data, forms: data.forms.some(item => item.id === form.id) ? data.forms.map(item => item.id === form.id ? form : item) : [...data.forms, form] }); setMessage("Form saved in this browser."); }
  function create() { setEditor({ id: crypto.randomUUID(), kind: "work-order", title: "", instructions: "", category: "", frequency: "One-off / event", venue: "All venues", owner: "Head of Facilities", version: 1, reviewDate: "", dueDate: "", active: true, source: "Custom facilities form", standard: false, assignments: [], fields: [{ id: crypto.randomUUID(), label: "Work required", type: "textarea", required: true, help: "", options: [] }] }); }
- const filtered = data.forms.filter(form => (kind === "all" || form.kind === kind) && `${form.title} ${form.category} ${form.instructions}`.toLowerCase().includes(query.toLowerCase()));
  return <div className="space-y-6 text-slate-900">
   <FacilitiesDepartmentBanner title="Forms & Procedures" description="Create, edit and organise the forms used across your facilities. Assign additional work to particular venues, dates and events."/>
   <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">Design preview · catalogue changes and assignments save in this browser. Live permissions and shared database records will be connected after design approval.</p>
@@ -30,15 +30,14 @@ export default function FormsAndProcedures() {
   : assigning ? <AssignmentEditor key={assigning.id} form={assigning} venues={venues} loading={loading} venueError={error} onCancel={() => setAssigning(null)} onSave={form => { save(form); setAssigning(null); }} onAddVenue={name => { const venue = { id: crypto.randomUUID(), name }; saveCatalogue({ ...data, previewVenues: [...data.previewVenues, venue] }); }}/>
   : previewing ? <section aria-label="Form preview" className="space-y-4"><button type="button" className={outline} onClick={() => setPreviewing(null)}>Back to forms</button><p className="text-sm text-slate-600">Preview only · try the fields below. Answers save in this browser; no report is sent or work order issued.</p><FormPreviewCard key={previewing.id + previewing.version} form={previewing} scope="all"/></section>
   : <>
-   <div className="flex flex-wrap items-end justify-between gap-4"><div className="flex flex-wrap gap-4"><label className="text-sm font-semibold">Find a form<input className={workflowInput} value={query} onChange={e => setQuery(e.target.value)} placeholder="Search title or category"/></label><label className="text-sm font-semibold">Form category<select className={workflowInput} value={kind} onChange={e => setKind(e.target.value)}><option value="all">All forms ({data.forms.length})</option>{WORKFLOW_KINDS.map(value => <option key={value} value={value}>{KIND_LABELS[value]}</option>)}</select></label></div><button type="button" className={workflowButton} onClick={create}>Create new form</button></div>
-   <div className="grid gap-4 sm:grid-cols-3">{[["All forms",data.forms.length],["Standard facility forms",data.forms.filter(form => form.standard && form.active).length],["Extra / one-off forms",data.forms.filter(form => !form.standard).length]].map(([label,count]) => <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">{label}</p><p className="mt-1 text-2xl font-bold text-[#0C2F57]">{count}</p></div>)}</div>
+   <div className="flex flex-wrap items-center justify-between gap-4"><div className="flex gap-1" role="group" aria-label="Forms view">{([["cards", "Card view", LayoutGrid], ["list", "List view", List]] as const).map(([value, label, Icon]) => <button key={value} type="button" aria-pressed={view === value} onClick={() => setView(value)} className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${view === value ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}><Icon size={16} aria-hidden="true"/>{label}</button>)}</div><button type="button" className={workflowButton} onClick={create}>Create new form</button></div>
    <p className="text-sm text-slate-600">Standard forms are included automatically for every facility. Extra forms only appear at their assigned venues. Use Assign to change either setting.</p>
-   <div className="space-y-4">{filtered.map(form => <article key={form.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+   <div className={view === "cards" ? "grid gap-4 xl:grid-cols-2" : "space-y-3"}>{data.forms.map(form => <article key={form.id} className={`rounded-2xl border border-slate-200 bg-white p-5 shadow-sm ${view === "list" ? "flex flex-wrap items-center justify-between gap-4" : ""}`}><div className={view === "list" ? "min-w-0 flex-1" : ""}>
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-lg font-bold text-slate-900">{form.title}</h2><p className="mt-1 text-sm text-slate-500">{KIND_LABELS[form.kind]}{form.category ? ` · ${form.category}` : ""} · {form.frequency} · v{form.version}</p></div><span className="rounded-full bg-slate-50 px-3 py-1 text-xs font-semibold ring-1 ring-slate-200">{!form.active ? "Inactive" : form.standard ? "Standard · every facility" : "Extra form"}</span></div>
-    <p className="mt-3 text-sm text-slate-600">{form.instructions}</p><p className="mt-3 text-xs text-slate-500">{form.fields.length} fields · Owner: {form.owner}</p>
+    {view === "cards" && <p className="mt-3 text-sm text-slate-600">{form.instructions}</p>}<p className="mt-3 text-xs text-slate-500">{form.fields.length} fields · Owner: {form.owner}</p>
     <div className="mt-3 flex flex-wrap gap-2">{form.assignments.map((a,i) => <span key={i} className="rounded-lg bg-blue-50 px-3 py-2 text-xs text-[#0C2F57]">{a.venueName}{a.date ? ` · ${a.date}${a.endDate ? ` to ${a.endDate}` : ""}` : ""}{a.event ? ` · ${a.event}` : ""}</span>)}{!form.standard && !form.assignments.length && <p className="text-xs text-slate-500">No venue assigned yet</p>}</div>
-    <div className="mt-4 flex flex-wrap gap-2"><button type="button" className={outline} onClick={() => setEditor(form)}>Edit</button><button type="button" className={outline} onClick={() => setAssigning(form)}>Assign</button><button type="button" className={outline} onClick={() => setPreviewing(form)}>Preview</button><button type="button" className={outline + " text-rose-700"} onClick={() => { saveCatalogue({ ...data, forms: data.forms.filter(item => item.id !== form.id) }); setDeleted(form); setMessage("Form removed from the catalogue and venue assignments."); }}>Delete</button></div>
-   </article>)}{!filtered.length && <p className="rounded-2xl bg-white p-6 text-sm">No forms match your search.</p>}</div>
+    </div><div className={`flex flex-wrap gap-2 ${view === "cards" ? "mt-4" : ""}`}><button type="button" className={outline} onClick={() => setEditor(form)}>Edit</button><button type="button" className={outline} onClick={() => setAssigning(form)}>Assign</button><button type="button" className={outline} onClick={() => setPreviewing(form)}>Preview</button><button type="button" className={outline + " text-rose-700"} onClick={() => { saveCatalogue({ ...data, forms: data.forms.filter(item => item.id !== form.id) }); setDeleted(form); setMessage("Form removed from the catalogue and venue assignments."); }}>Delete</button></div>
+   </article>)}{!data.forms.length && <p className="rounded-2xl bg-white p-6 text-sm">No forms have been created yet.</p>}</div>
   </>}
  </div>;
 }
