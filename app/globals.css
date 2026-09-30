@@ -72,3 +72,8 @@ html, body {
 [data-venue-view="list"] .venue-records > * {
   width: 100%;
 }
+
+/* GSLA website blue shared by all Sports Development Unit brand surfaces. */
+.sdu-brand-surface {
+  background-color: #4b77d4;
+}
