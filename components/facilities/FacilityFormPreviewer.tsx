@@ -33,7 +33,7 @@ export default function FacilityFormPreviewer({ facilityId, defaultTab = "handov
 function examples(form: CatalogueForm): Record<string,Answer> {
  return Object.fromEntries(form.fields.map(field => [field.id, field.type === "checkbox" ? false : field.type === "photos" || field.type === "file" ? [] : field.type === "select" ? field.options[0] || "" : field.type === "date" || field.type === "time" ? "" : `Example: ${field.label === "Shift summary" ? "Opening checks completed. Describe the shift here." : field.label === "Risks / concerns" ? "Monitor the entrance gate until it has been checked." : field.label === "Actions required" ? "Arrange a gate inspection." : field.label === "Manager message / notes" ? "Pass unresolved concerns to the next shift." : field.label.toLowerCase()}`]));
 }
-function FormPreviewCard({form,scope}:{form:CatalogueForm;scope:string}) {
+export function FormPreviewCard({form,scope}:{form:CatalogueForm;scope:string}) {
  const [answers,setAnswers] = useVenueDesignState(scope,"catalogue-form-" + form.id + "-v" + form.version,examples(form));
  const [meta,setMeta] = useVenueDesignState(scope,"catalogue-meta-" + form.id,{ actor:"",date:"",notes:"",recipient:"" });
  const notice = useVenueDesignNotice(scope); const [message,setMessage] = useState("");
