@@ -25,8 +25,22 @@ const FACILITY_TYPES: FacilityType[] = [
 ];
 
 const FACILITY_STATUSES: FacilityStatus[] = ["Operational", "Limited", "Closed"];
+const ACTIVITY_LABELS: Record<string, string> = {
+  "billiards-snooker": "Billiards & Snooker",
+  "brazilian-jiu-jitsu": "Brazilian Jiu-Jitsu",
+  "esports-video-gaming": "Esports & Video Gaming",
+  "jet-ski": "Jet Skiing",
+  "ju-jitsu": "Ju-Jitsu",
+  "lifesaving": "Lifesaving Sport",
+  "sub-aqua": "Sub-Aqua",
+  "marocatlas-4x4": "4×4 Off-Road Driving",
+  "paamoa": "Physical Activities for Older Adults (PAAMOA)",
+};
 const ACTIVITY_OPTIONS = directoryAssociations
-  .map(({ slug, name }) => ({ id: slug, label: name }))
+  .map(({ slug }) => ({
+    id: slug,
+    label: ACTIVITY_LABELS[slug] ?? slug.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
+  }))
   .sort((a, b) => a.label.localeCompare(b.label));
 
 export default function AdminFacilityNewPage() {
@@ -257,12 +271,12 @@ export default function AdminFacilityNewPage() {
 
             <div className="lg:col-span-2 border-t border-slate-200 pt-5">
               <h2 className="text-lg font-bold text-[#0C2F57]">Supported activities</h2>
-              <p className="mt-1 text-sm text-slate-500">Select all sports and leisure associations associated with this venue.</p>
-              <label htmlFor="activity-search" className="mt-4 block text-xs font-semibold text-slate-600">Search sports and associations</label>
+              <p className="mt-1 text-sm text-slate-500">Select all sports and activities associated with this venue.</p>
+              <label htmlFor="activity-search" className="mt-4 block text-xs font-semibold text-slate-600">Search sports and activities</label>
               <input id="activity-search" type="search" value={activitySearch}
                 onChange={(e) => setActivitySearch(e.target.value)}
                 className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none"
-                placeholder="Search by sport or association name" />
+                placeholder="Search by sport or activity name" />
               <p className="mt-2 text-xs text-slate-500" aria-live="polite">{supportedActivities.length} selected · {filteredActivities.length} of {ACTIVITY_OPTIONS.length} shown</p>
               <div className="mt-3 grid grid-cols-1 gap-2 lg:grid-cols-2">
                 {filteredActivities.map(({ id, label: activity }) => {
@@ -277,7 +291,7 @@ export default function AdminFacilityNewPage() {
                   </label>;
                 })}
               </div>
-              {!filteredActivities.length && <p className="mt-3 text-sm text-slate-500">No matching sports or associations.</p>}
+              {!filteredActivities.length && <p className="mt-3 text-sm text-slate-500">No matching sports or activities.</p>}
             </div>
 
             <div className="lg:col-span-2">
