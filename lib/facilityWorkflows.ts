@@ -1,6 +1,6 @@
-export const WORKFLOW_KINDS = ["maintenance", "opening", "closing", "afternoon", "night", "compliance", "sop", "issue"] as const;
+export const WORKFLOW_KINDS = ["maintenance", "opening", "closing", "afternoon", "night", "compliance", "sop", "issue", "work-order", "booking", "photo", "update"] as const;
 export type WorkflowKind = typeof WORKFLOW_KINDS[number];
-export const KIND_LABELS: Record<WorkflowKind, string> = { maintenance: "Maintenance procedure", opening: "Daily opening", closing: "Daily closing", afternoon: "Afternoon handover", night: "Night handover", compliance: "Compliance check", sop: "Procedure / SOP", issue: "Issue report" };
+export const KIND_LABELS: Record<WorkflowKind, string> = { maintenance: "Maintenance procedure", opening: "Daily opening", closing: "Daily closing", afternoon: "Afternoon handover", night: "Night handover", compliance: "Compliance check", sop: "Procedure / SOP", issue: "Issue report", "work-order": "Work order", booking: "Booking", photo: "Photo log", update: "Operational update" };
 export const FIELD_TYPES = ["checkbox", "text", "textarea", "select", "date", "time", "photos", "file"] as const;
 export type FormField = { id: string; label: string; type: typeof FIELD_TYPES[number]; required: boolean; help: string; options: string[] };
 export type WorkflowTemplate = { id: string; kind: WorkflowKind; title: string; instructions: string; category: string; frequency: string; venue: string; owner: string; version: number; reviewDate: string; dueDate: string; active: boolean; fields: FormField[]; source: string; documents?: Attachment[] };

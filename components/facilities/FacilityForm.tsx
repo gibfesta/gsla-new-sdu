@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Save } from "lucide-react";
 import FacilityScheduleEditor from "@/components/facilities/FacilityScheduleEditor";
+import Link from "next/link";
+import { useCatalogue } from "@/lib/facilityFormCatalogue";
 import { emptyFacilitySchedule, parseFacilitySchedule } from "@/lib/facilitySchedule";
 
 type FacilityStatus = "Operational" | "Limited" | "Closed";
@@ -30,6 +32,7 @@ import { ACTIVITY_OPTIONS, normalizeActivity } from "@/components/facilities/act
 
 export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const router = useRouter();
+  const { data: catalogue } = useCatalogue();
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -332,6 +335,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
 
           <div className="mt-6 text-xs text-slate-500">
             Fields marked with * are required.
+            <p className="mt-2">{catalogue.forms.filter(form => form.standard && form.active).length} standard forms are included automatically in this browser’s facility preview. Manage the standard set and extra assignments in <Link className="font-semibold text-[#0C2F57] underline" href="/facilities/forms-and-procedures">Forms & Procedures</Link>.</p>
           </div>
         </CardContent>
       </Card>

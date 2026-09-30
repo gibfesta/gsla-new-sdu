@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import OriginalVenueWorkspace from "@/components/facilities/OriginalVenueWorkspace";
+import FacilityFormPreviewer from "@/components/facilities/FacilityFormPreviewer";
 export default function FacilitiesFormsPage() {
- return <Suspense fallback={<p role="status">Loading venue form preview…</p>}><OriginalVenueWorkspace/></Suspense>;
+ return <Suspense fallback={<p role="status">Loading venue form preview…</p>}><FacilityFormPreviewer/></Suspense>;
 }
