@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
+import { normalizeActivity } from "@/components/facilities/activityOptions";
 import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 import {
   Plus,
@@ -46,80 +47,7 @@ type Facility = {
   notes: string[];
 };
 
-const MOCK_FACILITIES: Facility[] = [
-  {
-    id: "fac-001",
-    name: "Europa Sports Complex",
-    type: "Sports Centre",
-    status: "Operational",
-    suburb: "Europa Point",
-    address: "Europa Point, Gibraltar",
-    sportsSupported: ["Football", "Athletics"],
-    managerEmail: "europa@gov.gi",
-    managerPhone: "+350 200 10001",
-    notes: ["Main outdoor sports complex", "Large-capacity venue"],
-  },
-  {
-    id: "fac-002",
-    name: "Bayside Sports Complex",
-    type: "Sports Centre",
-    status: "Operational",
-    suburb: "Bayside",
-    address: "Bayside Road, Gibraltar",
-    sportsSupported: ["Basketball", "Futsal", "Volleyball"],
-    managerEmail: "bayside@gov.gi",
-    managerPhone: "+350 200 10002",
-    notes: ["Indoor sports complex", "Used for multi-sport activities"],
-  },
-  {
-    id: "fac-003",
-    name: "Lathbury Sports Complex",
-    type: "Sports Centre",
-    status: "Operational",
-    suburb: "Lathbury",
-    address: "Lathbury Barracks, Gibraltar",
-    sportsSupported: ["Football", "Training"],
-    managerEmail: "lathbury@gov.gi",
-    managerPhone: "+350 200 10003",
-    notes: ["Multi-use sports venue", "Regular training sessions held here"],
-  },
-  {
-    id: "fac-004",
-    name: "Lathbury Pool",
-    type: "Sports Centre",
-    status: "Limited",
-    suburb: "Lathbury",
-    address: "Lathbury Barracks, Gibraltar",
-    sportsSupported: ["Swimming"],
-    managerEmail: "lathburypool@gov.gi",
-    managerPhone: "+350 200 10004",
-    notes: ["Swimming pool facility", "Currently operating with limited access"],
-  },
-  {
-    id: "fac-005",
-    name: "GASA Pool",
-    type: "Sports Centre",
-    status: "Operational",
-    suburb: "Victoria Stadium",
-    address: "Victoria Stadium Area, Gibraltar",
-    sportsSupported: ["Swimming"],
-    managerEmail: "gasa@gov.gi",
-    managerPhone: "+350 200 10005",
-    notes: ["Aquatic facility", "Open for training and public sessions"],
-  },
-  {
-    id: "fac-006",
-    name: "Parks",
-    type: "Park",
-    status: "Operational",
-    suburb: "Various Locations",
-    address: "Various Locations, Gibraltar",
-    sportsSupported: ["Outdoor Recreation"],
-    managerEmail: "parks@gov.gi",
-    managerPhone: "+350 200 10006",
-    notes: ["Collection of public parks", "Outdoor recreation spaces"],
-  },
-];
+
 
 function statusStyles(status: FacilityStatus) {
   if (status === "Operational") {
@@ -148,6 +76,24 @@ function typeIcon(type: FacilityType) {
 
 export default function FacilitiesPage() {
   const router = useRouter();
+  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/facilities", { cache: "no-store", signal: controller.signal })
+      .then(async (response) => { if (!response.ok) throw new Error("Unable to load facilities"); return response.json(); })
+      .then((records) => setFacilities(records.map((record: { id: string; name: string; type: FacilityType; status: FacilityStatus; area: string; address: string; supported_activities: string[]; centre_manager_email: string; centre_manager_phone: string; contact_email: string; contact_phone: string; notes: string }) => ({
+        id: record.id, name: record.name, type: record.type, status: record.status,
+        suburb: record.area, address: record.address, sportsSupported: record.supported_activities.map(normalizeActivity),
+        managerEmail: record.centre_manager_email || record.contact_email,
+        managerPhone: record.centre_manager_phone || record.contact_phone,
+        notes: record.notes.split("\n").filter(Boolean),
+      }))))
+      .catch((error: Error) => { if (!controller.signal.aborted) setError(error.message); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
+  }, []);
   const [selectedFacilityId, setSelectedFacilityId] = useState("");
   const [view, setView] = useState<"cards" | "list">("list");
 
@@ -156,6 +102,9 @@ export default function FacilitiesPage() {
       <FacilitiesDepartmentBanner title="Facilities Directory" description="Browse GSLA facilities and open a dedicated page for each location." />
 
       <section>
+        {loading && <p role="status">Loading facilities...</p>}
+        {error && <p role="alert" className="mb-4 text-red-700">{error}</p>}
+        {!loading && !error && !facilities.length && <p className="mb-4 rounded-xl bg-blue-50 p-4">No facilities have been saved yet. Choose Create Facility to add your first venue.</p>}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1" role="group" aria-label="Directory view">
             <button type="button" aria-pressed={view === "cards"} onClick={() => setView("cards")} className={classNames("inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold", view === "cards" ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50")}><LayoutGrid size={16} aria-hidden="true" />Card view</button>
@@ -168,7 +117,7 @@ export default function FacilitiesPage() {
           </div>
         </div>
 
-        <p className="mb-4 text-sm text-slate-500">{MOCK_FACILITIES.length} facilities · {selectedFacilityId ? `${MOCK_FACILITIES.find((facility) => facility.id === selectedFacilityId)?.name} selected` : "Select a facility below to edit or archive"}</p>
+        <p className="mb-4 text-sm text-slate-500">{facilities.length} facilities · {selectedFacilityId ? `${facilities.find((facility) => facility.id === selectedFacilityId)?.name} selected` : "Select a facility below to edit or archive"}</p>
 
         {view === "list" ? (
           <div className="overflow-hidden rounded-2xl border border-[#d5e4f6] bg-white p-4 shadow-sm sm:p-5">
@@ -177,7 +126,7 @@ export default function FacilitiesPage() {
                 <thead className="bg-[#eef5fd] text-xs font-semibold text-[#35557f]"><tr>
                   <th scope="col" className="rounded-l-lg px-3 py-3">Select</th><th scope="col" className="px-3 py-3">Facility</th><th scope="col" className="px-3 py-3">Status</th><th scope="col" className="px-3 py-3">Location</th><th scope="col" className="px-3 py-3">Sports</th><th scope="col" className="rounded-r-lg px-3 py-3">Actions</th>
                 </tr></thead>
-                <tbody>{MOCK_FACILITIES.map((facility) => {
+                <tbody>{facilities.map((facility) => {
                   const TypeIcon = typeIcon(facility.type);
                   return <tr key={facility.id} className={selectedFacilityId === facility.id ? "bg-blue-50" : ""}>
                     <td className="border-b border-[#e5edf8] px-3 py-3"><input type="radio" name="selected-facility-list" value={facility.id} checked={selectedFacilityId === facility.id} onChange={() => setSelectedFacilityId(facility.id)} aria-label={`Select ${facility.name}`} className="h-4 w-4 accent-[#155ca7]" /></td>
@@ -193,7 +142,7 @@ export default function FacilitiesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {MOCK_FACILITIES.map((facility) => {
+            {facilities.map((facility) => {
               const status = statusStyles(facility.status);
               const StatusIcon = status.icon;
               const TypeIcon = typeIcon(facility.type);

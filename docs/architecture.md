@@ -41,7 +41,7 @@ Compatibility redirects in `next.config.ts` keep prior bookmarks usable during m
 ## Boundaries and follow-up work
 
 - Route and UI grouping is complete; data models and API endpoints have not been renamed.
-- The Facilities directory still uses fixed data while its create route writes to Prisma; the venue dashboard is a fixed demonstration. HR, sports and calendar screens also contain demo workflows.
+- The Facilities directory and venue information now read saved Prisma records. Create and Edit share FacilityForm, activityOptions, and the same fields; PATCH persists the full information contract. Legacy fac-001 through fac-006 bookmarks resolve saved records by venue name, or offer first-time data entry without sample contact or activity values. Other operational venue pages, HR, sports and calendar screens still contain demo workflows.
 - The current middleware refreshes Supabase sessions but does not enforce department roles. Facilities API endpoints and some server actions lack server-side role and venue checks. Auth, authorization and venue assignment need dedicated work before operational use.
 - The current calendar has sports-focused sample events. Decide ownership of a truly shared calendar contract before wiring live data.
 - Existing `documents/` source material and `accelerate.txt` remain in place pending a separate content/repository hygiene review.
