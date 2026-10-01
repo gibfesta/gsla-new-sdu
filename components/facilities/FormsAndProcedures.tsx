@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import EventEditor from "./EventEditor";
 import { LayoutGrid, List } from "lucide-react";
 import { FormPreviewCard } from "./FacilityFormPreviewer";
@@ -16,7 +15,6 @@ export default function FormsAndProcedures() {
  const { facilities, loading, error } = useSavedFacilities();
  const [view, setView] = useState<"cards" | "list">("list");
  const [editor, setEditor] = useState<CatalogueForm | null>(null);
- const [eventPreview, setEventPreview] = useState(false);
  const [previewing, setPreviewing] = useState<CatalogueForm | null>(null);
  const [assigning, setAssigning] = useState<CatalogueForm | null>(null);
  const [deleted, setDeleted] = useState<CatalogueForm | null>(null);
@@ -29,23 +27,20 @@ export default function FormsAndProcedures() {
   <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">Design preview · catalogue changes and assignments save in this browser. Live permissions and shared database records will be connected after design approval.</p>
   {notice && <p role="alert" className="text-sm text-rose-700">{notice}</p>}{message && <p role="status" className="rounded-xl bg-slate-50 p-3 text-sm">{message}</p>}
   {deleted && <p className="rounded-xl bg-slate-50 p-3 text-sm">Removed “{deleted.title}”. <button type="button" className="font-semibold underline" onClick={() => { save(deleted); setDeleted(null); }}>Undo deletion</button></p>}
-  {editor ? <WorkflowTemplateEditor key={editor.id} initial={editor} onCancel={() => setEditor(null)} onSave={(form: WorkflowTemplate) => { save({ ...editor, ...form, version: data.forms.some(item => item.id === form.id) ? editor.version + 1 : 1 }); setEditor(null); }}/>
+  {editor?.eventLayout ? <section className="space-y-4"><label className="block text-sm font-semibold">Template title<input className={workflowInput} value={editor.title} onChange={e => setEditor({ ...editor, title: e.target.value })}/></label><label className="block text-sm font-semibold">Instructions<textarea className={workflowInput} value={editor.instructions} onChange={e => setEditor({ ...editor, instructions: e.target.value })}/></label><EventEditor mode="new" preview templateTitle={editor.title} templateInstructions={editor.instructions} templateInitial={editor.eventLayout} onTemplateSave={eventLayout => { if (!editor.title.trim()) { setMessage("Enter a template title before saving."); return; } save({ ...editor, eventLayout, version: editor.version + 1 }); setEditor(null); }} onClose={() => setEditor(null)}/></section>
+  : editor ? <WorkflowTemplateEditor key={editor.id} initial={editor} onCancel={() => setEditor(null)} onSave={(form: WorkflowTemplate) => { save({ ...editor, ...form, version: data.forms.some(item => item.id === form.id) ? editor.version + 1 : 1 }); setEditor(null); }}/>
   : assigning ? <AssignmentEditor key={assigning.id} form={assigning} venues={venues} loading={loading} venueError={error} onCancel={() => setAssigning(null)} onSave={form => { save(form); setAssigning(null); }} onAddVenue={name => { const venue = { id: crypto.randomUUID(), name }; saveCatalogue({ ...data, previewVenues: [...data.previewVenues, venue] }); }}/>
-  : eventPreview ? <section aria-label="Event form preview"><EventEditor mode="new" preview onClose={() => setEventPreview(false)}/></section>
+  : previewing?.eventLayout ? <section aria-label="Event form preview"><EventEditor key={previewing.id + previewing.version} mode="new" preview templateTitle={previewing.title} templateInstructions={previewing.instructions} templateInitial={previewing.eventLayout} onClose={() => setPreviewing(null)}/></section>
   : previewing ? <section aria-label="Form preview" className="space-y-4"><button type="button" className={outline} onClick={() => setPreviewing(null)}>Back to forms</button><p className="text-sm text-slate-600">Preview only · try the fields below. Answers save in this browser; no report is sent or work order issued.</p><FormPreviewCard key={previewing.id + previewing.version} form={previewing} scope="all"/></section>
   : <>
    <div className="flex flex-wrap items-center justify-between gap-4"><div className="flex gap-1" role="group" aria-label="Forms view">{([["cards", "Card view", LayoutGrid], ["list", "List view", List]] as const).map(([value, label, Icon]) => <button key={value} type="button" aria-pressed={view === value} onClick={() => setView(value)} className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold ${view === value ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"}`}><Icon size={16} aria-hidden="true"/>{label}</button>)}</div><button type="button" className={workflowButton} onClick={create}>Create new form</button></div>
    <p className="text-sm text-slate-600">Standard forms are included automatically for every facility. Extra forms only appear at their assigned venues. Use Assign to change either setting.</p>
    <div className="space-y-6">{FORM_SECTIONS.map(section => {
     const forms = data.forms.filter(form => formSection(form) === section);
-    if (!forms.length && section !== "events") return null;
+    if (!forms.length) return null;
     return <section key={section} aria-labelledby={`forms-${section}`} className="space-y-3">
      <h2 id={`forms-${section}`} className="text-lg font-bold text-[#0C2F57]">{FORM_SECTION_LABELS[section]}</h2>
      <div className={view === "cards" ? "grid gap-3 xl:grid-cols-2" : "overflow-hidden rounded-xl border border-slate-200 bg-white divide-y divide-slate-200"}>
-      {section === "events" && <article className={view === "list" ? "flex flex-wrap items-center justify-between gap-3 px-4 py-3" : "rounded-xl border border-slate-200 bg-white p-4"}>
-       <h3 className="min-w-0 flex-1 text-sm font-semibold">Event Form</h3>
-       <div className={`flex flex-wrap gap-2 ${view === "cards" ? "mt-4" : ""}`}><Link className={outline} href="/facilities/events-control/new">Open form</Link><button type="button" className={outline} onClick={() => setEventPreview(true)}>Preview</button></div>
-      </article>}
       {forms.map(form => <article key={form.id} className={view === "list" ? "flex flex-wrap items-center justify-between gap-3 px-4 py-3" : "rounded-xl border border-slate-200 bg-white p-4"}>
        <h3 className={"text-sm font-semibold text-slate-900 " + (view === "list" ? "min-w-0 flex-1" : "")}>{form.title}</h3>
        <div className={`flex flex-wrap gap-2 ${view === "cards" ? "mt-4" : ""}`}><button type="button" className={outline} onClick={() => setEditor(form)}>Edit</button><button type="button" className={outline} onClick={() => setAssigning(form)}>Assign</button><button type="button" className={outline} onClick={() => setPreviewing(form)}>Preview</button><button type="button" className={outline + " text-rose-700"} onClick={() => { saveCatalogue({ ...data, forms: data.forms.filter(item => item.id !== form.id) }); setDeleted(form); setMessage("Form removed from the catalogue and venue assignments."); }}>Delete</button></div>
