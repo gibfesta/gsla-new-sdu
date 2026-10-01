@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { FIELD_TYPES, KIND_LABELS, WORKFLOW_KINDS, validateTemplate, type WorkflowTemplate, type WorkflowKind, type FormField } from "@/lib/facilityWorkflows";
+import { FIELD_TYPES, KIND_LABELS, WORKFLOW_KINDS, FORM_SECTIONS, FORM_SECTION_LABELS, formSection, validateTemplate, type FormSection, type WorkflowTemplate, type WorkflowKind, type FormField } from "@/lib/facilityWorkflows";
 import WorkflowAttachments from "./WorkflowAttachments";
 export const workflowInput = "mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800";
 export const workflowButton = "rounded-xl bg-[#0C2F57] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110";
@@ -18,6 +18,7 @@ export default function WorkflowTemplateEditor({ initial, onSave, onCancel }: { 
     <div className="grid gap-4 sm:grid-cols-2">
       <label className="text-sm font-semibold">Template title *<input required className={workflowInput} value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} /></label>
       <label className="text-sm font-semibold">Form type<select className={workflowInput} value={draft.kind} onChange={e => setDraft({ ...draft, kind: e.target.value as WorkflowKind })}>{WORKFLOW_KINDS.map(kind => <option key={kind} value={kind}>{KIND_LABELS[kind]}</option>)}</select></label>
+      <label className="text-sm font-semibold">Section<select className={workflowInput} value={formSection(draft)} onChange={e => setDraft({ ...draft, section: e.target.value as FormSection })}>{FORM_SECTIONS.map(section => <option key={section} value={section}>{FORM_SECTION_LABELS[section]}</option>)}</select></label>
       <label className="text-sm font-semibold">Category<input className={workflowInput} value={draft.category} placeholder="e.g. Fire Safety, SOP or Checklist" onChange={e => setDraft({ ...draft, category: e.target.value })} /></label>
       <label className="text-sm font-semibold">Frequency<select className={workflowInput} value={draft.frequency} onChange={e => setDraft({ ...draft, frequency: e.target.value })}>{["Daily", "Weekly", "Monthly", "Quarterly", "Annually", "As scheduled", "As required", "One-off / event"].map(item => <option key={item}>{item}</option>)}</select></label>
       <p className="self-center text-sm text-slate-500">Venue assignments and standard facility inclusion are managed using Assign on the catalogue.</p>

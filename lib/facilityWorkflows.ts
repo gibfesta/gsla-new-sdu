@@ -1,9 +1,22 @@
 export const WORKFLOW_KINDS = ["maintenance", "opening", "closing", "afternoon", "night", "compliance", "sop", "issue", "work-order", "booking", "photo", "update"] as const;
 export type WorkflowKind = typeof WORKFLOW_KINDS[number];
+export const FORM_SECTIONS = ["daily-operations", "maintenance-issues", "compliance", "procedures-sop", "events", "bookings"] as const;
+export type FormSection = typeof FORM_SECTIONS[number];
+export const FORM_SECTION_LABELS: Record<FormSection, string> = { "daily-operations": "Daily Operations", "maintenance-issues": "Maintenance & Issues", compliance: "Compliance", "procedures-sop": "Procedures & SOPs", events: "Events", bookings: "Bookings & Resources" };
+export function formSection(form: { kind: WorkflowKind; section?: FormSection }): FormSection {
+  if (form.section && FORM_SECTIONS.includes(form.section)) return form.section;
+  switch (form.kind) {
+    case "maintenance": case "issue": case "work-order": case "photo": return "maintenance-issues";
+    case "compliance": return "compliance";
+    case "sop": return "procedures-sop";
+    case "booking": return "bookings";
+    default: return "daily-operations";
+  }
+}
 export const KIND_LABELS: Record<WorkflowKind, string> = { maintenance: "Maintenance procedure", opening: "Daily opening", closing: "Daily closing", afternoon: "Afternoon handover", night: "Night handover", compliance: "Compliance check", sop: "Procedure / SOP", issue: "Issue report", "work-order": "Work order", booking: "Booking", photo: "Photo log", update: "Operational update" };
 export const FIELD_TYPES = ["checkbox", "text", "textarea", "select", "date", "time", "photos", "file"] as const;
 export type FormField = { id: string; label: string; type: typeof FIELD_TYPES[number]; required: boolean; help: string; options: string[] };
-export type WorkflowTemplate = { id: string; kind: WorkflowKind; title: string; instructions: string; category: string; frequency: string; venue: string; owner: string; version: number; reviewDate: string; dueDate: string; active: boolean; fields: FormField[]; source: string; documents?: Attachment[] };
+export type WorkflowTemplate = { id: string; kind: WorkflowKind; section?: FormSection; title: string; instructions: string; category: string; frequency: string; venue: string; owner: string; version: number; reviewDate: string; dueDate: string; active: boolean; fields: FormField[]; source: string; documents?: Attachment[] };
 export type PreviewRole = "Head of Facilities" | "FM 1" | "FM 2" | "FM 3" | "Centre Manager";
 export const PREVIEW_ROLES: PreviewRole[] = ["Head of Facilities", "FM 1", "FM 2", "FM 3", "Centre Manager"];
 export type Attachment = { id: string; name: string; type: string; data: string };
