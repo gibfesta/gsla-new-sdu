@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, CalendarDays, MapPin, Users, Wrench, ClipboardList, ShieldCheck, FileText, Package, UserCheck, CheckCircle2, AlertTriangle, type LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import WorkflowAttachments from "./WorkflowAttachments";
+import { useCatalogue } from "@/lib/facilityFormCatalogue";
 import { useEventRecords, emptyEvent, saveEventRecord, validateEvent, blockedTime, type EventRecord, type EventTimes, type Category, type Status, type ApprovalState, type DocStatus } from "@/lib/eventPageStore";
 const input="mt-2 w-full min-h-10 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal text-slate-700 focus:border-[#155ca7] focus:outline-none focus:ring-1 focus:ring-[#155ca7]";
 const button="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50";
@@ -17,10 +18,12 @@ function Field({label,value,onChange,type="text",options,area=false,scope=""}:{l
 const row="rounded-xl border border-slate-100 bg-white p-3 space-y-3";
 const grid="grid gap-3 sm:grid-cols-2";
 export default function EventEditor({mode,eventId,preview=false,onClose,...templateProps}:{mode:"new"|"edit";eventId?:string;preview?:boolean;onClose?:()=>void} & TemplateProps) {
+ const { data: catalogue } = useCatalogue();
+ const managedTemplate = catalogue.forms.find(form => form.id === "event-form" && form.active);
  const {records,ready}=useEventRecords();const event=records.find(e=>e.id===eventId);
  if(!ready) return <p className="p-6" role="status">Loading event form…</p>;
  if(mode==="edit"&&!event) return <div className="p-6"><h1 className="text-xl font-bold">Event not found</h1><Link href="/facilities/events-control">Back to Events Control</Link></div>;
- return <EventForm key={eventId||"new"} initial={templateProps.templateInitial || event||emptyEvent()} mode={mode} preview={preview} onClose={onClose} {...templateProps}/>;
+ return <EventForm key={eventId||"new"} initial={structuredClone(templateProps.templateInitial || event || managedTemplate?.eventLayout || emptyEvent())} mode={mode} preview={preview} onClose={onClose} {...templateProps}/>;
 }
 function EventForm({initial,mode,preview,onClose,templateTitle,templateInstructions,onTemplateSave}:{initial:EventRecord;mode:"new"|"edit";preview:boolean;onClose?:()=>void} & TemplateProps) {
  const router=useRouter();const [draft,setDraft]=useState(initial);const [tab,setTab]=useState<Tab>("Overview");const [error,setError]=useState("");
