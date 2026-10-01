@@ -1,10 +1,11 @@
 "use client";
+import { emptyEvent, type EventRecord } from "./eventPageStore";
 import { useSyncExternalStore } from "react";
 import { initialWorkflowTemplates, parsePreviewStore, STORAGE_KEY, validateTemplate, type WorkflowTemplate, type FormField } from "./facilityWorkflows";
 export type Assignment = { venueId: string; venueName: string; date: string; endDate: string; event: string };
-export type CatalogueForm = WorkflowTemplate & { standard: boolean; assignments: Assignment[] };
+export type CatalogueForm = WorkflowTemplate & { standard: boolean; assignments: Assignment[]; eventLayout?: EventRecord };
 export type PreviewVenue = { id: string; name: string };
-type Catalogue = { version: 1; forms: CatalogueForm[]; previewVenues: PreviewVenue[] };
+type Catalogue = { version: 1; eventTemplateMigrated?: boolean; forms: CatalogueForm[]; previewVenues: PreviewVenue[] };
 type Snapshot = { data: Catalogue; notice: string };
 const key = "gsla-facilities-forms-procedures-v1";
 const f = (id: string, label: string, type: FormField["type"] = "textarea", required = false, options: string[] = []): FormField => ({ id, label, type, required, help: "", options });
@@ -14,6 +15,7 @@ function extra(id: string, kind: WorkflowTemplate["kind"], title: string, fields
 export function initialCatalogueForms(): CatalogueForm[] {
  const base = initialWorkflowTemplates().map(form => ({ ...form, standard: true, assignments: [] }));
  return [...base,
+  { ...extra("event-form", "work-order", "Event Form", [f("event-name", "Event name", "text", true)], true), section: "events", eventLayout: emptyEvent() },
   extra("maintenance-request", "work-order", "Maintenance Request", [f("asset", "Asset / location", "text", true), f("linked", "Linked issue reference", "text"), f("work", "Work required", "textarea", true), f("priority", "Priority", "select", true, ["Low", "Medium", "High", "Urgent"]), f("requester", "Requested by", "text", true), f("requested", "Requested on", "date", true), f("photos", "Evidence photos", "photos")], true),
   extra("maintenance-update", "work-order", "Maintenance Update / Work Order", [f("reference", "Work order reference", "text", true), f("assigned", "Assigned to", "text"), f("status", "Status", "select", true, ["New", "In Progress", "Completed", "On hold"]), f("target", "Target date", "date"), f("work", "Work completed / progress notes"), f("completed", "Completion date", "date"), f("photos", "Evidence photos", "photos")], true),
   extra("follow-up", "compliance", "Compliance Follow-up Action", [f("linked", "Linked compliance check", "text", true), f("action", "Action required", "textarea", true), f("owner", "Owner", "text", true), f("deadline", "Deadline", "date"), f("done", "Action completed", "checkbox"), f("evidence", "Completion evidence", "file")], true),
@@ -26,7 +28,7 @@ export function initialCatalogueForms(): CatalogueForm[] {
   extra("quick-update", "update", "Quick Update / Timeline Entry", [f("title", "Update title", "text", true), f("type", "Activity type", "select", true, ["Operations", "Maintenance", "Issue", "Event", "Handover"]), f("detail", "Message / detail", "textarea", true), f("actor", "Recorded by", "text", true)], true),
  ];
 }
-const server: Snapshot = { data: { version: 1, forms: initialCatalogueForms(), previewVenues: [{ id: "preview-venue", name: "Venue preview" }] }, notice: "" };
+const server: Snapshot = { data: { version: 1, eventTemplateMigrated: true, forms: initialCatalogueForms(), previewVenues: [{ id: "preview-venue", name: "Venue preview" }] }, notice: "" };
 let snapshot: Snapshot | null = null;
 const listeners = new Set<() => void>();
 function emit() { listeners.forEach(listener => listener()); }
@@ -37,6 +39,10 @@ function read(): Snapshot {
   if (raw) {
    const data = JSON.parse(raw) as Catalogue;
    if (data.version !== 1 || !Array.isArray(data.forms) || !Array.isArray(data.previewVenues) || data.forms.some(form => !Array.isArray(form.assignments) || typeof form.standard !== "boolean" || validateTemplate(form))) throw new Error("Invalid catalogue");
+   if (!data.eventTemplateMigrated) {
+    if (!data.forms.some(form => form.id === "event-form")) data.forms.push(initialCatalogueForms().find(form => form.id === "event-form")!);
+    data.eventTemplateMigrated = true;
+   }
    snapshot = { data, notice: "" };
   } else {
    const data = structuredClone(server.data);
@@ -53,6 +59,10 @@ function read(): Snapshot {
      }
      data.forms = existing ? data.forms.map(item => item.id === form.id ? migrated : item) : [...data.forms,migrated];
     }
+   }
+   if (!data.eventTemplateMigrated) {
+    if (!data.forms.some(form => form.id === "event-form")) data.forms.push(initialCatalogueForms().find(form => form.id === "event-form")!);
+    data.eventTemplateMigrated = true;
    }
    snapshot = { data, notice: "" };
   }
