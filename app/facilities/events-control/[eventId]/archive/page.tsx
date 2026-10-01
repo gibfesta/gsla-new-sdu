@@ -1,13 +1,17 @@
+"use client";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { use } from "react";
+import { useEventRecords, eventRegisterEntry } from "@/lib/eventPageStore";
 import { Archive, ArrowLeft, Info } from "lucide-react";
-import { eventExamples } from "@/components/facilities/eventExamples";
 import FacilitiesDepartmentBanner from "@/components/facilities/FacilitiesDepartmentBanner";
 
-export default async function ArchiveFacilitiesEventPage({ params }: { params: Promise<{ eventId: string }> }) {
-  const { eventId } = await params;
-  const event = eventExamples.find((item) => item.id === eventId);
-  if (!event) notFound();
+export default function ArchiveFacilitiesEventPage({ params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = use(params);
+  const { records, ready } = useEventRecords();
+  if (!ready) return <p role="status">Loading event…</p>;
+  const record = records.find(item => item.id === eventId);
+  if (!record) return <div className="space-y-4"><FacilitiesDepartmentBanner title="Archive Event" description="Review the record before it is removed from the active event register."/><p>Event not found.</p><Link href="/facilities/events-control">Back to Events Control</Link></div>;
+  const event = eventRegisterEntry(record);
   return (
     <div className="space-y-4 text-[#112d56]">
       <FacilitiesDepartmentBanner title="Archive Event" description="Review the record before it is removed from the active event register." />
