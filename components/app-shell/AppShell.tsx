@@ -22,7 +22,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const humanResourcesArea = pathname.startsWith("/human-resources");
   const financeArea = pathname.startsWith("/finance");
 
-  if (pathname === "/sign-in") return <>{children}</>;
+  if (pathname === "/sign-in" || pathname === "/") return <>{children}</>;
 
   if (publicPage) {
     return <main className="mx-auto min-h-screen w-full max-w-[1400px] px-8 py-8">{children}</main>;

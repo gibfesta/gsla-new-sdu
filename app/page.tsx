@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function HomePage() {
@@ -74,18 +75,23 @@ export default function HomePage() {
     router.refresh();
   }
 
-  if (!invitation) return <main className="min-h-screen bg-slate-50" aria-label="Loading GSLA WebApp" />;
   return <main className="min-h-screen flex items-center justify-center bg-slate-100 p-6">
     <section className="w-full max-w-md space-y-5 rounded-2xl bg-white p-8 shadow-sm">
-      <h1 className="text-2xl font-bold text-[#0C2F57]">Activate your GSLA account</h1>
-      <p className="text-slate-600">Choose your private password to finish setting up your account.</p>
+      <div className="text-center">
+        <div className="relative mx-auto mb-4 h-24 w-60 max-w-full">
+          <Image src="/gsla-transp-logo.png" alt="GSLA" fill sizes="240px" className="object-cover" priority />
+        </div>
+        <h1 className="text-2xl font-bold text-[#0C2F57]">{invitation ? "Set your password" : "Checking your account link"}</h1>
+        {invitation && <p className="mt-2 text-sm leading-6 text-slate-600">Choose a private password for your GSLA account.</p>}
+      </div>
+      {!ready && <p role="status" className="text-center text-sm text-slate-600">Please wait…</p>}
       {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       {ready && !error && <form onSubmit={setNewPassword} className="space-y-4">
         <label className="block text-sm font-semibold">New password<input type="password" minLength={16} required autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)} className="mt-2 w-full rounded-lg border p-3" /></label>
         <label className="block text-sm font-semibold">Confirm password<input type="password" minLength={16} required autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} className="mt-2 w-full rounded-lg border p-3" /></label>
         <button disabled={saving} className="w-full rounded-lg bg-[#0C2F57] p-3 font-semibold text-white disabled:opacity-50">{saving ? "Saving…" : "Set password"}</button>
       </form>}
-      <a href="/sign-in" className="block text-sm text-blue-700 underline">Go to sign in</a>
+      <a href="/sign-in" className="block rounded-lg border border-slate-200 px-4 py-3 text-center text-sm font-semibold text-[#0C2F57] hover:bg-slate-50">Back to sign in</a>
     </section>
   </main>;
 }
