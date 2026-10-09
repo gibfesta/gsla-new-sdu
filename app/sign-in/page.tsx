@@ -19,7 +19,22 @@ export default function SignInPage() {
       const supabase = createSupabaseBrowserClient();
       const result = await supabase.auth.signInWithPassword({ email, password });
       if (result.error) { setError("Unable to sign in. Check your details."); return; }
-      router.replace("/auth/continue");
+      // Determine the destination before navigating, avoiding an intermediate page.
+      // Department layouts still enforce access independently on the server.
+      const userId = result.data.user?.id;
+      if (!userId) { setError("Unable to verify your account."); return; }
+      const { data: assignments, error: rolesError } = await supabase
+        .from("user_roles")
+        .select("role_name")
+        .eq("user_id", userId);
+      if (rolesError) { setError("Unable to verify your account permissions."); return; }
+      const roles = new Set((assignments ?? []).map(item => item.role_name));
+      const destination = roles.has("organisation_admin")
+        ? "/organisation/home"
+        : roles.has("facilities_admin")
+          ? "/facilities/home"
+          : "/access-denied";
+      router.replace(destination);
       router.refresh();
     } catch {
       setError("Sign-in is temporarily unavailable.");
