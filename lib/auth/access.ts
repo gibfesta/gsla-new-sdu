@@ -8,9 +8,15 @@ export async function getAccess() {
   const supabase = await createSupabaseServerClient();
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return { user: null, roles: [] as GslaRole[] };
-  const assignments = await prisma.user_roles.findMany({ where: { user_id: user.id }, select: { role_name: true } });
-  const roles = assignments.map(a => a.role_name).filter((r): r is GslaRole => validRoles.includes(r));
-  return { user, roles };
+  try {
+    const assignments = await prisma.user_roles.findMany({ where: { user_id: user.id }, select: { role_name: true } });
+    const roles = assignments.map(a => a.role_name).filter((r): r is GslaRole => validRoles.includes(r));
+    return { user, roles };
+  } catch (error) {
+    // Never allow access when role verification fails.
+    console.error("GSLA role verification failed", error);
+    return { user, roles: [] as GslaRole[] };
+  }
 }
 
 export async function requireFacilityAccess(write = false) {
