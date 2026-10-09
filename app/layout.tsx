@@ -25,6 +25,7 @@ import type { Metadata } from "next";
 // Any global navigation or layout changes should be done in AppShell,
 // not here.
 import AppShell from "@/components/app-shell/AppShell";
+import { AccountDisplayProvider } from "@/components/shared/AccountDisplayProvider";
 
 // Default metadata for the application
 // ------------------------------------------------------------
@@ -62,7 +63,7 @@ export default function RootLayout({
           This is where persistent UI lives (sidebar, header, etc).
           Pages rendered via routing appear inside {children}.
         */}
-        <AppShell>{children}</AppShell>
+        <AccountDisplayProvider><AppShell>{children}</AppShell></AccountDisplayProvider>
       </body>
     </html>
   );
