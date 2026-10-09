@@ -1,3 +1,4 @@
+import { requireFacilityAccess } from "@/lib/auth/access";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { parseFacilitySchedule } from "@/lib/facilitySchedule";
@@ -7,6 +8,8 @@ import { parseFacilitySchedule } from "@/lib/facilitySchedule";
  * Fetch all facilities
  */
 export async function GET() {
+  const denied = await requireFacilityAccess(false);
+  if (denied) return NextResponse.json({ error: denied.error }, { status: denied.status });
   try {
     const facilities = await prisma.facilities_Table.findMany();
     return NextResponse.json(facilities);
@@ -24,6 +27,8 @@ export async function GET() {
  * Create a new facility
  */
 export async function POST(req: Request) {
+  const denied = await requireFacilityAccess(true);
+  if (denied) return NextResponse.json({ error: denied.error }, { status: denied.status });
   try {
     const body = await req.json();
     if (!body || typeof body !== "object" || typeof body.name !== "string" || !body.name.trim() ||
