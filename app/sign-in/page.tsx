@@ -19,7 +19,7 @@ export default function SignInPage() {
       const supabase = createSupabaseBrowserClient();
       const result = await supabase.auth.signInWithPassword({ email, password });
       if (result.error) { setError("Unable to sign in. Check your details."); return; }
-      router.replace("/facilities/home");
+      router.replace("/auth/continue");
       router.refresh();
     } catch {
       setError("Sign-in is temporarily unavailable.");
