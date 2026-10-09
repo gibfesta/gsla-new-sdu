@@ -23,8 +23,16 @@ export function AccountDisplayProvider({ children }: { children: ReactNode }) {
     let active = true;
 
     async function load(id: string, controller: AbortController) {
+      let verified = false;
       try {
-        // The endpoint verifies the current user. These details are display-only.
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (!active || controller.signal.aborted) return;
+        if (error || !user || user.id !== id) throw new Error("Account unavailable");
+        verified = true;
+        // Keep a verified identity available even if the profile database fails.
+        // These details are display-only, never used to grant access.
+        const fallbackName = (user.email?.split("@")[0] || "User").replace(/[._-]+/g, " ");
+        setAccount(current => current ?? { initials: accountInitials(fallbackName), label: fallbackName });
         const response = await fetch("/api/profile", { cache: "no-store", signal: controller.signal });
         if (!response.ok) return;
         const payload = await response.json();
@@ -35,7 +43,12 @@ export function AccountDisplayProvider({ children }: { children: ReactNode }) {
         const displayName = profileName && !isPlaceholder ? profileName : (email.split("@")[0] || "User").replace(/[._-]+/g, " ");
         setAccount({ initials: accountInitials(displayName), label: displayName });
       } catch {
-        // A cancelled request must never restore the previous user's details.
+        // Only a failed identity lookup needs an error indicator; profile failures
+        // retain the verified name. Cancelled requests cannot restore old users.
+        if (!verified && active && !controller.signal.aborted) {
+          setAccount({ initials: "U", label: "Account unavailable" });
+          userId = null;
+        }
       }
     }
 
