@@ -1,3 +1,4 @@
+import { requireFacilityAccess } from "@/lib/auth/access";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { type Prisma } from "@prisma/client";
@@ -9,6 +10,8 @@ async function findFacility(id: string) {
 }
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireFacilityAccess(false);
+  if (denied) return NextResponse.json({ error: denied.error }, { status: denied.status });
   try {
     const facility = await findFacility((await params).id);
     return facility ? NextResponse.json(facility) : NextResponse.json({ error: "Facility not found" }, { status: 404 });
@@ -19,6 +22,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 }
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireFacilityAccess(true);
+  if (denied) return NextResponse.json({ error: denied.error }, { status: denied.status });
   try {
     const facility = await findFacility((await params).id);
     if (!facility) return NextResponse.json({ error: "Facility not found" }, { status: 404 });
@@ -49,6 +54,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireFacilityAccess(true);
+  if (denied) return NextResponse.json({ error: denied.error }, { status: denied.status });
   try {
     const facility = await findFacility((await params).id);
     if (!facility) return NextResponse.json({ error: "Facility not found" }, { status: 404 });
