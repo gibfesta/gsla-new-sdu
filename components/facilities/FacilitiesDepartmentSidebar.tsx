@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -37,6 +38,15 @@ const groups: { title: string; items: Item[] }[] = [
 
 export default function FacilitiesDepartmentSidebar() {
   const pathname = usePathname();
+  const [canAccessOrganisation, setCanAccessOrganisation] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    void fetch("/api/me/permissions", { cache: "no-store", signal: controller.signal })
+      .then(response => response.ok ? response.json() : null)
+      .then(data => { if (!controller.signal.aborted) setCanAccessOrganisation(data?.canAccessOrganisation === true); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   return (
     <aside className="w-full shrink-0 bg-[linear-gradient(180deg,#0d2d52,#123c69)] text-white lg:sticky lg:top-0 lg:h-screen lg:w-[286px] lg:overflow-y-auto">
       <div className="flex min-h-full flex-col px-4 py-5 lg:px-5">
@@ -53,7 +63,7 @@ export default function FacilitiesDepartmentSidebar() {
           </div>)}
         </nav>
         <div className="mt-6 border-t border-blue-300/30 pt-3 lg:mt-auto">
-          <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>
+          {canAccessOrganisation && <Link href="/organisation/home" className="flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm text-blue-50 hover:bg-white/10"><ArrowLeft size={19} aria-hidden="true" />Back to Organisation</Link>}
         </div>
       </div>
     </aside>
