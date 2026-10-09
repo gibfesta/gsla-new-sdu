@@ -18,7 +18,7 @@ export async function requireFacilityAccess(write = false) {
   if (!access.user) return { status: 401, error: "Sign in required" };
   const allowed = write
     ? access.roles.some(r => r === "organisation_admin" || r === "facilities_admin")
-    : access.roles.some(r => r === "organisation_admin" || r === "facilities_admin" || r === "centre_manager");
+    : access.roles.some(r => r === "organisation_admin" || r === "facilities_admin");
   if (!allowed) return { status: 403, error: "Insufficient permissions" };
   return null;
 }
