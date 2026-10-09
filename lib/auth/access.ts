@@ -1,5 +1,4 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
 
 export type GslaRole = "organisation_admin" | "facilities_admin" | "centre_manager";
 const validRoles: readonly string[] = ["organisation_admin", "facilities_admin", "centre_manager"];
@@ -9,11 +8,18 @@ export async function getAccess() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return { user: null, roles: [] as GslaRole[] };
   try {
-    const assignments = await prisma.user_roles.findMany({ where: { user_id: user.id }, select: { role_name: true } });
-    const roles = assignments.map(a => a.role_name).filter((r): r is GslaRole => validRoles.includes(r));
+    // Roles are fetched using this user's verified Supabase session.
+    // Database RLS permits each account to read only its own assignments.
+    const { data, error: roleError } = await supabase
+      .from("user_roles")
+      .select("role_name")
+      .eq("user_id", user.id);
+    if (roleError) throw roleError;
+    const roles = (data ?? [])
+      .map(row => row.role_name)
+      .filter((r): r is GslaRole => validRoles.includes(r));
     return { user, roles };
   } catch (error) {
-    // Never allow access when role verification fails.
     console.error("GSLA role verification failed", error);
     return { user, roles: [] as GslaRole[] };
   }
