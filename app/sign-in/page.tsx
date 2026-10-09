@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function SignInPage() {
@@ -26,7 +27,13 @@ export default function SignInPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-100 p-6">
       <form onSubmit={submit} className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm space-y-5">
-        <div><h1 className="text-2xl font-bold text-[#0C2F57]">GSLA WebApp</h1><p className="mt-2 text-slate-600">Sign in to your account</p></div>
+        <div className="text-center">
+          <div className="relative mx-auto mb-4 h-24 w-60 max-w-full">
+            <Image src="/gsla-transp-logo.png" alt="GSLA" fill sizes="240px" className="object-cover" priority />
+          </div>
+          <h1 className="text-2xl font-bold text-[#0C2F57]">GSLA WebApp</h1>
+          <p className="mt-2 text-slate-600">Sign in to your account</p>
+        </div>
         <label className="block text-sm font-medium">Email<input className="mt-2 w-full rounded-lg border p-3" type="email" autoComplete="username" required value={email} onChange={e => setEmail(e.target.value)} /></label>
         <label className="block text-sm font-medium">Password<input className="mt-2 w-full rounded-lg border p-3" type="password" autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} /></label>
         {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
