@@ -35,11 +35,28 @@ export default function HomePage() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (active && session) setReady(true);
     });
-    void supabase.auth.getSession().then(({ data, error: sessionError }) => {
+    void (async () => {
+      if (hash.has("access_token") && hash.has("refresh_token")) {
+        const { error: tokenError } = await supabase.auth.setSession({
+          access_token: hash.get("access_token")!,
+          refresh_token: hash.get("refresh_token")!,
+        });
+        if (!active) return;
+        if (tokenError) {
+          setError("The recovery link is invalid or expired. Request a new recovery email.");
+          setReady(true);
+          return;
+        }
+      }
+      const { data, error: sessionError } = await supabase.auth.getSession();
       if (!active) return;
-      if (sessionError || !data.session) setError("Invitation not yet verified. Open a fresh invitation link.");
+      if (sessionError || !data.session) {
+        setError("The recovery link could not be verified. Request a new recovery email.");
+      } else {
+        window.history.replaceState({}, "", "/");
+      }
       setReady(true);
-    });
+    })();
     return () => { active = false; subscription.unsubscribe(); };
   }, [router]);
 
