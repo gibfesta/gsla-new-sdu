@@ -31,8 +31,7 @@ export default function SignInPage() {
           <div className="relative mx-auto mb-4 h-24 w-60 max-w-full">
             <Image src="/gsla-transp-logo.png" alt="GSLA" fill sizes="240px" className="object-cover" priority />
           </div>
-          <h1 className="text-2xl font-bold text-[#0C2F57]">GSLA WebApp</h1>
-          <p className="mt-2 text-slate-600">Sign in to your account</p>
+          <h1 className="mt-2 text-base font-normal text-slate-600">Sign in to your account</h1>
         </div>
         <label className="block text-sm font-medium">Email<input className="mt-2 w-full rounded-lg border p-3" type="email" autoComplete="username" required value={email} onChange={e => setEmail(e.target.value)} /></label>
         <label className="block text-sm font-medium">Password<input className="mt-2 w-full rounded-lg border p-3" type="password" autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} /></label>
