@@ -1,3 +1,4 @@
+import BannerAccount from "@/components/shared/BannerAccount";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -70,7 +71,7 @@ export default function OrganisationOverview() {
         <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(105deg,#12365f_0%,#12457c_65%,#0f4f8b_100%)] px-7 pb-9 pt-16 text-white shadow-sm sm:min-h-[238px] sm:px-10 sm:pb-10 sm:pt-14">
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-44 right-0 h-80 w-[70%] rounded-[50%] border-[32px] border-white/5 shadow-[0_0_0_42px_rgba(255,255,255,0.025),0_0_0_90px_rgba(255,255,255,0.015)]" />
           <Image src="/gsla-white.png" alt="GSLA" width={600} height={279} sizes="208px" className="pointer-events-none absolute left-[70%] top-1/2 hidden h-auto w-52 -translate-x-1/2 -translate-y-1/2 object-contain xl:block" priority />
-          <div className="absolute right-7 top-4 z-10 flex items-center gap-2 md:right-9"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-[10px] font-semibold text-white" aria-label="Organisation account">OA</span><span className="text-xs font-medium text-white">Organisation</span></div>
+          <BannerAccount />
           <div className="relative flex flex-wrap items-end justify-between gap-5">
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Organisation Overview</h1>
