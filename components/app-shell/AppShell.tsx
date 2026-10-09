@@ -13,7 +13,7 @@ import DepartmentPageFrame from "@/components/shared/DepartmentPageFrame";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const publicPage = ["/login", "/signup", "/join"].includes(pathname);
+  const publicPage = ["/On-Hold-Pages/login", "/On-Hold-Pages/signup", "/join"].includes(pathname);
   const noSidebar = ["/", "/organisation/home", "/organisation/health"].includes(pathname);
   const ownHeader = ["/organisation/home", "/organisation/health"].includes(pathname);
   const facilitiesArea = pathname.startsWith("/facilities");
@@ -22,7 +22,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const humanResourcesArea = pathname.startsWith("/human-resources");
   const financeArea = pathname.startsWith("/finance");
 
-  if (pathname === "/sign-in" || pathname === "/") return <>{children}</>;
+  if (["/", "/sign-in", "/forgot-password", "/set-password", "/reset-password", "/change-password", "/access-denied", "/auth/page-preview"].includes(pathname)) return <>{children}</>;
 
   if (publicPage) {
     return <main className="mx-auto min-h-screen w-full max-w-[1400px] px-8 py-8">{children}</main>;

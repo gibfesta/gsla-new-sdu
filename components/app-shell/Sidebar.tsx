@@ -74,7 +74,7 @@ export default function Sidebar() {
       <nav aria-label="Section navigation">
         <div className="space-y-1">
           <NavItem href="/" label="Home" icon={House} pathname={pathname} />
-          <NavItem href="/profile" label="Profile" icon={User} pathname={pathname} />
+          <NavItem href="/On-Hold-Pages/profile" label="Profile" icon={User} pathname={pathname} />
           <NavItem href="/facilities/shared-calendar" label="Calendar" icon={Calendar} pathname={pathname} />
         </div>
         {section && <div className="mt-6">

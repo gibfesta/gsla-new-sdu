@@ -11,6 +11,7 @@
 //                                fetch/server data (DB/API) + pass into this component.
 // -------------------------------------------------------------------------------------
 
+import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import {
   User,
@@ -418,10 +419,10 @@ export default function Page() {
           Edit Profile
         </button>
 
-        <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+        <Link href="/change-password" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
           <Lock size={16} />
           Change Password
-        </button>
+        </Link>
 
         <button className="inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-100">
           <Ban size={16} />

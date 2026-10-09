@@ -9,7 +9,7 @@ import { createServerClient } from "@supabase/ssr";
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isPublicPage = pathname === "/" || pathname === "/sign-in" ||
-    pathname === "/access-denied" || pathname.startsWith("/auth/") ||
+    ["/forgot-password", "/set-password", "/reset-password", "/On-Hold-Pages/login", "/On-Hold-Pages/signup"].includes(pathname) || pathname === "/access-denied" || pathname.startsWith("/auth/") ||
     pathname === "/callback";
   const isApi = pathname === "/api" || pathname.startsWith("/api/");
   let response = NextResponse.next({ request });
@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
   if (isPublicPage) return response;
   if (isApi) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
   const url = request.nextUrl.clone();
-  url.pathname = "/sign-in";
+  url.pathname = pathname.startsWith("/On-Hold-Pages/") ? "/On-Hold-Pages/login" : "/sign-in";
   url.search = "";
   return NextResponse.redirect(url);
 }

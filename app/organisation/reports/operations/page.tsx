@@ -133,7 +133,7 @@ const domainQueues = [
     items: [
       { label: "New association requests", value: 2, tone: "danger" as QueueTone, href: "/organisation/system/manage" },
       { label: "Facility issues reported", value: 2, tone: "danger" as QueueTone, href: "/facilities/facilities-directory" },
-      { label: "Profile updates pending", value: 3, tone: "warn" as QueueTone, href: "/profile" },
+      { label: "Profile updates pending", value: 3, tone: "warn" as QueueTone, href: "/On-Hold-Pages/profile" },
     ],
   },
   {
