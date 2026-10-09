@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/prisma";
 import BannerAccount from "@/components/shared/BannerAccount";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,6 +57,8 @@ const departments: Department[] = [
   },
 ];
 
+export const dynamic = "force-dynamic";
+
 const systems = [
   { name: "WebApp", icon: Globe2 },
   { name: "Database", icon: Database },
@@ -64,7 +67,27 @@ const systems = [
   { name: "Services", icon: Server },
 ];
 
-export default function OrganisationOverview() {
+export default async function OrganisationOverview() {
+  let databaseStatus = "Unavailable";
+  try {
+    if (process.env.DATABASE_URL) {
+      // Live connectivity check, bounded so the dashboard does not hang indefinitely.
+      await Promise.race([
+        prisma.$queryRaw`SELECT 1`,
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("timeout")), 4000)),
+      ]);
+      databaseStatus = "Responding";
+    }
+  } catch {
+    databaseStatus = "Unavailable";
+  }
+  const healthStatuses: Record<string, string> = {
+    WebApp: "Responding",
+    Database: databaseStatus,
+    Security: "Not monitored",
+    Integrations: "Not monitored",
+    Services: "Not monitored",
+  };
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#f1f7ff_100%)] text-[#142542]">
       <main className="mx-auto max-w-[1500px] space-y-5 px-5 py-5 md:px-8">
@@ -106,10 +129,10 @@ export default function OrganisationOverview() {
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#194e85]"><Activity size={27} strokeWidth={1.8} aria-hidden="true" /></span>
               <div><h2 id="health-title" className="text-xl font-bold">Health Dashboard</h2><p className="mt-1 text-[#52617a]">Monitor the health, security and performance of the GSLA WebApp.</p></div>
             </div>
-            <p className="text-sm font-semibold text-amber-700">Monitoring not connected<br /><span className="font-normal text-[#52617a]">Live status unavailable</span></p>
+            <p className="text-sm font-semibold text-[#174a84]">Live basic checks enabled<br /><span className="font-normal text-[#52617a]">Other systems not yet monitored</span></p>
           </div>
           <div className="mt-5 flex flex-wrap items-stretch gap-3">
-            {systems.map(({ name, icon: Icon }) => <div key={name} className="flex min-w-[145px] flex-1 items-center gap-2 rounded-xl border border-[#dfe7f2] px-3 py-2"><Icon size={25} className="shrink-0 text-[#163b67]" aria-hidden="true" /><div><p className="text-sm font-semibold">{name}</p><p className="mt-1 text-xs text-[#69788d]">Not connected</p></div></div>)}
+            {systems.map(({ name, icon: Icon }) => <div key={name} className="flex min-w-[145px] flex-1 items-center gap-2 rounded-xl border border-[#dfe7f2] px-3 py-2"><Icon size={25} className="shrink-0 text-[#163b67]" aria-hidden="true" /><div><p className="text-sm font-semibold">{name}</p><p className={`mt-1 text-xs ${healthStatuses[name] === "Responding" ? "text-emerald-700" : healthStatuses[name] === "Unavailable" ? "text-rose-700" : "text-[#69788d]"}`}>{healthStatuses[name]}</p></div></div>)}
             <Link href="/organisation/health" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#87b9ec] px-4 font-semibold text-[#1265b5] hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1265b5]">View System Health <ArrowRight size={18} aria-hidden="true" /></Link>
           </div>
         </section>
