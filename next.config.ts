@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   async redirects() {
     return [
+      { source: "/awaiting-venue", destination: "/auth/awaiting-assignment", permanent: false },
       { source: "/superuser", destination: "/organisation/home", permanent: true },
       { source: "/superuser/dashboard", destination: "/organisation/home", permanent: true },
       { source: "/superuser/:path*", destination: "/organisation/:path*", permanent: true },
