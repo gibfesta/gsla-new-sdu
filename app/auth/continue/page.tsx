@@ -6,6 +6,6 @@ export default async function ContinueAfterLogin() {
   if (!user) redirect("/sign-in");
   if (roles.includes("organisation_admin")) redirect("/organisation/home");
   if (roles.includes("facilities_admin")) redirect("/facilities/home");
-  // Centre Manager venue access will be enabled once assignments are enforced.
+  if (roles.includes("centre_manager")) redirect("/awaiting-venue");
   redirect("/access-denied");
 }
