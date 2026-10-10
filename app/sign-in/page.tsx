@@ -33,7 +33,7 @@ export default function SignInPage() {
         ? "/organisation/home"
         : roles.has("facilities_admin")
           ? "/facilities/home"
-          : roles.has("centre_manager") ? "/awaiting-venue" : "/access-denied";
+          : roles.has("centre_manager") ? "/auth/awaiting-assignment" : "/access-denied";
       router.replace(destination);
       router.refresh();
     } catch {
