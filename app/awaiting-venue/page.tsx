@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getAccess } from "@/lib/auth/access";
 export default async function AwaitingVenuePage() {
@@ -8,7 +9,7 @@ export default async function AwaitingVenuePage() {
  if (!roles.includes("centre_manager")) redirect("/access-denied");
  return <main className="min-h-screen bg-[#f5f9ff] flex items-center justify-center p-6">
   <section className="w-full max-w-lg overflow-hidden rounded-2xl bg-white border border-[#d5e4f6] shadow-sm">
-   <header className="bg-[#123c69] p-7 text-white"><p className="text-xs uppercase tracking-widest text-blue-100">GSLA WebApp</p><h1 className="text-xl font-bold mt-1">Centre Manager Portal</h1></header>
+   <header className="bg-[#123c69] px-7 py-7 text-white"><div className="relative mx-auto h-20 w-48 sm:h-24 sm:w-56"><Image src="/gsla-white.png" alt="GSLA" fill sizes="(max-width: 640px) 192px, 224px" className="object-contain" priority /></div></header>
    <div className="p-8 text-center">
     <div className="mx-auto h-16 w-16 rounded-2xl bg-[#eef5fd] flex items-center justify-center text-3xl">⌛</div>
     <h2 className="mt-6 text-2xl font-bold text-[#153763]">Awaiting Venue Assignment</h2>
