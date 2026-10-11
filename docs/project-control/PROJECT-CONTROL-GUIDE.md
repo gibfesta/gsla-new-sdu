@@ -210,3 +210,28 @@ If the board and documentation disagree, stop and reconcile before continuing.
 A Breeze card may link to a GitHub Issue or PR, but GitHub Project fields are no longer part of the GSLA WebApp control model. Do not maintain a duplicate GitHub Projects board.
 
 If Breeze and GitHub technical evidence disagree, stop and reconcile the task before proceeding. Operational status is corrected in Breeze; technical implementation facts are corrected in GitHub/source-controlled documentation.
+
+
+## Breeze card description standard
+
+Every controlled Breeze card must use a clear, mobile-friendly description rather than one compressed paragraph.
+
+Use the following order where applicable:
+
+1. **Owner**
+2. **Priority**
+3. **GitHub Issue / PR**
+4. **Objective**
+5. **Dependencies**
+6. **Decision Required** or **On Hold Reason**, where applicable
+7. **Verification**
+8. **Documentation**
+9. **Outcome**, for completed or review-stage work where useful
+
+Formatting rules:
+- Put each field in its own paragraph or clearly separated line.
+- Keep the Task ID and task name in the card title; do not repeat them unnecessarily in the description.
+- Use clickable GitHub Issue/PR links where available.
+- Keep dependencies both in the description and as native Breeze dependency links when the feature is enabled.
+- Do not compress Owner, Priority, Dependencies, Objective and evidence into one continuous block of text.
+- New Breeze cards created by the Project Controller should follow this standard automatically.
