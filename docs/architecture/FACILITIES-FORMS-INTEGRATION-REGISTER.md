@@ -1,0 +1,40 @@
+# GSLA Facilities — Form & Backend Integration Register
+
+Status: Implementation planning; data model and permissions require approval before migrations.
+Scope: Facilities first. HR module remains on hold.
+
+## Existing interfaces
+| Interface | Route | Source | Persistence | Next work |
+|---|---|---|---|---|
+| Create / Edit Facility | /facilities/facilities-directory/new and /facilities/facilities-directory/[id]/edit | components/facilities/FacilityForm.tsx | /api/facilities (Prisma/PostgreSQL) | Security checks, complete field mapping, CRUD tests |
+| Forms & Procedures | /facilities/forms-and-procedures | components/facilities/FormsAndProcedures.tsx | localStorage via lib/facilityFormCatalogue.ts | Preserve/export browser data, approved catalogue tables, venue assignments, submissions, role checks |
+| Duty Team | /facilities/duty-team | app/facilities/duty-team/page.tsx | None (disabled preview) | Staff source, Shift Black/Grey/White assignments, date/shift validation, audit history |
+
+## Predefined catalogue
+23 templates are seeded from lib/facilityWorkflows.ts and lib/facilityFormCatalogue.ts. Preserve stable template and field IDs, versions, section, required fields, standard/extra assignments and event layouts. Confirm against user-edited browser copies before migrating. User-created and edited catalogue data currently may exist in browser localStorage only.
+
+## Suggested entity model (proposal, not yet created)
+- facilities: reuse and normalise existing facility table through reviewed migration
+- staff directory: reference authenticated user/profile records; do not build HR payroll module
+- facility_form_templates: UUID, stable key, name, category, version, status, definition JSONB, dates, creator
+- facility_form_assignments: template version, facility, optional event/date period, status
+- facility_form_submissions: template version, facility, submitted_by, submitted_at, answers JSONB, status
+- facility_form_attachments: submission, storage key, safe metadata
+- duty_shift_assignments: duty date, shift colour (Black/Grey/White), employee, assigned_by, timestamps
+- operational_audit_log: actor, action, subject, time, details
+Model uniqueness, version history, archive/retention, indexes and foreign keys with Database Engineer review.
+
+## Planned build gates
+1. Export existing browser-only forms and assignments safely; compare each customized form against default templates. Do not overwrite localStorage or silently promote browser preview venues to real facilities.
+2. Secure facilities APIs and database access, including Prisma server operations. Establish role permissions for Organisation Admin, Facilities Admin and scoped Centre Manager.
+3. Validate Create/Edit Facility form and ensure all submitted fields persist; test reads/updates and safe archival.
+4. Implement persistent form catalogue and assignments, migrate approved templates and imported customisations.
+5. Implement form submissions with provenance, attachment storage and traceable history.
+6. Connect Duty Team selectors to an authorised staff directory and save dated Black/Grey/White shift records and audit trail.
+7. Run role-based negative tests, concurrent edit tests, reload/device persistence checks and operational acceptance tests.
+
+## Current findings
+- Duty Team is a non-functional preview with disabled controls.
+- Forms & Procedures uses browser-local storage and preview venues; it is not yet a shared production catalogue.
+- Create Facility already calls an API, but field mapping and production security require verification.
+- Separate Centre Manager venue assignments remain out of scope until actual facilities exist.
