@@ -46,7 +46,7 @@ It does **not** treat a merged PR, successful build or existing page as automati
 | Work Receipt Standard | Verified Complete | Merged through PR #21 |
 | Status / Reporting Rules | Verified Complete | Merged through PR #21 |
 | Controlled GitHub Issue template | Verified Complete | Present on main |
-| Interactive GitHub Project board | Implemented / Needs Verification | Project owner confirmed statuses, fields, four initial items and saved views; connector cannot independently inspect Projects v2 |
+| Interactive GitHub Project board | Superseded | Built and used during M0, then replaced by Breeze as the operational control board on 2026-10-11. GitHub remains the technical record. |
 | Historical project reconciliation | In Progress | GSLA-M0-002 |
 | Exhaustive Page & Route Registry | Outstanding | Existing registry explicitly states it is not exhaustive; GSLA-M0-003 |
 
@@ -322,3 +322,20 @@ The next phase should concentrate on:
 - Facilities data/forms persistence;
 - operational acceptance;
 - then controlled expansion into the later departments.
+
+
+---
+
+## Post-baseline control migration — Breeze
+
+**Date:** 2026-10-11
+
+After this baseline was produced, the operational control layer was migrated from GitHub Projects to the Breeze project **GSLA WebApp — Project Control**.
+
+Current responsibility split:
+
+- **Breeze:** operational task board, milestone swimlanes, workflow stages, dependencies, blockers/on-hold state, verification and day-to-day sequencing.
+- **GitHub:** permanent technical record for source code, Issues, pull requests, commits and source-controlled documentation.
+- **GitHub Projects:** superseded and no longer required for GSLA WebApp operational control.
+
+The historical references in this report to the initial GitHub Project setup remain evidence of what was built during M0; they must not be interpreted as the current control architecture.

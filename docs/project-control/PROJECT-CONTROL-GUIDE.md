@@ -8,7 +8,7 @@ Applies to: All GSLA WebApp workstreams, departments and specialist workers
 
 This guide defines how GSLA WebApp work is requested, assessed, prioritised, assigned, verified, documented and closed.
 
-The permanent project record is GitHub. ChatGPT conversations are working environments, not the source of truth.
+The operational project-control record is Breeze. GitHub remains the permanent technical record for source code, Issues, pull requests, commits and source-controlled documentation. ChatGPT conversations are working environments, not the source of truth.
 
 ## Control hierarchy
 
@@ -24,8 +24,8 @@ GSLA WebApp
 
 ## Permanent records
 
-- GitHub Project: operational control board.
-- GitHub Issues: controlled task register.
+- Breeze project **GSLA WebApp — Project Control**: operational control board and authoritative workflow status.
+- GitHub Issues: linked technical task records where useful; not the authoritative board status.
 - Pull Requests / commits: implementation evidence.
 - System Handbook: operational handover entry point.
 - Architecture and departmental registers: technical source of truth.
@@ -95,7 +95,7 @@ The Project Controller has verified the completion criteria and evidence.
 9. Blocked work must name the blocker.
 10. On Hold work must state why it is paused.
 11. New ideas go to Backlog until assessed.
-12. GitHub is the permanent record; ChatGPT conversations are execution environments.
+12. Breeze is the operational control record; GitHub is the permanent technical record; ChatGPT conversations are execution environments.
 
 ## Starting new work
 
@@ -112,7 +112,7 @@ The Project Controller must:
 6. Create or update the controlled task.
 7. Issue a Work Order.
 
-The project owner does not need to manually format GitHub tickets.
+The project owner does not need to manually format Breeze cards or linked GitHub tickets.
 
 ## Work Order flow
 
@@ -195,7 +195,57 @@ Start here:
 
 Repository README
 → Project Control Guide
-→ GitHub Project Board
+→ Breeze: GSLA WebApp — Project Control
 → Current milestone and Ready / In Progress tasks
 
 If the board and documentation disagree, stop and reconcile before continuing.
+
+
+## Breeze / GitHub responsibility split
+
+**Breeze** is the day-to-day control layer. Maintain the current task stage, milestone swimlane, dependency links, blocker/on-hold state, verification position and operational sequence there.
+
+**GitHub** is the permanent technical evidence layer. Keep source code, source-controlled documentation, linked Issues where useful, pull requests, commits and implementation evidence there.
+
+A Breeze card may link to a GitHub Issue or PR, but GitHub Project fields are no longer part of the GSLA WebApp control model. Do not maintain a duplicate GitHub Projects board.
+
+If Breeze and GitHub technical evidence disagree, stop and reconcile the task before proceeding. Operational status is corrected in Breeze; technical implementation facts are corrected in GitHub/source-controlled documentation.
+
+
+## Breeze card description standard
+
+Every controlled Breeze card must use a clear, mobile-friendly description rather than one compressed paragraph.
+
+Use the following order where applicable:
+
+1. **Owner**
+2. **Priority**
+3. **GitHub Issue / PR**
+4. **Objective**
+5. **Dependencies**
+6. **Decision Required** or **On Hold Reason**, where applicable
+7. **Verification**
+8. **Documentation**
+9. **Outcome**, for completed or review-stage work where useful
+
+Formatting rules:
+- Put each field in its own paragraph or clearly separated line.
+- Keep the Task ID and task name in the card title; do not repeat them unnecessarily in the description.
+- Use clickable GitHub Issue/PR links where available.
+- Keep dependencies both in the description and as native Breeze dependency links when the feature is enabled.
+- Do not compress Owner, Priority, Dependencies, Objective and evidence into one continuous block of text.
+- New Breeze cards created by the Project Controller should follow this standard automatically.
+
+
+## Work Receipt lifecycle rule
+
+Work Receipts are created when execution produces evidence, not simply because a card exists.
+
+- Ready and Backlog cards do not need receipts.
+- In Progress cards use progress comments until the worker reaches a handoff point.
+- Review / Verification requires a final Work Receipt on the Breeze card.
+- Blocked or On Hold work that had already started requires an Interim Work Receipt preserving completed work, blocker/hold reason, safe state and remaining work.
+- Blocked or On Hold work that never entered execution does not require a receipt.
+- Done requires both the final Work Receipt and a separate Project Controller Verification comment.
+
+The Project Controller is responsible for enforcing these gates when moving Breeze cards between stages.
