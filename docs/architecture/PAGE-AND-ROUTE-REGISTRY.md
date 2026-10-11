@@ -4,7 +4,7 @@
 
 | Route | Source file | Owner / purpose | Access | Status |
 | --- | --- | --- | --- | --- |
-| /sign-in | app/sign-in/page.tsx | Authentication: sign in | Public | Existing |
+| /sign-in | app/(auth)/sign-in/page.tsx | Authentication: sign in | Public | Existing |
 | /auth/continue | app/auth/continue/page.tsx | Authentication: post-login role routing | Signed-in users | Existing |
 | /auth/awaiting-assignment | app/auth/awaiting-assignment/page.tsx | Authentication: centre manager without venue assignment | Centre Manager | Current / canonical |
 | /awaiting-venue | Redirect in next.config.ts | Legacy URL compatibility | Redirect to canonical route | Deprecated |
@@ -13,7 +13,7 @@
 | /facilities/home | app/facilities/home/page.tsx | Facilities overview | Organisation or Facilities Administrator | Existing |
 | /facilities/facilities-directory | app/facilities/facilities-directory/page.tsx | Facility records | Organisation or Facilities Administrator | Existing |
 | /profile | app/profile/page.tsx | Internal user profile (content still needs full data integration) | Authenticated authorised user | Existing |
-| /access-denied | app/access-denied/page.tsx | Restricted access response | Public page, no privileged data | Existing |
+| /access-denied | app/(auth)/access-denied/page.tsx | Restricted access response | Public page, no privileged data | Existing |
 
 ## Route governance rules
 1. New routes must have an owner, purpose, authorised roles and implementation status.
@@ -31,3 +31,11 @@
 The canonical callback implementation is now at `app/(auth)/callback/route.ts`; its public URL remains `/callback`. The root-level duplicate was removed.
 
 **Later controlled migration (not yet executed):** Review and relocate the sign-in, forgot-password, set-password, reset-password, change-password and related authentication pages into the `(auth)` route group. Route groups do not change public URLs. Inventory existing routes and references first, check route collisions, and test invitations, recovery links, session handling and redirects after each migration. Preserve the separate Centre Manager waiting route at `/auth/awaiting-assignment` until its own migration is approved. Do not move the on-hold public pages without explicit review.
+
+## Auth route-group consolidation — 2026-10-11
+
+- Canonical sign-in page source: `app/(auth)/sign-in/page.tsx`, URL remains `/sign-in`.
+- Canonical restricted-access page source: `app/(auth)/access-denied/page.tsx`, URL remains `/access-denied`.
+- Existing password and callback screens already live under `app/(auth)/`; their URLs have not changed.
+- `app/auth/continue` and `app/auth/awaiting-assignment` remain in place pending separate review. On-hold public pages remain untouched.
+- Verify Vercel build and account flows before closing the migration.
