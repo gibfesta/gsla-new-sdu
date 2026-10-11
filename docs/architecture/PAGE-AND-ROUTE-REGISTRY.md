@@ -25,3 +25,9 @@
 7. Inventory the remaining pages and API endpoints before declaring this registry complete.
 
 **Next audit:** Inventory all `app/**/page.tsx` and `app/**/route.ts` files, identify duplicates and undocumented redirects, then review each migration before moving it.
+
+## Planned authentication route-group consolidation
+
+The canonical callback implementation is now at `app/(auth)/callback/route.ts`; its public URL remains `/callback`. The root-level duplicate was removed.
+
+**Later controlled migration (not yet executed):** Review and relocate the sign-in, forgot-password, set-password, reset-password, change-password and related authentication pages into the `(auth)` route group. Route groups do not change public URLs. Inventory existing routes and references first, check route collisions, and test invitations, recovery links, session handling and redirects after each migration. Preserve the separate Centre Manager waiting route at `/auth/awaiting-assignment` until its own migration is approved. Do not move the on-hold public pages without explicit review.
