@@ -12,14 +12,14 @@ The approved frontend is the product reference. Backend/database work must prese
 
 Project work is governed through the GSLA WebApp Project Control System. Start with the [Project Control Guide](project-control/PROJECT-CONTROL-GUIDE.md).
 
-The control system uses GitHub Issues and the GitHub Project board to track milestones, owners, dependencies, status, verification and closure. Specialist ChatGPT conversations execute approved Work Orders and return Work Receipts; they do not independently set project sequence or mark their own work Done.
+The control system uses the Breeze project **GSLA WebApp — Project Control** as the operational board for milestones, owners, dependencies, status, verification and closure. GitHub Issues may remain linked technical task records, while GitHub source, pull requests, commits and documentation remain the permanent technical evidence. Specialist ChatGPT conversations execute approved Work Orders and return Work Receipts; they do not independently set project sequence or mark their own work Done.
 
 Supporting control documents:
 - [Work Order Standard](project-control/WORK-ORDER-STANDARD.md)
 - [Work Receipt Standard](project-control/WORK-RECEIPT-STANDARD.md)
 - [Project Status & Reporting Rules](project-control/PROJECT-STATUS-RULES.md)
 
-GitHub remains the permanent project record. Technical behaviour belongs in the authoritative architecture, route, permissions, forms and departmental registers rather than being duplicated in the control board.
+Breeze is the operational project-control record. GitHub remains the permanent technical record. Technical behaviour belongs in the authoritative architecture, route, permissions, forms and departmental registers rather than being duplicated in Breeze.
 
 ## System at a glance
 - Source repository: `gibfesta/gsla-new-sdu` (Next.js, TypeScript, React, Tailwind).
@@ -51,7 +51,7 @@ GitHub remains the permanent project record. Technical behaviour belongs in the 
 
 ## New developer onboarding checklist
 1. Review this handbook and the repo README.
-2. Review the Project Control Guide and current board before starting work.
+2. Review the Project Control Guide and the current Breeze board before starting work.
 3. Identify current production deployment/branch; check build history and outstanding issues.
 4. Configure an isolated local environment using the repo's documented package scripts. Never place secrets in source control.
 5. Understand Supabase authentication, role checks and PostgreSQL access/RLS before handling real user data.
@@ -90,7 +90,8 @@ For unsafe access: restrict exposure, document scope, test fixes, and assess dat
 
 ## Change and decision history
 - 2026-10-11 — First handbook established as entry point; linked supporting registers and documented gaps. This is **not** a completed operational certification.
-- 2026-10-11 — Project Control System linked into handbook. GitHub Issues / Project control work status; technical registers remain authoritative for system behaviour.
+- 2026-10-11 — Project Control System linked into handbook. GitHub Issues / GitHub Project were used for the initial M0 control setup; technical registers remained authoritative for system behaviour.
+- 2026-10-11 — Operational project control migrated from GitHub Projects to Breeze (`GSLA WebApp — Project Control`). GitHub remains the permanent technical record for code, Issues, pull requests, commits and documentation.
 - Subsequent entries should include date, author/reviewer, relevant commit, changes, migration/test outcomes and any known limitations.
 
 ## Handover acceptance criteria
