@@ -71,3 +71,11 @@ Therefore the full repository tree and **all** link references have **not** been
 
 ### Safe next step
 Obtain the repository tree and source locally (via a GitHub archive, authenticated checkout or connected action exposing the recursive tree); enumerate `app/**/page.tsx` and `app/**/route.ts`; scan `href`, `router.push/replace`, `redirect`, `fetch`, server actions, config rewrites, and dynamic templates. Preserve exact source files and line numbers. Only after that perform live redirect/role tests and approve deletions.
+
+## Security and legacy route follow-up — 2026-10-11
+
+Read-only scan of the uploaded repository snapshot: there were no exact legacy `/superuser` or `/facilities/dashboard` references in TypeScript/TSX outside `next.config.ts`. The current Facilities sidebar and home links use canonical routes. This does not measure old bookmarks or request traffic, and the snapshot may differ from later GitHub changes. Keep the redirects pending runtime and destination checks.
+
+Supabase security advisors currently report 4 public tables without RLS (`_prisma_migrations`, `timesheet_week_packs`, `timesheet_shift_entries`, `timesheet_audit_logs`), 13 RLS tables without policies and 3 functions with mutable search path. Do not automatically enable RLS: inspect the use of those tables, existing database grants, Prisma access and required policies first. Review GraphQL exposure of public schema. Security issues are not resolved by page redirect cleanup.
+
+The uploaded source snapshot contains four API files: `/api/facilities`, `/api/facilities/[id]`, `/api/profile`, `/api/me/permissions`, with 9 total exported HTTP handlers. Do a current-source and runtime authorisation test across all user roles before inserting production data.
