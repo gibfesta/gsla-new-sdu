@@ -5,8 +5,8 @@
 | Route | Source file | Owner / purpose | Access | Status |
 | --- | --- | --- | --- | --- |
 | /sign-in | app/(auth)/sign-in/page.tsx | Authentication: sign in | Public | Existing |
-| /auth/continue | app/auth/continue/page.tsx | Authentication: post-login role routing | Signed-in users | Existing |
-| /auth/awaiting-assignment | app/auth/awaiting-assignment/page.tsx | Authentication: centre manager without venue assignment | Centre Manager | Current / canonical |
+| /auth/continue | app/(auth)/auth/continue/page.tsx | Authentication: post-login role routing | Signed-in users | Existing |
+| /auth/awaiting-assignment | app/(auth)/auth/awaiting-assignment/page.tsx | Authentication: centre manager without venue assignment | Centre Manager | Current / canonical |
 | /awaiting-venue | Redirect in next.config.ts | Legacy URL compatibility | Redirect to canonical route | Deprecated |
 | /organisation/home | app/organisation/home/page.tsx | Organisation overview | Organisation Administrator | Existing |
 | /organisation/health | app/organisation/health/page.tsx | WebApp system health | Organisation Administrator | Existing |
@@ -39,3 +39,7 @@ The canonical callback implementation is now at `app/(auth)/callback/route.ts`; 
 - Existing password and callback screens already live under `app/(auth)/`; their URLs have not changed.
 - `app/auth/continue` and `app/auth/awaiting-assignment` remain in place pending separate review. On-hold public pages remain untouched.
 - Verify Vercel build and account flows before closing the migration.
+
+## Auth consolidation completed — 2026-10-11
+
+Moved `continue` and `awaiting-assignment` under the `(auth)` source group, preserving their public URLs `/auth/continue` and `/auth/awaiting-assignment`. No redirect rule was changed. Verify production deployment and both login/assignment flows before marking runtime verification complete.
