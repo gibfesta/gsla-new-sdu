@@ -235,3 +235,17 @@ Formatting rules:
 - Keep dependencies both in the description and as native Breeze dependency links when the feature is enabled.
 - Do not compress Owner, Priority, Dependencies, Objective and evidence into one continuous block of text.
 - New Breeze cards created by the Project Controller should follow this standard automatically.
+
+
+## Work Receipt lifecycle rule
+
+Work Receipts are created when execution produces evidence, not simply because a card exists.
+
+- Ready and Backlog cards do not need receipts.
+- In Progress cards use progress comments until the worker reaches a handoff point.
+- Review / Verification requires a final Work Receipt on the Breeze card.
+- Blocked or On Hold work that had already started requires an Interim Work Receipt preserving completed work, blocker/hold reason, safe state and remaining work.
+- Blocked or On Hold work that never entered execution does not require a receipt.
+- Done requires both the final Work Receipt and a separate Project Controller Verification comment.
+
+The Project Controller is responsible for enforcing these gates when moving Breeze cards between stages.
