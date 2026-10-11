@@ -40,3 +40,34 @@ Reviewed the 31 redirect declarations whose source begins with `/admin` or `/sup
 3. Build a row-per-route dependency register with file paths and line numbers, including APIs.
 4. Test 301/302 chains, unmatched destinations and access controls across all roles.
 5. Present remove/change/retain decisions for approval. Implement only after approval.
+
+## Dependency review update — 2026-10-11
+
+### Files directly inspected
+The following source files were retrieved from GitHub and searched for literal references to old `/admin`, `/superuser`, `/awaiting-venue`, and `/auth/callback` addresses:
+
+- `components/app-shell/Sidebar.tsx`
+- `components/app-shell/HeaderBar.tsx`
+- `components/facilities/FacilitiesDepartmentSidebar.tsx`
+- `components/facilities/FacilitiesSidebar.tsx`
+- `components/sports-development/SportsDevelopmentSidebar.tsx`
+- `components/human-resources/HumanResourcesSidebar.tsx`
+- `components/finance/FinanceSidebar.tsx`
+- `components/shared/DepartmentPageFrame.tsx`
+- `components/shared/BannerAccount.tsx`
+- `app/page.tsx`
+- `app/sign-in/page.tsx`
+- `app/auth/continue/page.tsx`
+
+**Result:** No matching legacy URL strings were found in these 12 inspected files. The legacy addresses remain configured in `next.config.ts` and may occur elsewhere.
+
+### Confirmed blocker to full dependency certification
+- GitHub connected code search returned zero even for known-present strings/files. This is not evidence of zero usage.
+- No recursive repository tree/listing action is currently exposed through the connected GitHub integration.
+- Attempting Vercel's deployed source-tree listing returned `404 File tree not found`.
+- A direct Git clone from the analysis runtime was unavailable because external DNS/network access was blocked.
+
+Therefore the full repository tree and **all** link references have **not** been collected. Do not remove any redirect based solely on this review.
+
+### Safe next step
+Obtain the repository tree and source locally (via a GitHub archive, authenticated checkout or connected action exposing the recursive tree); enumerate `app/**/page.tsx` and `app/**/route.ts`; scan `href`, `router.push/replace`, `redirect`, `fetch`, server actions, config rewrites, and dynamic templates. Preserve exact source files and line numbers. Only after that perform live redirect/role tests and approve deletions.
