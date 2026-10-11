@@ -223,10 +223,10 @@ Use the following order where applicable:
 3. **GitHub Issue / PR**
 4. **Objective**
 5. **Dependencies**
-6. **Decision Required** or **On Hold Reason**, where applicable
-7. **Verification**
-8. **Documentation**
-9. **Outcome**, for completed or review-stage work where useful
+6. **Expected Outcome**
+7. **Decision Required** or **On Hold Reason**, where applicable
+8. **Verification**
+9. **Documentation**
 
 Formatting rules:
 - Put each field in its own paragraph or clearly separated line.
@@ -249,3 +249,12 @@ Work Receipts are created when execution produces evidence, not simply because a
 - Done requires both the final Work Receipt and a separate Project Controller Verification comment.
 
 The Project Controller is responsible for enforcing these gates when moving Breeze cards between stages.
+
+
+## Expected Outcome vs Actual Outcome
+
+- **Objective** describes what the task is trying to achieve.
+- **Expected Outcome** is defined before execution and describes the successful end-state the Work Order is aiming for.
+- **Actual Outcome** is recorded only after execution in the Work Receipt and describes what was actually achieved.
+
+Active Breeze cards must show Expected Outcome in their description. Completed work must not rewrite Expected Outcome as if it were evidence; Actual Outcome belongs in the Work Receipt.
