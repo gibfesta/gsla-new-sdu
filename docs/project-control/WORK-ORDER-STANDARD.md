@@ -20,7 +20,10 @@ A Work Order is the controlled instruction given to a specialist worker before s
 **Authoritative documents:**  
 
 ### Objective
-State the outcome in plain language.
+State what the task is trying to achieve in plain language.
+
+### Expected Outcome
+State the successful end-state expected before execution begins. This is not the Actual Outcome; the Work Receipt records what was actually achieved.
 
 ### Background
 Only the context required to perform the task correctly.
