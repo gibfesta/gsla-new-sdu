@@ -88,3 +88,18 @@ Historical work may be recorded as verified completed evidence without creating 
 Unverified historical work should be classified as Review / Verification, Outstanding, Blocked or On Hold until evidence supports closure.
 
 Never mark a task complete merely because a PR merged.
+
+
+## Work Receipt gates
+
+Status movement must preserve execution evidence:
+
+- **Backlog → Ready:** no Work Receipt required.
+- **Ready → In Progress:** no Work Receipt required; execution begins.
+- **In Progress → Review / Verification:** final Work Receipt required first.
+- **In Progress → Blocked:** Interim Work Receipt required if any execution occurred.
+- **In Progress → On Hold:** Interim Work Receipt required if any execution occurred.
+- **Blocked / On Hold before execution:** no receipt required until work actually starts.
+- **Review / Verification → Done:** Project Controller Verification required in addition to the Work Receipt.
+
+A task must never be placed in Done simply because a PR was merged, a deployment succeeded or a worker says it is complete.
