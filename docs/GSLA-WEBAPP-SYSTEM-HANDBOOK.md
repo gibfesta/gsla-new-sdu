@@ -12,7 +12,7 @@ The approved frontend is the product reference. Backend/database work must prese
 
 Project work is governed through the GSLA WebApp Project Control System. Start with the [Project Control Guide](project-control/PROJECT-CONTROL-GUIDE.md).
 
-The control system uses the Breeze project **GSLA WebApp — Project Control** as the operational board for milestones, owners, dependencies, status, verification and closure. GitHub Issues may remain linked technical task records, while GitHub source, pull requests, commits and documentation remain the permanent technical evidence. Specialist ChatGPT conversations execute approved Work Orders and return Work Receipts; they do not independently set project sequence or mark their own work Done.
+The control system uses the Breeze project **GSLA WebApp — Project Control** as the operational board for milestones, owners, dependencies, status, verification and closure. GitHub Issues may remain linked technical task records, while GitHub source, pull requests, commits and documentation remain the permanent technical evidence. Specialist ChatGPT conversations execute approved Work Orders and return Work Receipts; they do not independently set project sequence or mark their own work Done. Every Work Receipt must also tell the project owner what happens next, explain the result in plain English, and provide copy/paste-ready instructions for the next worker.
 
 Supporting control documents:
 - [Work Order Standard](project-control/WORK-ORDER-STANDARD.md)
@@ -100,6 +100,7 @@ For unsafe access: restrict exposure, document scope, test fixes, and assess dat
 - 2026-10-11 — Operational project control migrated from GitHub Projects to Breeze (`GSLA WebApp — Project Control`). GitHub remains the permanent technical record for code, Issues, pull requests, commits and documentation.
 - 2026-10-12 — Unified My Account flow added for current authenticated roles. Banner account identity opens `/account`, which centralises personal details, role/access information, password change and secure sign-out. Runtime role verification required before closing GSLA-M1-008.
 - 2026-10-12 — Specialist Worker Verification Standard established. Specialist attribution now requires role-definition evidence, specialist checks, authority-boundary compliance and Project Controller verification.
+- 2026-10-12 — Work Receipt handoff standard expanded. Every Work Receipt must now include the exact next step/owner, a plain-English explanation for the project owner, and copy/paste instructions for the next worker.
 - Subsequent entries should include date, author/reviewer, relevant commit, changes, migration/test outcomes and any known limitations.
 
 ## Handover acceptance criteria
