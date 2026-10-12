@@ -6,7 +6,7 @@ Scope: Facilities first. HR module remains on hold.
 ## Existing interfaces
 | Interface | Route | Source | Persistence | Next work |
 |---|---|---|---|---|
-| Create / Edit Facility | /facilities/facilities-directory/new and /facilities/facilities-directory/[id]/edit | components/facilities/FacilityForm.tsx | /api/facilities (Prisma/PostgreSQL) | Security checks, complete field mapping, CRUD tests |
+| Create / Edit Facility | /facilities/facilities-directory/new and /facilities/facilities-directory/[id]/edit | components/facilities/FacilityForm.tsx | /api/facilities (Prisma/PostgreSQL); initial approval lifecycle absent | M1-009 architecture acceptance, database specialist contract, versioned approval commands, field mapping and role/runtime tests |
 | Forms & Procedures | /facilities/forms-and-procedures | components/facilities/FormsAndProcedures.tsx | localStorage via lib/facilityFormCatalogue.ts | Preserve/export browser data, approved catalogue tables, venue assignments, submissions, role checks |
 | Duty Team | /facilities/duty-team | app/facilities/duty-team/page.tsx | None (disabled preview) | Staff source, Shift Black/Grey/White assignments, date/shift validation, audit history |
 
@@ -34,6 +34,8 @@ Model uniqueness, version history, archive/retention, indexes and foreign keys w
 7. Run role-based negative tests, concurrent edit tests, reload/device persistence checks and operational acceptance tests.
 
 ## Current findings
+
+- [M1-009 Facilities approval architecture](FACILITIES-APPROVAL-WORKFLOW.md) is a review proposal dated 2026-10-12. It preserves v0.2 role authority, separates approval/archival from operational status, and specifies preparation, continuing edits, audit and negative tests. It has not been implemented. Current DELETE is fail-closed by M1-004; the archive page remains a disabled placeholder.
 - Duty Team is a non-functional preview with disabled controls.
 - Forms & Procedures uses browser-local storage and preview venues; it is not yet a shared production catalogue.
 - Create Facility already calls an API, but field mapping and production security require verification.

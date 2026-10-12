@@ -26,6 +26,10 @@ The current source establishes these broad boundaries:
 
 ## UI page registry
 
+### Planned Facilities approval routes — not included in current counts
+
+The [M1-009 architecture](FACILITIES-APPROVAL-WORKFLOW.md) proposes an Organisation-only `/organisation/facility-approvals` review page and explicit Facilities initial-approval, archive-request, request-withdrawal, decision and history API endpoints. These are design contracts only, not current routes. The existing create/edit/archive page URLs remain. Update the deployed registry/counts only when implementation adds the routes and access tests provide evidence.
+
 | Route | Source file | Owner / purpose | Current access | Status |
 | --- | --- | --- | --- | --- |
 | `/access-denied` | `app/(auth)/access-denied/page.tsx` | Authentication — Restricted-access response | Public by middleware | Existing |

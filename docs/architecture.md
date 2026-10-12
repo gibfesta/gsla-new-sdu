@@ -42,6 +42,10 @@ Compatibility redirects in `next.config.ts` keep prior bookmarks usable during m
 
 - Route and UI grouping is complete; data models and API endpoints have not been renamed.
 - The Facilities directory and venue information now read saved Prisma records. Create and Edit share FacilityForm, activityOptions, and the same fields; PATCH persists the full information contract. Legacy fac-001 through fac-006 bookmarks resolve saved records by venue name, or offer first-time data entry without sample contact or activity values. Other operational venue pages, HR, sports and calendar screens still contain demo workflows.
-- The current middleware refreshes Supabase sessions but does not enforce department roles. Facilities API endpoints and some server actions lack server-side role and venue checks. Auth, authorization and venue assignment need dedicated work before operational use.
+- Current middleware/session checks, departmental layouts and Facilities API role guards are implemented in source. They are not runtime or database-security certification. New Facilities approval states remain unimplemented; permanent DELETE is disabled by M1-004 while controlled archival is absent. Centre Manager venue scope remains a separate dependency.
 - The current calendar has sports-focused sample events. Decide ownership of a truly shared calendar contract before wiring live data.
 - Existing `documents/` source material and `accelerate.txt` remain in place pending a separate content/repository hygiene review.
+
+## Facilities approval architecture — review proposal
+
+[GSLA-M1-009 — Facilities / Venues Approval Architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md) defines the proposed state/transition model, role authority under approved v0.2, post-approval edits, archive requests/decisions, audit, API commands, migration impact and specialist handoff. Status: architecture produced for review on 2026-10-12 against `eb4dc64`; not approved for implementation or deployed by this documentation change. Database schema/RLS/grants review belongs to Senior Database Engineer; implementation and runtime verification remain outstanding under controlled tasks including M1-004.

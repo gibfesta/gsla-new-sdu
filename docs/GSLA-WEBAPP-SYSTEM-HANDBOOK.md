@@ -33,6 +33,7 @@ Breeze is the operational project-control record. GitHub remains the permanent t
 - Organisation Admin and Facilities Admin role-based routing, initial departmental access guards and Facilities API guards have been implemented. Shared account controls are available through `/account`. The banner avatar/name opens My Account, where users can review personal/account details, change password and sign out. Centre Managers can also open My Account from the awaiting-assignment screen. These require comprehensive negative/security tests before production accreditation.
 - Centre Managers can authenticate and reach an awaiting-venue page. Venue-scoped assignment/access remains future work until real facilities exist.
 - Facilities Directory has a Prisma-backed API and database table; create/edit/read operations still require full acceptance testing. A complete persistent forms system is **not yet live**.
+- New Facilities / Venues approval and archival have a [proposed M1-009 architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md), ready for Owner/Controller review. It is not an implemented workflow. M1-004 disabled permanent venue deletion; database/schema and backend/frontend implementation remain controlled follow-up work.
 - Forms & Procedures has predefined templates and browser-local editing/assignment behaviour; approved migration to Supabase remains outstanding. Preserve users' browser-only customisations.
 - Duty Team page is a preview; shift staff and rota are not yet database-connected.
 - HR development is on hold; its three timesheet tables were retained and direct `anon`/`authenticated` access was revoked with RLS enabled. Privileged data connections need separate review.
@@ -92,6 +93,8 @@ For form-save failures: preserve browser draft data; verify API validation, sche
 For unsafe access: restrict exposure, document scope, test fixes, and assess data protection obligations before releasing.
 
 ## Change and decision history
+
+- 2026-10-12 — M1-009 approval architecture produced for review against `eb4dc64`; links added to the architecture/permission/forms references. No production behaviour or v0.2 business permission was changed. [Architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md) and [Software Architect receipt](project-control/GSLA-M1-009-WORK-RECEIPT.md) record scope and evidence.
 - 2026-10-11 — First handbook established as entry point; linked supporting registers and documented gaps. This is **not** a completed operational certification.
 - 2026-10-11 — Project Control System linked into handbook. GitHub Issues / GitHub Project were used for the initial M0 control setup; technical registers remained authoritative for system behaviour.
 - 2026-10-11 — Operational project control migrated from GitHub Projects to Breeze (`GSLA WebApp — Project Control`). GitHub remains the permanent technical record for code, Issues, pull requests, commits and documentation.
