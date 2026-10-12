@@ -62,8 +62,8 @@ export default async function AccountPage() {
               <h1 className="mt-2 text-3xl font-extrabold">My Account</h1>
               <p className="mt-2 text-sm text-blue-50">Manage your personal account, access and security.</p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link href={homeHref} className="rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/20">
+            <div className="flex flex-col items-stretch gap-2 sm:items-end">
+              <Link href={homeHref} className="rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-center text-sm font-semibold hover:bg-white/20">
                 Back
               </Link>
               <SignOutButton compact />
