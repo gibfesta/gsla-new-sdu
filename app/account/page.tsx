@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { KeyRound, ShieldCheck, UserRound, LogOut } from "lucide-react";
+import { KeyRound, ShieldCheck, UserRound } from "lucide-react";
 import { getAccess } from "@/lib/auth/access";
 import { prisma } from "@/lib/prisma";
 import PasswordForm from "@/components/auth/PasswordForm";
@@ -62,9 +62,12 @@ export default async function AccountPage() {
               <h1 className="mt-2 text-3xl font-extrabold">My Account</h1>
               <p className="mt-2 text-sm text-blue-50">Manage your personal account, access and security.</p>
             </div>
-            <Link href={homeHref} className="rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/20">
-              Back to WebApp
-            </Link>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link href={homeHref} className="rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold hover:bg-white/20">
+                Back
+              </Link>
+              <SignOutButton compact />
+            </div>
           </div>
         </section>
 
@@ -102,13 +105,6 @@ export default async function AccountPage() {
           <div className="mt-6 max-w-xl"><PasswordForm change continueHref="/account" /></div>
         </article>
 
-        <article className="rounded-2xl border border-rose-200 bg-white p-6 shadow-sm sm:p-7">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-700"><LogOut size={20} /></span>
-            <div><h2 className="text-lg font-bold">Session</h2><p className="text-sm text-[#60799f]">Sign out of this device when you have finished.</p></div>
-          </div>
-          <div className="mt-5"><SignOutButton tone="light" /></div>
-        </article>
       </div>
     </main>
   );
