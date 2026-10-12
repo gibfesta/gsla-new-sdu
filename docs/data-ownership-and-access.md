@@ -1,6 +1,6 @@
 # GSLA WebApp — Data Ownership and Access
 
-> **Status: PARTIALLY APPROVED v0.2. Active M1 / Facilities decisions below are approved business rules; explicitly listed open items remain Deferred / To decide. Approval does not itself mean implementation is complete.**
+> **Status: APPROVED FOR ACTIVE M1 / FACILITIES SCOPE v0.2. Active M1 / Facilities decisions below are approved business rules. Later-department and explicitly deferred roles remain Deferred / To decide. Approval does not itself mean implementation is complete.**
 
 ## What this file is
 
@@ -71,7 +71,8 @@ Later SDU, HR, Finance, service-account and auditor roles remain Deferred / To d
 - Do not create a separate technical Facilities Manager role unless future approved requirements make its permissions different.
 - Facilities Administrator access is restricted to the Facilities Department.
 - No Organisation-only, HR, SDU or Finance access unless separately approved later.
-- Organisation Administrator approval is currently required only for **Events** and **New Facilities / Venues**.
+- **Facilities Administrator default rule:** full access and control within the Facilities Department unless a specific approved rule explicitly limits that authority or reserves approval/control to Organisation Administrator.
+- Current explicit exceptions: **Events** require Organisation Administrator approval; **New Facilities / Venues** require Organisation Administrator approval and archive approval.
 
 ### Events
 - Facilities Administrators may create and edit event records.
@@ -138,7 +139,7 @@ Later SDU, HR, Finance, service-account and auditor roles remain Deferred / To d
 ## Explicitly Deferred / Open items
 
 The following are not yet approved and must not be inferred:
-- Exact Facilities Administrator create/edit/archive/export rights for any remaining Facilities record where the broad department rule is not enough.
+- Any future Facilities exception to the approved default rule.
 - Any later-department SDU, HR or Finance permission model beyond Organisation Administrator full rights.
 - Any system/service-account or auditor roles.
 - Any future exception to the current Centre Manager assigned-venue model.
