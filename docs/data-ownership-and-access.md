@@ -83,8 +83,11 @@ Later SDU, HR, Finance, service-account and auditor roles remain Deferred / To d
 - Approved workflow: Create / Prepare → Gather information/documentation → Submit for Organisation Administrator approval → Approved / Final.
 
 ### New Facilities / Venues
-- Organisation Administrator approval is required before a new facility/venue becomes final.
-- Detailed create/edit/archive responsibility remains Deferred / To decide.
+- Facilities Administrators may create and edit a proposed facility/venue record before approval.
+- Organisation Administrator is the approval authority.
+- Approved workflow: Facilities Administrator creates/prepares → required information completed → Organisation Administrator approves → facility becomes formally approved/final.
+- After approval, Facilities Administrators may continue to manage and edit the approved facility's operational details within Facilities.
+- Archiving a facility/venue requires Organisation Administrator approval.
 
 ### Maintenance / Venue Issues
 - Centre Managers may create issue cards for their assigned venue and add information/updates while active.
@@ -135,7 +138,6 @@ Later SDU, HR, Finance, service-account and auditor roles remain Deferred / To d
 ## Explicitly Deferred / Open items
 
 The following are not yet approved and must not be inferred:
-- New Facility/Venue record-level create/edit/archive responsibilities below Organisation Administrator approval.
 - Exact Facilities Administrator create/edit/archive/export rights for any remaining Facilities record where the broad department rule is not enough.
 - Any later-department SDU, HR or Finance permission model beyond Organisation Administrator full rights.
 - Any system/service-account or auditor roles.
