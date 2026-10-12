@@ -1,9 +1,13 @@
 # GSLA-M1-009 — Facilities / Venues Approval Architecture
 
-**Version:** 1.0 proposed architecture · **Date:** 2026-10-12  
-**Worker:** Software Architect · **Disposition:** Ready for Project Controller / Project Owner review; not approved for implementation by this document alone.  
-**Source baseline:** `eb4dc64a176addc6172d98518001bd5065a8eecd` on GitHub `main`.  
-**Authority:** [Issue #43](https://github.com/gibfesta/gsla-new-sdu/issues/43), [Breeze M1-009](https://app.breeze.pm/cards/6533385), [approved active M1 / Facilities policy v0.2](../data-ownership-and-access.md), [M1-004 findings](../project-control/GSLA-M1-004-BACKEND-VERIFICATION.md).  
+**Version:** 1.0 proposed architecture · **Date:** 2026-10-12
+
+**Worker:** Software Architect · **Disposition:** Ready for Project Controller / Project Owner review; not approved for implementation by this document alone.
+
+**Source baseline:** `eb4dc64a176addc6172d98518001bd5065a8eecd` on GitHub `main`.
+
+**Authority:** [Issue #43](https://github.com/gibfesta/gsla-new-sdu/issues/43), [Breeze M1-009](https://app.breeze.pm/cards/6533385), [approved active M1 / Facilities policy v0.2](../data-ownership-and-access.md), [M1-004 findings](../project-control/GSLA-M1-004-BACKEND-VERIFICATION.md).
+
 **Evidence limits:** Source and task-record review only. No production implementation, live database inspection, RLS/grants certification, authenticated runtime tests, or deployment verification.
 
 ## 1. Decision and approved-policy traceability

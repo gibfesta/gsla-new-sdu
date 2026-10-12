@@ -1,14 +1,23 @@
 # WORK RECEIPT — GSLA-M1-009
 
-**Task:** Define Facilities approval workflow architecture.  
-**Milestone:** M1 — Core Platform, Authentication & Permissions.  
-**Worker:** Software Architect.  
-**Date:** 2026-10-12.  
-**Outcome:** Completed architecture definition; awaiting Project Controller / Project Owner acceptance. Task not self-closed.  
-**Branch:** `docs/gsla-m1-009-facility-approval` (documentation-only review branch).  
-**Baseline commit:** `eb4dc64a176addc6172d98518001bd5065a8eecd`.  
-**PR / delivery commit:** Recorded in the matching Issue #43 and Breeze receipt after publication; no runtime code commit is represented by this document.  
-**Deployment:** Not deployed by this Work Order; no app/database implementation performed.  
+**Task:** Define Facilities approval workflow architecture.
+
+**Milestone:** M1 — Core Platform, Authentication & Permissions.
+
+**Worker:** Software Architect.
+
+**Date:** 2026-10-12.
+
+**Outcome:** Completed architecture definition; awaiting Project Controller / Project Owner acceptance. Task not self-closed.
+
+**Branch:** `docs/gsla-m1-009-facility-approval` (documentation-only review branch).
+
+**Baseline commit:** `eb4dc64a176addc6172d98518001bd5065a8eecd`.
+
+**PR / delivery commit:** Recorded in the matching Issue #43 and Breeze receipt after publication; no runtime code commit is represented by this document.
+
+**Deployment:** Not deployed by this Work Order; no app/database implementation performed.
+
 **Authoritative task:** [GitHub Issue #43](https://github.com/gibfesta/gsla-new-sdu/issues/43), [Breeze card 6533385 / M1-009](https://app.breeze.pm/cards/6533385).
 
 ## Task and actual outcome
@@ -52,19 +61,26 @@ No production code, schema, roles, grants, RLS, credentials, user records, venue
 - Inspected baseline role resolver, Facilities/Organisation layout gates, middleware, both Facilities API handlers, Prisma Facilities schema, Create/Edit form, saved-facility consumers, detail/archive route, sidebar, overview, handbook and integration/route registers.
 - Traced every mutation to approved role authority; walked create/submit/return/reject/revise/approve/edit/archive paths including OA self-approval and multi-role handling.
 - Reviewed stale pending edits, competing decisions, archive/edit races, retries, audit failure, role revocation, legacy provenance and history retention as architectural cases; supplied expected results for F01–F23. These are design checks, not executable production acceptance results.
-- Validated relative Markdown links and document-only changes, checked whitespace with `git diff --check`, and compared permission-document content after removing the added reference: approved policy unchanged byte-for-byte.
+- Validated relative Markdown links, document-only scope and all required specialist receipt fields; compared permission-document content after removing the added reference: approved policy unchanged byte-for-byte. The first unstaged whitespace check omitted new untracked documents; a complete committed-diff check caught Markdown hard-break trailing spaces. Removed those spaces and reran the full change check before final handoff.
 - Consulted current primary Next.js authorization, Prisma v6 transaction/concurrency and Supabase RLS documentation as technical boundary references.
 - No application typecheck/build/runtime test, SQL test, live role request, database advisors or deployment test was required or performed for this documentation-only task. Such evidence is explicitly required of later implementation specialists.
 
 ## Specialist Role Compliance
 
-**Specialist Worker / Role:** Software Architect, identified before execution in user instruction and authoritative task records.  
-**Role Specification Reference:** [Issue #43](https://github.com/gibfesta/gsla-new-sdu/issues/43) and [Breeze M1-009](https://app.breeze.pm/cards/6533385) explicit approved scope: system structure, workflow/state architecture, component/service boundaries and cross-system design; [Specialist Worker Verification Standard](SPECIALIST-WORKER-VERIFICATION-STANDARD.md).  
-**Specialist responsibilities exercised:** Policy-to-state translation, explicit transition authority, server/service/UI separation, durable approval/archival evidence, concurrency and migration impact design, cross-specialist handoff boundaries.  
-**Specialist checks actually performed:** State reachability/disposition review; role/action mapping against v0.2; preparation/pending/approved distinctions; return/reject/edit/archive model; audit/version consistency; API bypass and race analysis; existing consumer impact; database implication review without physical implementation/certification.  
-**Evidence inspected / produced:** Baseline source paths and task records listed above; architecture v1.0 with transition tables/API contracts/F01–F23; linked authoritative registers and this receipt; publication PR/commit and validation results recorded in Issue/Breeze handoff.  
-**Authority boundaries respected:** No business permission redefinition, no production implementation or self-approval of architecture, no schema/RLS/grant change or certification, no independent claim of Backend/Database specialist review, no runtime/security/deployment sign-off, no self-closing M1-009 or M1-004.  
-**Items referred to another specialist:** Senior Database Engineer for canonical key, schema/constraints, migration/reconciliation, grants/RLS/privileged Prisma paths and DB tests; Senior Backend Developer for command implementation review and API/session/concurrency tests; Frontend Developer for approved state controls/queue/read projections; QA for independent role/runtime acceptance; Project Controller/Owner for architectural acceptance and controlled assignments. These referrals are deliverable requirements, not claims that those specialists have executed.  
+**Specialist Worker / Role:** Software Architect, identified before execution in user instruction and authoritative task records.
+
+**Role Specification Reference:** [Issue #43](https://github.com/gibfesta/gsla-new-sdu/issues/43) and [Breeze M1-009](https://app.breeze.pm/cards/6533385) explicit approved scope: system structure, workflow/state architecture, component/service boundaries and cross-system design; [Specialist Worker Verification Standard](SPECIALIST-WORKER-VERIFICATION-STANDARD.md).
+
+**Specialist responsibilities exercised:** Policy-to-state translation, explicit transition authority, server/service/UI separation, durable approval/archival evidence, concurrency and migration impact design, cross-specialist handoff boundaries.
+
+**Specialist checks actually performed:** State reachability/disposition review; role/action mapping against v0.2; preparation/pending/approved distinctions; return/reject/edit/archive model; audit/version consistency; API bypass and race analysis; existing consumer impact; database implication review without physical implementation/certification.
+
+**Evidence inspected / produced:** Baseline source paths and task records listed above; architecture v1.0 with transition tables/API contracts/F01–F23; linked authoritative registers and this receipt; publication PR/commit and validation results recorded in Issue/Breeze handoff.
+
+**Authority boundaries respected:** No business permission redefinition, no production implementation or self-approval of architecture, no schema/RLS/grant change or certification, no independent claim of Backend/Database specialist review, no runtime/security/deployment sign-off, no self-closing M1-009 or M1-004.
+
+**Items referred to another specialist:** Senior Database Engineer for canonical key, schema/constraints, migration/reconciliation, grants/RLS/privileged Prisma paths and DB tests; Senior Backend Developer for command implementation review and API/session/concurrency tests; Frontend Developer for approved state controls/queue/read projections; QA for independent role/runtime acceptance; Project Controller/Owner for architectural acceptance and controlled assignments. These referrals are deliverable requirements, not claims that those specialists have executed.
+
 **Specialist conclusion:** Software Architect responsibilities and required architectural checks were executed and evidenced. Architecture deliverable complete for review; Specialist Role Compliance assessment belongs to Project Controller. No production workflow or database security certification is claimed.
 
 ## Developer work required / follow-up candidates
