@@ -146,6 +146,10 @@ The following are not yet approved and must not be inferred:
 
 ## Implementation rule once approved
 
+### Facilities workflow implementation reference
+
+The [M1-009 Facilities approval architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md) is a proposed technical implementation of the approved New Facilities / Venues rules above. It is awaiting architectural acceptance; it does not amend this v0.2 permission policy or certify enforcement. Preparation, Organisation approval, continuing operational edits and Organisation archive approval are mapped there to states, API commands and specialist implementation requirements.
+
 For every approved matrix entry, enforce read and write scope at the data boundary and validate actions on the server. The UI should reflect the same permissions, but hiding a page or button does not secure a record. Include direct URL, API/action, cross-venue, cross-department, and reassignment cases in verification. Default to no new access for any undecided entry; do not infer permissions from demo data or current navigation.
 
 ## Version handoff
