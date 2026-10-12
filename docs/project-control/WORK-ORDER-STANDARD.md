@@ -62,6 +62,7 @@ When a specialist is assigned, define the specialist-specific evidence required 
 - If new material work is discovered, return it to the Project Controller as a follow-up candidate.
 - The worker may clarify implementation detail but may not silently expand scope.
 - A Work Order is not complete until a Work Receipt is returned.
+- The required Work Receipt must end with: **What happens next**, **Plain-English explanation**, and **Copy/paste instructions for the next worker**.
 - Specialist attribution must be defined before or during execution, never invented retrospectively.
 - Specialist Work Orders must define role scope, specialist checks and authority boundaries.
 - Cross-discipline tasks must identify each required specialist; one specialist cannot silently absorb another discipline's judgement.
