@@ -53,16 +53,18 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
 }
 
-export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const denied = await requireFacilityAccess(true);
-  if (denied) return NextResponse.json({ error: denied.error }, { status: denied.status });
-  try {
-    const facility = await findFacility((await params).id);
-    if (!facility) return NextResponse.json({ error: "Facility not found" }, { status: 404 });
-    await prisma.facilities_Table.deleteMany({ where: { id: facility.id } });
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error("Failed to delete facility", error);
-    return NextResponse.json({ error: "Failed to delete facility" }, { status: 500 });
+export async function DELETE() {
+  // Hard deletion is disabled until the approved Organisation Administrator
+  // archive-approval workflow has been implemented and tested.
+  // Do not silently erase facility records or circumvent approval.
+  const { getAccess } = await import("@/lib/auth/access");
+  const access = await getAccess();
+  if (!access.user) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+  if (!access.roles.includes("organisation_admin")) {
+    return NextResponse.json({ error: "Organisation Administrator approval is required to archive a facility" }, { status: 403 });
   }
+  return NextResponse.json(
+    { error: "Facility archival is not yet implemented. Permanent deletion has been disabled." },
+    { status: 409 }
+  );
 }
