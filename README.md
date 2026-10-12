@@ -25,5 +25,9 @@ See:
 - [Work Order Standard](docs/project-control/WORK-ORDER-STANDARD.md)
 - [Work Receipt Standard](docs/project-control/WORK-RECEIPT-STANDARD.md)
 - [Project Status & Reporting Rules](docs/project-control/PROJECT-STATUS-RULES.md)
+- [Specialist Worker Verification Standard](docs/project-control/SPECIALIST-WORKER-VERIFICATION-STANDARD.md)
 
 Breeze is the operational project-control board. GitHub is the permanent technical record for code, Issues, pull requests, commits and source-controlled documentation. ChatGPT conversations are execution environments and must not become competing sources of truth.
+
+
+Specialist titles are not sufficient evidence of specialist execution. Specialist-credited tasks must satisfy the Specialist Worker Verification Standard before they can be marked Done.
