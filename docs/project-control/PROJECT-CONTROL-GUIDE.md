@@ -170,7 +170,8 @@ The specialist:
 - respects authority boundaries and refers cross-discipline decisions to the correct specialist;
 - updates required documentation;
 - returns a Work Receipt containing Specialist Role Compliance;
-- identifies limitations and follow-up work.
+- identifies limitations and follow-up work;
+- finishes the Work Receipt with: exact next step and owner, a plain-English explanation, and copy/paste-ready instructions for the next worker.
 
 The Project Controller:
 - verifies the evidence;
@@ -261,6 +262,7 @@ Work Receipts are created when execution produces evidence, not simply because a
 - Blocked or On Hold work that had already started requires an Interim Work Receipt preserving completed work, blocker/hold reason, safe state and remaining work.
 - Blocked or On Hold work that never entered execution does not require a receipt.
 - Done requires both the final Work Receipt and a separate Project Controller Verification comment.
+- Every Work Receipt must tell the project owner exactly what happens next, explain the result in plain English, and provide ready-to-send instructions for the next worker.
 
 The Project Controller is responsible for enforcing these gates when moving Breeze cards between stages.
 
@@ -285,3 +287,14 @@ A specialist task must be traceable through:
 A chat title, task category, merged PR or successful deployment does not prove that specialist work occurred.
 
 Multi-specialist tasks require separate evidence for each discipline. One specialist must not certify another specialist's area.
+
+
+## Owner-facing Work Receipt handoff
+
+Every Work Receipt must end with three mandatory sections:
+
+1. **What happens next** — the next controlled action, who owns it, and the expected status/task transition.
+2. **Plain-English explanation** — a short non-technical summary of what was done, what was not done, and why it matters.
+3. **Copy/paste instructions for the next worker** — a ready-to-send instruction that the project owner can paste directly into the correct specialist chat without rewriting it.
+
+This applies to final and interim Work Receipts. The handoff instructions do not authorise unapproved work; the Project Controller still controls assignment and sequencing.
