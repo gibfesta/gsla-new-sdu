@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getAccess } from "@/lib/auth/access";
 import { prisma } from "@/lib/prisma";
+import SignOutButton from "@/components/auth/SignOutButton";
 export const dynamic = "force-dynamic";
 export default async function ProfilePage() {
   const { user, roles } = await getAccess();
@@ -18,6 +19,7 @@ export default async function ProfilePage() {
         <div><dt className="font-semibold">Role</dt><dd className="mt-1">{roles.map(role => role.replaceAll("_", " ")).join(", ")}</dd></div>
         <div><dt className="font-semibold">Phone</dt><dd className="mt-1">{profile?.phone || "Not provided"}</dd></div>
       </dl>
+      <div className="mt-7 border-t border-[#d5e4f6] pt-5"><SignOutButton tone="light" /></div>
     </section>
   </main>;
 }
