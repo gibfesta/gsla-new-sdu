@@ -96,6 +96,9 @@ The Project Controller has verified the completion criteria and evidence.
 10. On Hold work must state why it is paused.
 11. New ideas go to Backlog until assessed.
 12. Breeze is the operational control record; GitHub is the permanent technical record; ChatGPT conversations are execution environments.
+13. Specialist titles are not evidence of specialist execution.
+14. A specialist may only be credited when their approved role scope, specialist checks and evidence are recorded.
+15. Retrospective specialist attribution is prohibited.
 
 ## Starting new work
 
@@ -109,8 +112,9 @@ The Project Controller must:
 3. Check dependencies and affected authoritative documents.
 4. Define acceptance criteria.
 5. Select the correct worker.
-6. Create or update the controlled task.
-7. Issue a Work Order.
+6. If specialist work is required, identify the specialist's approved role definition, specialist checks and authority boundaries.
+7. Create or update the controlled task.
+8. Issue a Work Order.
 
 The project owner does not need to manually format Breeze cards or linked GitHub tickets.
 
@@ -118,7 +122,7 @@ The project owner does not need to manually format Breeze cards or linked GitHub
 
 REQUEST → ASSESS → TASK → ASSIGN → WORK ORDER → EXECUTION → WORK RECEIPT → VERIFY → CLOSE / FOLLOW-UP
 
-See WORK-ORDER-STANDARD.md and WORK-RECEIPT-STANDARD.md.
+See WORK-ORDER-STANDARD.md, WORK-RECEIPT-STANDARD.md and SPECIALIST-WORKER-VERIFICATION-STANDARD.md.
 
 ## Definition of Done
 
@@ -134,6 +138,7 @@ A task may be marked Done only when all applicable criteria are satisfied:
 8. The Documentation Maintenance Rule has been satisfied.
 9. Dependent registers have been updated.
 10. The Project Controller has verified the evidence.
+11. Where specialist work is claimed, Specialist Role Compliance has passed under the Specialist Worker Verification Standard.
 
 Implemented ≠ Done.
 Merged ≠ Done.
@@ -160,11 +165,20 @@ The Project Controller:
 
 The specialist:
 - performs only the assigned scope;
+- works against an approved role specification or explicitly stated specialist scope;
+- performs the specialist-specific checks defined in the Work Order;
+- respects authority boundaries and refers cross-discipline decisions to the correct specialist;
 - updates required documentation;
-- returns a Work Receipt;
+- returns a Work Receipt containing Specialist Role Compliance;
 - identifies limitations and follow-up work.
 
-The Project Controller verifies and closes the task.
+The Project Controller:
+- verifies the evidence;
+- checks Specialist Role Compliance before crediting the named specialist;
+- must not invent or retrospectively assign specialist participation;
+- closes the task only after all applicable verification gates pass.
+
+If work was performed generally, record the actual executor as Project Controller / implementation support or other accurate non-specialist attribution.
 
 ## Project reporting
 
@@ -258,3 +272,16 @@ The Project Controller is responsible for enforcing these gates when moving Bree
 - **Actual Outcome** is recorded only after execution in the Work Receipt and describes what was actually achieved.
 
 Active Breeze cards must show Expected Outcome in their description. Completed work must not rewrite Expected Outcome as if it were evidence; Actual Outcome belongs in the Work Receipt.
+
+
+## Specialist worker verification
+
+The permanent rule is defined in [Specialist Worker Verification Standard](SPECIALIST-WORKER-VERIFICATION-STANDARD.md).
+
+A specialist task must be traceable through:
+
+**named specialist → approved role definition → specialist checks → specialist evidence → Specialist Role Compliance → Project Controller verification**
+
+A chat title, task category, merged PR or successful deployment does not prove that specialist work occurred.
+
+Multi-specialist tasks require separate evidence for each discipline. One specialist must not certify another specialist's area.

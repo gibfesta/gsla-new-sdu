@@ -31,6 +31,9 @@ Every controlled task should record:
 - Documentation requirement
 - Release / deployment state
 - Source / discovery context
+- Specialist Worker / Role, where applicable
+- Role Specification Reference, where specialist work is required
+- Specialist verification requirement
 
 ## Priority
 
@@ -52,6 +55,8 @@ Use verifiable evidence:
 - documentation commit
 
 Do not close tasks based only on chat statements.
+
+For specialist-credited work, completion evidence must also show the specialist's approved scope, specialist-specific checks, authority boundaries and Specialist Role Compliance. A specialist title or specialist chat name is not completion evidence.
 
 ## Standard project report
 
@@ -101,5 +106,17 @@ Status movement must preserve execution evidence:
 - **In Progress → On Hold:** Interim Work Receipt required if any execution occurred.
 - **Blocked / On Hold before execution:** no receipt required until work actually starts.
 - **Review / Verification → Done:** Project Controller Verification required in addition to the Work Receipt.
+- **Specialist work → Done:** Specialist Role Compliance must be explicitly verified as PASS.
 
 A task must never be placed in Done simply because a PR was merged, a deployment succeeded or a worker says it is complete.
+
+
+## Specialist attribution status rule
+
+A task must not be represented as specialist-completed unless specialist execution is evidenced under the Specialist Worker Verification Standard.
+
+If specialist involvement cannot be demonstrated:
+- keep the factual implementation evidence;
+- use general/project implementation attribution;
+- do not backfill a specialist name;
+- create or assign specialist verification where specialist certification is actually required.

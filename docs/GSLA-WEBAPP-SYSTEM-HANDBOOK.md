@@ -18,6 +18,7 @@ Supporting control documents:
 - [Work Order Standard](project-control/WORK-ORDER-STANDARD.md)
 - [Work Receipt Standard](project-control/WORK-RECEIPT-STANDARD.md)
 - [Project Status & Reporting Rules](project-control/PROJECT-STATUS-RULES.md)
+- [Specialist Worker Verification Standard](project-control/SPECIALIST-WORKER-VERIFICATION-STANDARD.md)
 
 Breeze is the operational project-control record. GitHub remains the permanent technical record. Technical behaviour belongs in the authoritative architecture, route, permissions, forms and departmental registers rather than being duplicated in Breeze.
 
@@ -51,7 +52,7 @@ Breeze is the operational project-control record. GitHub remains the permanent t
 
 ## New developer onboarding checklist
 1. Review this handbook and the repo README.
-2. Review the Project Control Guide and the current Breeze board before starting work.
+2. Review the Project Control Guide, Specialist Worker Verification Standard and the current Breeze board before starting work.
 3. Identify current production deployment/branch; check build history and outstanding issues.
 4. Configure an isolated local environment using the repo's documented package scripts. Never place secrets in source control.
 5. Understand Supabase authentication, role checks and PostgreSQL access/RLS before handling real user data.
@@ -82,6 +83,7 @@ Breeze is the operational project-control record. GitHub remains the permanent t
 - Test Organisation Admin, Facilities Admin, Centre Manager and anonymous scenarios for each security-sensitive change.
 - Keep old redirects until callers/bookmarks have been audited and removals approved.
 - Maintain a tested rollback plan. Never document a planned feature as deployed.
+- Do not credit specialist workers unless their role scope, specialist checks and evidence are recorded under the Specialist Worker Verification Standard.
 
 ## Operations and incident handling
 For broken login: verify current Supabase URL configuration, callback endpoints, link expiry/rate limits, sessions and error logs without sharing access tokens.
@@ -94,6 +96,7 @@ For unsafe access: restrict exposure, document scope, test fixes, and assess dat
 - 2026-10-11 — Project Control System linked into handbook. GitHub Issues / GitHub Project were used for the initial M0 control setup; technical registers remained authoritative for system behaviour.
 - 2026-10-11 — Operational project control migrated from GitHub Projects to Breeze (`GSLA WebApp — Project Control`). GitHub remains the permanent technical record for code, Issues, pull requests, commits and documentation.
 - 2026-10-12 — Unified My Account flow added for current authenticated roles. Banner account identity opens `/account`, which centralises personal details, role/access information, password change and secure sign-out. Runtime role verification required before closing GSLA-M1-008.
+- 2026-10-12 — Specialist Worker Verification Standard established. Specialist attribution now requires role-definition evidence, specialist checks, authority-boundary compliance and Project Controller verification.
 - Subsequent entries should include date, author/reviewer, relevant commit, changes, migration/test outcomes and any known limitations.
 
 ## Handover acceptance criteria

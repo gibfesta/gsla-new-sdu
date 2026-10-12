@@ -14,6 +14,12 @@ A Work Order is the controlled instruction given to a specialist worker before s
 **Task:**  
 **Milestone:**  
 **Owner / Worker:**  
+**Specialist Worker / Role (if applicable):**  
+**Role Specification Reference:**  
+**Specialist Responsibilities Used:**  
+**Specialist Checks Required:**  
+**Authority Boundaries / Out of Scope:**  
+**Other Specialists Required:**  
 **Priority:**  
 **Status:** Ready / In Progress  
 **Dependencies:**  
@@ -46,6 +52,9 @@ Name the authoritative documents that must be updated under the Documentation Ma
 ### Constraints / safeguards
 Record compatibility, security, data preservation, migration or rollback requirements.
 
+### Specialist verification requirements
+When a specialist is assigned, define the specialist-specific evidence required to prove that the specialist actually performed the work. The approved role specification, or an explicit approved specialist scope, must be identified before execution begins.
+
 ## Rules
 
 - One Work Order maps to one controlled Task ID.
@@ -53,3 +62,7 @@ Record compatibility, security, data preservation, migration or rollback require
 - If new material work is discovered, return it to the Project Controller as a follow-up candidate.
 - The worker may clarify implementation detail but may not silently expand scope.
 - A Work Order is not complete until a Work Receipt is returned.
+- Specialist attribution must be defined before or during execution, never invented retrospectively.
+- Specialist Work Orders must define role scope, specialist checks and authority boundaries.
+- Cross-discipline tasks must identify each required specialist; one specialist cannot silently absorb another discipline's judgement.
+- If no specialist actually executes the work, the Work Receipt must use accurate general/project implementation attribution instead.

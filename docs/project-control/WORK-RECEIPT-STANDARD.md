@@ -28,6 +28,20 @@ Record type checks, lint, builds, automated tests, manual UI checks, role checks
 ### Documentation updated
 List all authoritative documents updated.
 
+### Specialist Role Compliance
+Required whenever the work is credited to a specialist.
+
+**Specialist Worker / Role:**  
+**Role Specification Reference:**  
+**Specialist responsibilities exercised:**  
+**Specialist checks actually performed:**  
+**Evidence inspected / produced:**  
+**Authority boundaries respected:**  
+**Items referred to another specialist:**  
+**Specialist conclusion:**  
+
+If the work was not actually performed by a specialist, do not complete this section with a specialist title. Record the real executor accurately.
+
 ### Known limitations
 State anything not verified, not implemented or still relying on demo/local data.
 
@@ -48,6 +62,8 @@ The Project Controller records one of:
 - ON HOLD → On Hold
 
 Workers do not close their own tasks.
+
+For specialist work, the Project Controller must additionally record **Specialist Role Compliance = PASS** before Done. Missing or unsupported specialist evidence requires correction or assignment to the appropriate specialist.
 
 
 ## When a Work Receipt is required
@@ -86,4 +102,6 @@ For controlled Breeze tasks:
 - post Project Controller Verification as a separate comment;
 - keep GitHub PR/commit/Issue links in the receipt as technical evidence;
 - no card may enter **Review / Verification** without a Work Receipt;
-- no card may enter **Done** without both a Work Receipt and Project Controller Verification.
+- no card may enter **Done** without both a Work Receipt and Project Controller Verification;
+- specialist-credited work may not enter **Done** unless Specialist Role Compliance is evidenced and explicitly passed by the Project Controller;
+- retrospective specialist attribution is prohibited.
