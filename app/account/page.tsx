@@ -17,16 +17,28 @@ export default async function AccountPage() {
   if (!user) redirect("/sign-in");
   if (roles.length === 0) redirect("/access-denied");
 
-  const profile = await prisma.profiles.findUnique({
-    where: { id: user.id },
-    select: {
-      full_name: true,
-      preferred_name: true,
-      email: true,
-      phone: true,
-      status: true,
-    },
-  });
+  let profile: {
+    full_name: string;
+    preferred_name: string | null;
+    email: string;
+    phone: string | null;
+    status: string | null;
+  } | null = null;
+
+  try {
+    profile = await prisma.profiles.findUnique({
+      where: { id: user.id },
+      select: {
+        full_name: true,
+        preferred_name: true,
+        email: true,
+        phone: true,
+        status: true,
+      },
+    });
+  } catch (error) {
+    console.error("My Account profile lookup failed", error);
+  }
 
   const displayName =
     profile?.preferred_name?.trim() ||
