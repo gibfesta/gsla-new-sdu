@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getAccess } from "@/lib/auth/access";
-import SignOutButton from "@/components/auth/SignOutButton";
+import Link from "next/link";
 export default async function AwaitingVenuePage() {
  const { user, roles } = await getAccess();
  if (!user) redirect("/sign-in");
@@ -19,7 +19,7 @@ export default async function AwaitingVenuePage() {
     <div className="mt-7 rounded-xl bg-[#f5f9ff] border border-[#d5e4f6] p-4 text-left text-sm text-[#153763]">
       <p>✓ Account verified</p><p className="mt-2">○ Venue assignment pending</p>
     </div>
-    <div className="mt-6 flex justify-center"><SignOutButton tone="light" /></div>
+    <div className="mt-6 flex justify-center"><Link href="/account" className="inline-flex min-h-10 items-center justify-center rounded-lg border border-[#c7d9ee] bg-white px-4 text-sm font-semibold text-[#0C2F57] hover:bg-[#eaf2fc]">My Account</Link></div>
    </div>
   </section>
  </main>;

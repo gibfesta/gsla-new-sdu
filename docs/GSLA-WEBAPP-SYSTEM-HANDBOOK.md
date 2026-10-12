@@ -29,7 +29,7 @@ Breeze is the operational project-control record. GitHub remains the permanent t
 - Authentication route source is grouped under `app/(auth)/`, which does **not** alter URLs. The Centre Manager awaiting-assignment URL remains `/auth/awaiting-assignment`.
 
 ## Current implementation status (verify periodically)
-- Organisation Admin and Facilities Admin role-based routing, initial departmental access guards and Facilities API guards have been implemented. Shared Supabase sign-out is available from the authenticated account UI, including the Centre Manager awaiting-assignment screen. These require comprehensive negative/security tests before production accreditation.
+- Organisation Admin and Facilities Admin role-based routing, initial departmental access guards and Facilities API guards have been implemented. Shared account controls are available through `/account`. The banner avatar/name opens My Account, where users can review personal/account details, change password and sign out. Centre Managers can also open My Account from the awaiting-assignment screen. These require comprehensive negative/security tests before production accreditation.
 - Centre Managers can authenticate and reach an awaiting-venue page. Venue-scoped assignment/access remains future work until real facilities exist.
 - Facilities Directory has a Prisma-backed API and database table; create/edit/read operations still require full acceptance testing. A complete persistent forms system is **not yet live**.
 - Forms & Procedures has predefined templates and browser-local editing/assignment behaviour; approved migration to Supabase remains outstanding. Preserve users' browser-only customisations.
@@ -93,7 +93,7 @@ For unsafe access: restrict exposure, document scope, test fixes, and assess dat
 - 2026-10-11 — First handbook established as entry point; linked supporting registers and documented gaps. This is **not** a completed operational certification.
 - 2026-10-11 — Project Control System linked into handbook. GitHub Issues / GitHub Project were used for the initial M0 control setup; technical registers remained authoritative for system behaviour.
 - 2026-10-11 — Operational project control migrated from GitHub Projects to Breeze (`GSLA WebApp — Project Control`). GitHub remains the permanent technical record for code, Issues, pull requests, commits and documentation.
-- 2026-10-12 — Shared Supabase sign-out control added for current authenticated roles, including the Centre Manager awaiting-assignment screen; runtime role verification required before closing GSLA-M1-008.
+- 2026-10-12 — Unified My Account flow added for current authenticated roles. Banner account identity opens `/account`, which centralises personal details, role/access information, password change and secure sign-out. Runtime role verification required before closing GSLA-M1-008.
 - Subsequent entries should include date, author/reviewer, relevant commit, changes, migration/test outcomes and any known limitations.
 
 ## Handover acceptance criteria

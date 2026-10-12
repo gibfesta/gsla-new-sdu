@@ -24,6 +24,6 @@ Current account roles:
 - Facilities Administrator
 - Centre Manager
 
-Sign-out is exposed in the shared authenticated account banner/profile flow and directly on the Centre Manager awaiting-assignment screen.
+The shared banner avatar/name opens `/account`. My Account centralises personal account information, current access/role, password change and sign-out. Centre Managers can open the same account page from the awaiting-assignment screen.
 
 Authentication establishes identity only. Role, department and venue scope must still be enforced separately at server/API/database boundaries.
