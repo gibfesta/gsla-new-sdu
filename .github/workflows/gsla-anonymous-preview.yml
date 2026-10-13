@@ -1,0 +1,39 @@
+name: GSLA approved anonymous Preview Chromium probe
+on:
+  pull_request:
+    paths:
+      - "tests/browser/probe-approved-preview.cjs"
+      - ".github/workflows/gsla-anonymous-preview.yml"
+permissions:
+  contents: read
+jobs:
+  anonymous-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install pinned Playwright dependencies
+        working-directory: tests/browser
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: tests/browser
+        run: npx playwright install --with-deps chromium
+      - name: Anonymous read-only Preview probes (no secrets or bypass)
+        working-directory: tests/browser
+        run: |
+          set +e
+          node probe-approved-preview.cjs
+          rc=$?
+          set -e
+          echo "GSLA_ANON_PROBE_EXIT_CODE=$rc"
+          if [ "$rc" -eq 2 ]; then exit 1; fi
+          if [ "$rc" -eq 1 ]; then echo "Unexpected response requires review, not acceptance"; fi
+          if [ "$rc" -eq 3 ]; then echo "BLOCKED: no application acceptance claimed"; fi
+          exit 0
+# No private environment, session state, admission header, Vercel bypass,
+# public artifacts, screenshot, trace, HAR, request/response body or mutation.
