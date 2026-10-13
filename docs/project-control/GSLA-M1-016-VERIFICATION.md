@@ -27,3 +27,11 @@ No actual browser-local custom definitions are declared reconciled. The UI has e
 ## Controller checklist
 
 Verify the exact PR/deployment commit and independent owner admission first. In an authorised owner session, compare storage/network before and after opening register, changing views/filters, inspecting a definition, previewing fields and refreshing. No business mutations, invitations, uploads, local writes or migrations may occur. Inspect this browser's definitions is the only explicit local read, and must not alter any original storage. Capture List, Cards, detail preview, empty Finance, local coverage, stale and tombstone states. Do not supply a fake domain record or grant a GSLA role just for Open verification.
+
+## Integration deployment / browser evidence
+
+[Draft PR #57](https://github.com/gibfesta/gsla-new-sdu/pull/57), implementation commit `99114344c7d17666a81ed698d5488eedd1b09894`, Vercel commit status SUCCESS and PR bot Ready. Preview runtime URL tested: `https://gsla-new-sdu-git-feat-gsla-m1-016-owner-form-fc903f-founder-os6.vercel.app/owner/form-control`. Browser observed `500 MIDDLEWARE_INVOCATION_FAILED`, including one reload. Root cause is not established without Backend/log access. This failure occurs before owner sign-in; it is not successful UI acceptance or proof of a broken/changed owner policy. Production owner URL still redirects the unsigned session to Sign in.
+
+![Actual preview runtime blocker](evidence/GSLA-M1-016-preview-error.jpg)
+
+No UI screenshot was fabricated from the compiled synthetic harness. Backend preview-runtime diagnosis and secure owner-session screenshots/manual UI remain required.

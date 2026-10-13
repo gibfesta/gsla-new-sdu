@@ -4,8 +4,8 @@
 **Date:** 2026-10-13.
 **Authority:** [Breeze M1-016](https://app.breeze.pm/cards/6537259), [GitHub Issue #55](https://github.com/gibfesta/gsla-new-sdu/issues/55). M1-014 architecture and M1-015 boundary accepted; baseline `175354cafe27c7c810de5493d23ade7baae2d743`.
 **Outcome:** UI and reviewed source inventory implemented; submitted for independent review. **Partially completed evidence: authenticated manual UI/screenshots remain outstanding. Do not mark Done.**
-**Branch:** `feat/gsla-m1-016-owner-form-control`; PR/delivery commit and integration build status are recorded in the linked task comments.
-**Deployment:** Review branch / integration preview only if its build succeeds. Production has not been changed by this Work Order.
+**Branch:** `feat/gsla-m1-016-owner-form-control`; [Draft PR #57](https://github.com/gibfesta/gsla-new-sdu/pull/57); implementation commit `99114344c7d17666a81ed698d5488eedd1b09894` (tree `f881c02ec4e49c9c0e7fbd6b30cddd1bd9d51526` matched local reviewed tree).
+**Deployment:** Vercel integration preview reported SUCCESS/Ready for implementation commit `99114344c7d17666a81ed698d5488eedd1b09894`. Browser runtime is BLOCKED: preview owner URL returns `500 MIDDLEWARE_INVOCATION_FAILED`, confirmed after one reload. Production has not been changed by this Work Order.
 
 ## Work completed
 
@@ -53,8 +53,8 @@ No production form, submission/storage handler, domain permission, owner designa
 - Actual default-factory expansion: PASS; the 23 live source native IDs equal the 23 manifest native IDs, not merely a hard-coded row count.
 - Frontend acceptance tests: PASS for O09–O19 aspects: independent Screen only + Ready + On hold states; mixed usage connections; no unverified database-persistence claim; aliases/renderer identity; Finance planned coverage; dynamic/unsafe link denial; passive SSR with disabled inputs and no form/file picker/network mutation; metadata-only local extraction; escaping script-like title/notes; stale/removed evidence retained. These are code/synthetic component tests, not authenticated runtime certification.
 - Reviewed source/save paths for FacilityForm/API/Prisma wiring, eventPageStore, venueDesignStore, catalogue factories/hooks, auth forms, Organisation/public wizards/mail, SDU annual funding/result/registration and sport editors, HR leave/timesheet/note/upload, Health refresh; page/import/auxiliary dispositions are available in the full ledger.
-- Local Next production build: **BLOCKED by executor** (`ENOENT: uv_resident_set_memory`). Prisma generation succeeds with a workspace temporary directory. No local build PASS is claimed. GitHub/Vercel integration build result, if available, is recorded separately in the task comment.
-- Synthetic interactive fixture harness compiled from actual components; Cloud Browser could not reach executor localhost. No live authenticated owner UI screenshot/manual List/Card/network/storage result is claimed. Current production owner URL redirects this unsigned browser to Sign in; it does not expose register metadata.
+- Local Next production build: **BLOCKED by executor** (`ENOENT: uv_resident_set_memory`). Prisma generation succeeds with a workspace temporary directory. No local build PASS is claimed. GitHub/Vercel integration reported SUCCESS and the PR bot reported Ready for the exact implementation commit. That does not prove a usable owner runtime: the browser reports middleware failure before authentication.
+- Synthetic interactive fixture harness compiled from actual components; Cloud Browser could not reach executor localhost. No live authenticated owner UI screenshot/manual List/Card/network/storage result is claimed. An actual [preview runtime failure screenshot](evidence/GSLA-M1-016-preview-error.jpg) is saved as blocker evidence, not presented as an implemented UI screenshot. Current production owner URL redirects this unsigned browser to Sign in; it does not expose register metadata.
 - No database-write round trip, connection/disconnection, account invitation, uploaded file, permissions change or actual form submission was used as a test.
 
 See [verification ledger](GSLA-M1-016-VERIFICATION.md) and [machine test results](evidence/GSLA-M1-016-automated-checks.json).
@@ -85,7 +85,7 @@ See [verification ledger](GSLA-M1-016-VERIFICATION.md) and [machine test results
 
 ## Known limitations / blockers
 
-No secure Operational Owner browser session is available in this execution. Source-private runtime gates are not bypassed for screenshots. The Vercel connector reports 403 for the project's team, and Cloud Browser cannot reach the local fixture server. These block actual screenshots/manual runtime verification here. Local build metrics are unavailable; integration preview readiness must be independently checked.
+No secure Operational Owner browser session is available in this execution. Source-private runtime gates are not bypassed for screenshots. The Vercel connector reports 403 for the project's team, and Cloud Browser cannot reach the local fixture server. The built preview additionally returns `500 MIDDLEWARE_INVOCATION_FAILED` before authentication. These block actual UI screenshots/manual runtime verification here; a failure screenshot is retained. Root cause is not claimed without Backend/log evidence. Local build metrics are unavailable; integration preview readiness must be independently checked.
 
 Local-only custom forms on other origins/devices and catalogue deletions remain unknown. Intended production use/readiness must be owner-reviewed; source inspection does not invent policy approval. Different deployment/source baselines show Inventory needs review; fingerprints must be reconciled before advancing evidence. Passive previews deliberately show field metadata, not full business layouts or submitted answers. Open may legitimately be denied by a domain guard even for the Operational Owner.
 
@@ -95,7 +95,7 @@ Complete secure authenticated UI/screenshots and storage/network comparison agai
 
 ## 1. What happens next
 
-Project Controller reviews M1-016's PR, manifest, exports and specialist evidence, verifies the integration build and arranges a secure Operational Owner test session for missing UI/screenshots. Keep M1-016 open / In Progress or return it for correction until required evidence is adequate. Do not mark Done from this worker receipt. Once independently accepted, Controller records Specialist Role Compliance and disposition and controls M1-017's full O01–O21 verification/unblocking.
+Project Controller reviews M1-016's PR, manifest, exports and specialist evidence, verifies the integration build and refers the preview middleware failure to the Senior Backend Developer and arranges a secure Operational Owner test session for missing UI/screenshots once runtime access works. Keep M1-016 open / In Progress or return it for correction until required evidence is adequate. Do not mark Done from this worker receipt. Once independently accepted, Controller records Specialist Role Compliance and disposition and controls M1-017's full O01–O21 verification/unblocking.
 
 ## 2. Plain-English explanation
 
@@ -116,7 +116,7 @@ config/form-control/register.json and generated CSV ledgers.
 Check 66 distinct source definitions / 169 usage-mode mappings / 23 Facilities native defaults, 143 UI-source and 88 page dispositions, 29 planned-only route candidates and auxiliary exclusion reasons. Discovery-file counts are not form counts. Independently test whether definitions/variants should be merged or split.
 Run TypeScript, scoped ESLint, node tests/form-control/acceptance.cjs,
 node scripts/form-control/check-inventory.cjs --strict,
-and a production build in a supported environment; verify exact integration deployment.
+and a production build in a supported environment; verify exact integration deployment. Implementation preview was Ready but returns 500 MIDDLEWARE_INVOCATION_FAILED before auth. Obtain Backend diagnosis/correction within a controlled scope; do not bypass guards or alter owner designation to hide the failure.
 Complete missing secure Operational Owner runtime checks: List default, Card toggle, search/filter states, metadata/detail previews, Finance/planned coverage, aliases, local candidate read, dynamic-route blocking, escaping, stale/tombstone state and unchanged storage/network. Capture actual UI screenshots. No real form submission is required.
 Respect existing owner/domain guards; do not expose the private owner identifier or change roles/config to make Open work. Refer DTO empty-route and any server/API issues to Backend. Other-device private browser definitions remain unreconciled until a controlled metadata review.
 Return separate Project Controller Verification and Specialist Role Compliance disposition. Do not mark Done until evidence is adequate. Control M1-017 unblocking/verification after acceptance, not before.
