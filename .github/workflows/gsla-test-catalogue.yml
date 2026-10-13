@@ -29,6 +29,16 @@ jobs:
           node -e "const { chromium } = require('playwright'); chromium.launch({headless:true}).then(b => b.close()).then(() => console.log('PASS Chromium launch')).catch(() => process.exit(1))"
       - name: Validate catalogue and PASS FAIL BLOCKED NOT RUN states
         run: node tests/browser/self-test.cjs
+      - name: Assert blocked-run evidence is redacted
+        working-directory: tests/browser
+        run: |
+          set +e
+          GSLA_TEST_COMMIT="SYNTHETIC_SECRET_DO_NOT_LOG_826401" GSLA_TEST_DEPLOYMENT="dpl_SYNTHETIC" node run.cjs
+          rc=$?
+          set -e
+          test "$rc" -eq 3
+          ! grep -R -F "SYNTHETIC_SECRET_DO_NOT_LOG_826401" ../../test-results/gsla-audit
+          node -e "const fs=require('fs');const d='../../test-results/gsla-audit';const f=fs.readdirSync(d).find(x=>x.endsWith('.json'));const r=JSON.parse(fs.readFileSync(d+'/'+f));if(r.summary.BLOCKED!==11||r.summary['NOT RUN']!==1||r.summary.PASS!==0)process.exit(1);console.log('PASS blocked evidence '+r.runId+' (11 BLOCKED, 1 NOT RUN)')"
 # No secrets, auth sessions, Preview bypass credentials, privileged contexts,
 # external app requests, artifact uploads, pull_request_target or deployment writes.
 # Credentialed Preview workflow requires separate authorisation and review.
