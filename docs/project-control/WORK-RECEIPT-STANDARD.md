@@ -5,7 +5,21 @@ Owner: Project Controller
 
 ## Purpose
 
-A Work Receipt is the specialist worker's evidence-backed handoff after completing or stopping work.
+A Work Receipt is the worker's evidence-backed handoff after completing, pausing, blocking, verifying, rejecting or otherwise stopping controlled work.
+
+## Universal audit-trail rule
+
+Every controlled task that enters execution must leave a complete auditable chain:
+
+**Task ID → Work Order → named worker/role → execution evidence → Work Receipt → Project Controller verification → status decision**
+
+This rule applies to all workers and all execution types, including implementation, architecture, database work, frontend/backend work, QA, independent verification, review, investigation and defect diagnosis.
+
+A QA finding, assessment, test report, verdict, handoff, defect note or review comment does **not** replace the formal Work Receipt. Where QA/verification is the assigned work, that verification itself counts as execution and must end with a formally titled **WORK RECEIPT — <Task ID>**.
+
+If work stops before completion, the worker must return an **INTERIM WORK RECEIPT — <Task ID>** preserving work completed, evidence, current safe state, blocker/hold reason and remaining work.
+
+No worker is exempt from this audit-trail requirement.
 
 ## Required format
 
@@ -76,7 +90,7 @@ Workers do not close their own tasks.
 
 For specialist work, the Project Controller must additionally record **Specialist Role Compliance = PASS** before Done. Missing or unsupported specialist evidence requires correction or assignment to the appropriate specialist.
 
-A final or interim Work Receipt is incomplete if it omits the three mandatory handoff sections: **What happens next**, **Plain-English explanation**, and **Copy/paste instructions for the next worker**.
+A final or interim Work Receipt is incomplete if it omits the formal receipt title and the three mandatory handoff sections: **What happens next**, **Plain-English explanation**, and **Copy/paste instructions for the next worker**.
 
 
 ## When a Work Receipt is required
