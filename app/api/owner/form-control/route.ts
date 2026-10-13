@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     if (query.length > 120 || area.length > 120) return NextResponse.json({error:"Invalid filter"}, {status:400,headers:ownerResponseHeaders});
     const register = loadFormRegister();
     const forms = register.forms.filter(x => (!area || x.area === area) &&
-      (!query || (x.displayName + " " + x.formId + " " + x.locations.map(l => l.route).join(" ")).toLowerCase().includes(query)));
+      (!query || (x.ownerFormId + " " + x.displayName + " " + x.formId + " " + x.locations.map(l => l.route).join(" ")).toLowerCase().includes(query)));
     const offset = (page - 1) * limit;
     return NextResponse.json({schemaVersion:register.schemaVersion,sourceCommit:register.sourceCommit,coverageNote:register.coverageNote,total:forms.length,page,limit,forms:forms.slice(offset,offset+limit)}, { headers: ownerResponseHeaders });
   } catch {

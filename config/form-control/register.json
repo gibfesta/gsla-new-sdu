@@ -106,7 +106,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-001"
     },
     {
       "formId": "facilities.template.closing",
@@ -210,7 +211,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-002"
     },
     {
       "formId": "facilities.template.afternoon",
@@ -304,7 +306,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-003"
     },
     {
       "formId": "facilities.template.night",
@@ -398,7 +401,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-004"
     },
     {
       "formId": "facilities.template.maintenance",
@@ -537,7 +541,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-005"
     },
     {
       "formId": "facilities.template.monthly",
@@ -646,7 +651,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-006"
     },
     {
       "formId": "facilities.template.fire",
@@ -765,7 +771,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-007"
     },
     {
       "formId": "facilities.template.first-aid",
@@ -884,7 +891,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-008"
     },
     {
       "formId": "facilities.template.site",
@@ -1003,7 +1011,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-009"
     },
     {
       "formId": "facilities.template.signage",
@@ -1122,7 +1131,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-010"
     },
     {
       "formId": "facilities.template.sop",
@@ -1216,7 +1226,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-011"
     },
     {
       "formId": "facilities.template.issue",
@@ -1320,7 +1331,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityWorkflows.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-012"
     },
     {
       "formId": "facilities.template.event-form",
@@ -1383,7 +1395,8 @@
         "components/facilities/EventEditor.tsx",
         "components/facilities/FormsAndProcedures.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-013"
     },
     {
       "formId": "facilities.template.maintenance-request",
@@ -1487,7 +1500,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-014"
     },
     {
       "formId": "facilities.template.maintenance-update",
@@ -1591,7 +1605,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-015"
     },
     {
       "formId": "facilities.template.follow-up",
@@ -1690,7 +1705,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-016"
     },
     {
       "formId": "facilities.template.opening-sop",
@@ -1774,7 +1790,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-017"
     },
     {
       "formId": "facilities.template.closing-checklist",
@@ -1858,7 +1875,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-018"
     },
     {
       "formId": "facilities.template.incident-form",
@@ -1952,7 +1970,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-019"
     },
     {
       "formId": "facilities.template.issue-review",
@@ -2056,7 +2075,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-020"
     },
     {
       "formId": "facilities.template.photo-log",
@@ -2155,7 +2175,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-021"
     },
     {
       "formId": "facilities.template.booking",
@@ -2259,7 +2280,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-022"
     },
     {
       "formId": "facilities.template.quick-update",
@@ -2348,7 +2370,8 @@
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowCompletionForm.tsx",
         "lib/facilityFormCatalogue.ts"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-023"
     },
     {
       "formId": "auth.sign-in",
@@ -2392,7 +2415,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/(auth)/sign-in/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-024"
     },
     {
       "formId": "auth.forgot-password",
@@ -2431,7 +2455,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/(auth)/forgot-password/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-025"
     },
     {
       "formId": "auth.password",
@@ -2528,7 +2553,8 @@
         "app/auth/page-preview/page.tsx",
         "app/profile/page.tsx",
         "components/auth/PasswordForm.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-026"
     },
     {
       "formId": "on-hold.login",
@@ -2572,7 +2598,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/On-Hold-Pages/login/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-027"
     },
     {
       "formId": "on-hold.signup",
@@ -2616,7 +2643,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/On-Hold-Pages/signup/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-028"
     },
     {
       "formId": "on-hold.profile-note",
@@ -2655,7 +2683,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/On-Hold-Pages/profile/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-029"
     },
     {
       "formId": "organisation.user-intake.new",
@@ -2729,7 +2758,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/users/new/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-030"
     },
     {
       "formId": "organisation.user-intake.add",
@@ -2803,7 +2833,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/users/add/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-031"
     },
     {
       "formId": "public.join",
@@ -2867,7 +2898,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/(public)/join/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-032"
     },
     {
       "formId": "organisation.mail.compose",
@@ -2916,7 +2948,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/system/mail/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-033"
     },
     {
       "formId": "organisation.mail.mail-reply",
@@ -2955,7 +2988,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/system/mail/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-034"
     },
     {
       "formId": "organisation.mail.chat-reply",
@@ -2994,7 +3028,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/system/mail/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-035"
     },
     {
       "formId": "organisation.import",
@@ -3033,7 +3068,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/system/import-export/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-036"
     },
     {
       "formId": "facilities.information",
@@ -3049,7 +3085,7 @@
           "source": "components/facilities/FacilityForm.tsx",
           "connectionStatus": "SERVER_SERVICE",
           "apiConnection": "POST /api/facilities",
-          "databaseConnection": "Prisma facilities_Table.create \u2014 linked, saving not verified",
+          "databaseConnection": "Prisma facilities_Table.create — linked, saving not verified",
           "evidence": "Source-reviewed handler; runtime round trip not tested.",
           "readiness": "Not assessed"
         },
@@ -3059,7 +3095,7 @@
           "source": "components/facilities/FacilityForm.tsx",
           "connectionStatus": "SERVER_SERVICE",
           "apiConnection": "PATCH /api/facilities/[id]",
-          "databaseConnection": "Prisma facilities_Table.updateMany \u2014 linked, saving not verified",
+          "databaseConnection": "Prisma facilities_Table.updateMany — linked, saving not verified",
           "evidence": "Source-reviewed handler; runtime round trip not tested.",
           "readiness": "Not assessed"
         },
@@ -3149,7 +3185,8 @@
         "app/facilities/facilities-directory/[facilityId]/archive/page.tsx",
         "components/facilities/FacilityForm.tsx",
         "components/facilities/SavedFacilityInformation.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-037"
     },
     {
       "formId": "facilities.event-record",
@@ -3266,7 +3303,8 @@
         "app/facilities/events-control/[eventId]/page.tsx",
         "app/facilities/facilities-directory/[facilityId]/events/[eventId]/page.tsx",
         "components/facilities/EventEditor.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-038"
     },
     {
       "formId": "facilities.catalogue-editor",
@@ -3361,7 +3399,8 @@
       "sourceFiles": [
         "components/facilities/FormsAndProcedures.tsx",
         "components/facilities/WorkflowTemplateEditor.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-039"
     },
     {
       "formId": "facilities.catalogue-assignment",
@@ -3415,7 +3454,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "components/facilities/FormsAndProcedures.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-040"
     },
     {
       "formId": "facilities.preview-venue",
@@ -3454,7 +3494,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "components/facilities/FormsAndProcedures.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-041"
     },
     {
       "formId": "facilities.booking-editor",
@@ -3528,7 +3569,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/facilities/bookings/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-042"
     },
     {
       "formId": "facilities.cm-cover",
@@ -3587,7 +3629,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/facilities/cm-assignments/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-043"
     },
     {
       "formId": "facilities.duty-team",
@@ -3636,7 +3679,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/facilities/duty-team/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-044"
     },
     {
       "formId": "facilities.workflow-review",
@@ -3700,11 +3744,12 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "components/facilities/WorkflowRecordReview.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-045"
     },
     {
       "formId": "sdu.association.registration",
-      "displayName": "Form A \u2014 Association annual registration",
+      "displayName": "Form A — Association annual registration",
       "area": "Sports Development Unit",
       "kind": "data-entry",
       "operationalStatus": "NEEDS_REVIEW",
@@ -3779,11 +3824,12 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/associations/registration/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-046"
     },
     {
       "formId": "sdu.association.form-b",
-      "displayName": "Form B \u2014 Funding application",
+      "displayName": "Form B — Funding application",
       "area": "Sports Development Unit",
       "kind": "data-entry",
       "operationalStatus": "NEEDS_REVIEW",
@@ -3858,11 +3904,12 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/associations/form-b/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-047"
     },
     {
       "formId": "sdu.association.form-c",
-      "displayName": "Form C \u2014 Results and outcomes",
+      "displayName": "Form C — Results and outcomes",
       "area": "Sports Development Unit",
       "kind": "data-entry",
       "operationalStatus": "NEEDS_REVIEW",
@@ -3937,7 +3984,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/associations/form-c/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-048"
     },
     {
       "formId": "sdu.league-create",
@@ -4011,7 +4059,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/leagues/add/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-049"
     },
     {
       "formId": "sdu.team-create",
@@ -4080,7 +4129,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/teams/add/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-050"
     },
     {
       "formId": "sdu.league-entry",
@@ -4144,7 +4194,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/leagues/[leagueId]/teams/add/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-051"
     },
     {
       "formId": "sdu.overview.logo",
@@ -4183,7 +4234,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-052"
     },
     {
       "formId": "sdu.overview.committee",
@@ -4222,7 +4274,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-053"
     },
     {
       "formId": "sdu.overview.league",
@@ -4261,7 +4314,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-054"
     },
     {
       "formId": "sdu.overview.team",
@@ -4300,7 +4354,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-055"
     },
     {
       "formId": "sdu.overview.coach",
@@ -4339,7 +4394,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-056"
     },
     {
       "formId": "sdu.sport.participants",
@@ -4418,7 +4474,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/participants/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-057"
     },
     {
       "formId": "sdu.sport.coaches",
@@ -4492,7 +4549,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/coaches/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-058"
     },
     {
       "formId": "sdu.sport.teams",
@@ -4571,7 +4629,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/teams/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-059"
     },
     {
       "formId": "sdu.sport.governance",
@@ -4640,7 +4699,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/sports-development/sports/[sport]/governance/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-060"
     },
     {
       "formId": "hr.leave",
@@ -4734,7 +4794,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/human-resources/leave/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-061"
     },
     {
       "formId": "hr.week-pack",
@@ -4750,7 +4811,7 @@
           "source": "app/human-resources/timesheets/weeks/page.tsx",
           "connectionStatus": "SERVER_SERVICE",
           "apiConnection": "Server Action createWeekPack",
-          "databaseConnection": "Prisma timesheet_week_packs.upsert \u2014 linked, saving not verified",
+          "databaseConnection": "Prisma timesheet_week_packs.upsert — linked, saving not verified",
           "evidence": "Source-reviewed handler; runtime round trip not tested.",
           "readiness": "Not assessed"
         }
@@ -4767,7 +4828,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/human-resources/timesheets/weeks/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-062"
     },
     {
       "formId": "hr.week-grid",
@@ -4826,7 +4888,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "components/human-resources/timesheets/WeekGridDemo.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-063"
     },
     {
       "formId": "hr.note",
@@ -4865,7 +4928,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/human-resources/employees/[id]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-064"
     },
     {
       "formId": "hr.document-upload",
@@ -4904,7 +4968,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/human-resources/employees/[id]/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-065"
     },
     {
       "formId": "health.check",
@@ -4919,7 +4984,7 @@
           "mode": "refresh GET checks",
           "source": "app/organisation/health/page.tsx",
           "connectionStatus": "SERVER_SERVICE",
-          "apiConnection": "GET /organisation/health \u2192 databaseCheck",
+          "apiConnection": "GET /organisation/health → databaseCheck",
           "databaseConnection": "Connectivity SELECT 1 only; no application-table write",
           "evidence": "Source-reviewed handler; runtime round trip not tested.",
           "readiness": "Not assessed"
@@ -4937,7 +5002,8 @@
       "permissionContext": "Existing domain route/handler permissions apply; register grants no business access.",
       "sourceFiles": [
         "app/organisation/health/page.tsx"
-      ]
+      ],
+      "ownerFormId": "GSLA-FRM-066"
     }
   ],
   "sourceLedger": [
@@ -7237,9 +7303,9 @@
         "@/lib/form-control/presentation",
         "./LocalCandidates"
       ],
-      "sourceHash": "08c9234bf34f37503d3b33c43152a2d087cf1d7574b95e070b1f4ee9fd5f674f",
+      "sourceHash": "a92f408c4114517f09ec2370aa75a1b5827f588bc59a95911662fb3ca52a59d1",
       "reviewedAt": "2026-10-13",
-      "sourceCommit": "working-tree:GSLA-M1-016",
+      "sourceCommit": "M1-016 continuation working tree on accepted 4270552",
       "directMarkerCandidate": true
     },
     {
@@ -7253,9 +7319,9 @@
         "@/lib/form-control/types",
         "@/lib/form-control/presentation"
       ],
-      "sourceHash": "58c54ed283114b99236e44482848a465ba31a8f060fb2435a5b3166f3fe581dd",
+      "sourceHash": "2fbf03d8f369e8544f86c1894cb7b1059f11c1ca871afe890f731abcbf16add4",
       "reviewedAt": "2026-10-13",
-      "sourceCommit": "working-tree:GSLA-M1-016",
+      "sourceCommit": "M1-016 continuation working tree on accepted 4270552",
       "directMarkerCandidate": true
     },
     {
@@ -7295,175 +7361,175 @@
     {
       "source": "app/On-Hold-Pages/README.md",
       "route": "/On-Hold-Pages",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/facilities/facilities-directory/[facilityId]/workspace/README.md",
       "route": "/facilities/facilities-directory/[facilityId]/workspace",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/facilities/settings/README.md",
       "route": "/facilities/settings",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/finance/budgets/new/README.md",
       "route": "/finance/budgets/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/finance/expenditure/new/README.md",
       "route": "/finance/expenditure/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/finance/invoices/new/README.md",
       "route": "/finance/invoices/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/finance/reports/README.md",
       "route": "/finance/reports",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/finance/settings/README.md",
       "route": "/finance/settings",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/finance/suppliers/new/README.md",
       "route": "/finance/suppliers/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/documents/README.md",
       "route": "/human-resources/documents",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/employees/[id]/edit/README.md",
       "route": "/human-resources/employees/[id]/edit",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/employees/new/README.md",
       "route": "/human-resources/employees/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/leave/new/README.md",
       "route": "/human-resources/leave/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/reports/README.md",
       "route": "/human-resources/reports",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/settings/README.md",
       "route": "/human-resources/settings",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/human-resources/timesheets/new/README.md",
       "route": "/human-resources/timesheets/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/organisation/departments/README.md",
       "route": "/organisation/departments",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/organisation/settings/README.md",
       "route": "/organisation/settings",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/coaches/README.md",
       "route": "/sports-development/associations/[associationId]/coaches",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/dashboard/README.md",
       "route": "/sports-development/associations/[associationId]/dashboard",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/documents/README.md",
       "route": "/sports-development/associations/[associationId]/documents",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/events/README.md",
       "route": "/sports-development/associations/[associationId]/events",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/governance/README.md",
       "route": "/sports-development/associations/[associationId]/governance",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/participants/README.md",
       "route": "/sports-development/associations/[associationId]/participants",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/[associationId]/teams/README.md",
       "route": "/sports-development/associations/[associationId]/teams",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/associations/new/README.md",
       "route": "/sports-development/associations/new",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/compliance/README.md",
       "route": "/sports-development/compliance",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/programmes/README.md",
       "route": "/sports-development/programmes",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     },
     {
       "source": "app/sports-development/settings/README.md",
       "route": "/sports-development/settings",
-      "status": "Planned candidate \u2014 no implemented page/form",
+      "status": "Planned candidate — no implemented page/form",
       "notes": "README-only; not included in confirmed form-definition total."
     }
   ],

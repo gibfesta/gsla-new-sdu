@@ -12,8 +12,8 @@ export async function GET() {
   if (denied) return denied;
   try {
     const forms = loadFormRegister().forms;
-    const lines = [["formId","displayName","area","kind","operationalStatus","connectionStatus","routes"].map(csv).join(","),
-      ...forms.map(form => [form.formId,form.displayName,form.area,form.kind,form.operationalStatus,
+    const lines = [["ownerFormId","formId","displayName","area","kind","operationalStatus","connectionStatus","routes"].map(csv).join(","),
+      ...forms.map(form => [form.ownerFormId,form.formId,form.displayName,form.area,form.kind,form.operationalStatus,
         form.connectionStatus,form.locations.map(loc=>loc.route).join(" | ")].map(csv).join(","))];
     return new NextResponse(lines.join("\r\n"),{
       headers:{...ownerResponseHeaders,"Content-Type":"text/csv; charset=utf-8",

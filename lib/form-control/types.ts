@@ -11,6 +11,7 @@ export type FormLocation = {
 export type PassiveField = { label: string; type: string; required: boolean };
 export type FormControlRecord = {
   formId: string;
+  ownerFormId: string;
   displayName: string;
   area: string;
   kind: string;

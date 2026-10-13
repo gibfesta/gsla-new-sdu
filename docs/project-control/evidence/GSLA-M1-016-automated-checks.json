@@ -9,6 +9,8 @@
     "O15/O18: metadata-only extraction, malicious titles retained as text, no answers/files/assignments emitted",
     "O19: changed / removed evidence remains stale / tombstoned",
     "O09/O17/O18: intentional Screen-only + Ready + On-hold supported; actual inspector escaped/passive/no mutations",
-    "O17: owner UI imports no live catalogue hooks and contains no storage-write or business mutation handlers"
+    "O19: actual inspector disables Open for stale and tombstoned evidence",
+    "O17: owner UI imports no live catalogue hooks and contains no storage-write or business mutation handlers",
+    "Permanent IDs: 66 unique fixed ledger assignments, canonical mapping, first List column, Cards/detail/search"
   ]
 }

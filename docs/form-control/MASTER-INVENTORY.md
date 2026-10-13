@@ -25,74 +25,74 @@ Browser-local copies/customisations/deletions on other devices/origins are **not
 
 ## Definition register
 
-| ID | Form | Area | Connection | Lifecycle | Readiness | Usage modes |
-|---|---|---|---|---|---|---|
-| facilities.template.opening | Daily Opening | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.closing | Daily Closing | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.afternoon | Afternoon Handover | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.night | Night Handover | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.maintenance | Weekly Maintenance Inspection | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.monthly | Monthly Maintenance Review | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.fire | Fire extinguisher inspection | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.first-aid | First aid kit stock check | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.site | Monthly site safety walkaround | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.signage | H&S signage verification | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.sop | Pitch Access & Safety Procedure | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.issue | Report an Issue | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.event-form | Event Form | Facilities | MIXED | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template |
-| facilities.template.maintenance-request | Maintenance Request | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.maintenance-update | Maintenance Update / Work Order | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.follow-up | Compliance Follow-up Action | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.opening-sop | Opening Procedure SOP | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.closing-checklist | Closing Checklist | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.incident-form | Incident Reporting Form | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.issue-review | Review & Resolve Issue | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.photo-log | Photo Log | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.booking | Booking / Resource Reservation | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| facilities.template.quick-update | Quick Update / Timeline Entry | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
-| auth.sign-in | Staff sign in | Login/Auth | SERVER_SERVICE | IN_USE | NOT_ASSESSED | authenticate |
-| auth.forgot-password | Password recovery request | Login/Auth | SERVER_SERVICE | IN_USE | NOT_ASSESSED | request recovery |
-| auth.password | Set / change account password | Login/Auth | MIXED | IN_USE | NOT_ASSESSED | set password; change password; change password within account; disabled design preview; redirect alias; account redirect alias |
-| on-hold.login | Public login | On-Hold | SERVER_SERVICE | ON_HOLD | NOT_ASSESSED | authenticate |
-| on-hold.signup | Public signup | On-Hold | SERVER_SERVICE | ON_HOLD | NOT_ASSESSED | register |
-| on-hold.profile-note | Public profile internal note | On-Hold | UI_ONLY | ON_HOLD | WORK_REQUIRED | note placeholder |
-| organisation.user-intake.new | User intake wizard | Organisation | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; create account (UI-only) |
-| organisation.user-intake.add | GSLA staff intake wizard | Organisation | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; create account (UI-only) |
-| public.join | Public membership / role request wizard | Shared/Public | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft; submit UI-only |
-| organisation.mail.compose | Compose mail / chat | Organisation | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | sendCompose |
-| organisation.mail.mail-reply | Mail reply | Organisation | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | sendMailReply |
-| organisation.mail.chat-reply | Chat reply | Organisation | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | sendChatReply |
-| organisation.import | Dataset import drop-zone | Organisation | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | import placeholder |
-| facilities.information | Facility information (Create / Edit) | Facilities | MIXED | NEEDS_REVIEW | NOT_ASSESSED | create; edit; read; archive request (disabled) |
-| facilities.event-record | Event record | Facilities | MIXED | NEEDS_REVIEW | NOT_ASSESSED | create; edit; read; venue read; archive request (disabled) |
-| facilities.catalogue-editor | Workflow template editor | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | create template; edit template; editor host |
-| facilities.catalogue-assignment | Template venue / date / event assignment | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | assign template |
-| facilities.preview-venue | Browser-only preview venue | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | add preview venue |
-| facilities.booking-editor | Booking / resource reservation drawer | Facilities | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | create; edit; delete |
-| facilities.cm-cover | Temporary Centre Manager cover | Facilities | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | assign cover placeholder |
-| facilities.duty-team | Duty team shift selection | Facilities | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | select shifts placeholder |
-| facilities.workflow-review | Manager workflow record review | Facilities | UNKNOWN | NEEDS_REVIEW | WORK_REQUIRED | review (unused component) |
-| sdu.association.registration | Form A — Association annual registration | Sports Development Unit | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; submit (UI-only); file selection metadata |
-| sdu.association.form-b | Form B — Funding application | Sports Development Unit | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; submit (UI-only); file selection metadata |
-| sdu.association.form-c | Form C — Results and outcomes | Sports Development Unit | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; submit (UI-only); file selection metadata |
-| sdu.league-create | League details | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | draft; save |
-| sdu.team-create | Team details | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | draft; save |
-| sdu.league-entry | League team entry | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | draft; save |
-| sdu.overview.logo | Sport logo upload | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | edit logo |
-| sdu.overview.committee | Sport overview committee editor | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
-| sdu.overview.league | Sport overview league quick-add | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
-| sdu.overview.team | Sport overview team quick-add | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
-| sdu.overview.coach | Sport overview coach quick-add | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
-| sdu.sport.participants | Participant details | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
-| sdu.sport.coaches | Coach details | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
-| sdu.sport.teams | Sport team details | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
-| sdu.sport.governance | Sport governance role | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
-| hr.leave | Leave request / manager review | Human Resources | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create request; approve; reject |
-| hr.week-pack | Create timesheet week pack | Human Resources | SERVER_SERVICE | NEEDS_REVIEW | NOT_ASSESSED | create week |
-| hr.week-grid | Timesheet week grid | Human Resources | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | edit demo cells; week route host |
-| hr.note | Employee HR note | Human Resources | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | note placeholder |
-| hr.document-upload | Employee document upload placeholder | Human Resources | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | upload placeholder |
-| health.check | Run system health checks | Health | SERVER_SERVICE | NEEDS_REVIEW | NOT_ASSESSED | refresh GET checks |
+| Form ID | Canonical ID | Form | Area | Connection | Lifecycle | Readiness | Usage modes |
+|---|---|---|---|---|---|---|---|
+| GSLA-FRM-001 | facilities.template.opening | Daily Opening | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-002 | facilities.template.closing | Daily Closing | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-003 | facilities.template.afternoon | Afternoon Handover | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-004 | facilities.template.night | Night Handover | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-005 | facilities.template.maintenance | Weekly Maintenance Inspection | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-006 | facilities.template.monthly | Monthly Maintenance Review | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-007 | facilities.template.fire | Fire extinguisher inspection | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-008 | facilities.template.first-aid | First aid kit stock check | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-009 | facilities.template.site | Monthly site safety walkaround | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-010 | facilities.template.signage | H&S signage verification | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-011 | facilities.template.sop | Pitch Access & Safety Procedure | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-012 | facilities.template.issue | Report an Issue | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-013 | facilities.template.event-form | Event Form | Facilities | MIXED | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template |
+| GSLA-FRM-014 | facilities.template.maintenance-request | Maintenance Request | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-015 | facilities.template.maintenance-update | Maintenance Update / Work Order | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-016 | facilities.template.follow-up | Compliance Follow-up Action | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-017 | facilities.template.opening-sop | Opening Procedure SOP | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-018 | facilities.template.closing-checklist | Closing Checklist | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-019 | facilities.template.incident-form | Incident Reporting Form | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-020 | facilities.template.issue-review | Review & Resolve Issue | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-021 | facilities.template.photo-log | Photo Log | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-022 | facilities.template.booking | Booking / Resource Reservation | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-023 | facilities.template.quick-update | Quick Update / Timeline Entry | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | preview answers; edit template; assign template; venue preview answers |
+| GSLA-FRM-024 | auth.sign-in | Staff sign in | Login/Auth | SERVER_SERVICE | IN_USE | NOT_ASSESSED | authenticate |
+| GSLA-FRM-025 | auth.forgot-password | Password recovery request | Login/Auth | SERVER_SERVICE | IN_USE | NOT_ASSESSED | request recovery |
+| GSLA-FRM-026 | auth.password | Set / change account password | Login/Auth | MIXED | IN_USE | NOT_ASSESSED | set password; change password; change password within account; disabled design preview; redirect alias; account redirect alias |
+| GSLA-FRM-027 | on-hold.login | Public login | On-Hold | SERVER_SERVICE | ON_HOLD | NOT_ASSESSED | authenticate |
+| GSLA-FRM-028 | on-hold.signup | Public signup | On-Hold | SERVER_SERVICE | ON_HOLD | NOT_ASSESSED | register |
+| GSLA-FRM-029 | on-hold.profile-note | Public profile internal note | On-Hold | UI_ONLY | ON_HOLD | WORK_REQUIRED | note placeholder |
+| GSLA-FRM-030 | organisation.user-intake.new | User intake wizard | Organisation | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; create account (UI-only) |
+| GSLA-FRM-031 | organisation.user-intake.add | GSLA staff intake wizard | Organisation | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; create account (UI-only) |
+| GSLA-FRM-032 | public.join | Public membership / role request wizard | Shared/Public | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft; submit UI-only |
+| GSLA-FRM-033 | organisation.mail.compose | Compose mail / chat | Organisation | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | sendCompose |
+| GSLA-FRM-034 | organisation.mail.mail-reply | Mail reply | Organisation | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | sendMailReply |
+| GSLA-FRM-035 | organisation.mail.chat-reply | Chat reply | Organisation | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | sendChatReply |
+| GSLA-FRM-036 | organisation.import | Dataset import drop-zone | Organisation | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | import placeholder |
+| GSLA-FRM-037 | facilities.information | Facility information (Create / Edit) | Facilities | MIXED | NEEDS_REVIEW | NOT_ASSESSED | create; edit; read; archive request (disabled) |
+| GSLA-FRM-038 | facilities.event-record | Event record | Facilities | MIXED | NEEDS_REVIEW | NOT_ASSESSED | create; edit; read; venue read; archive request (disabled) |
+| GSLA-FRM-039 | facilities.catalogue-editor | Workflow template editor | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | create template; edit template; editor host |
+| GSLA-FRM-040 | facilities.catalogue-assignment | Template venue / date / event assignment | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | assign template |
+| GSLA-FRM-041 | facilities.preview-venue | Browser-only preview venue | Facilities | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | add preview venue |
+| GSLA-FRM-042 | facilities.booking-editor | Booking / resource reservation drawer | Facilities | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | create; edit; delete |
+| GSLA-FRM-043 | facilities.cm-cover | Temporary Centre Manager cover | Facilities | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | assign cover placeholder |
+| GSLA-FRM-044 | facilities.duty-team | Duty team shift selection | Facilities | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | select shifts placeholder |
+| GSLA-FRM-045 | facilities.workflow-review | Manager workflow record review | Facilities | UNKNOWN | NEEDS_REVIEW | WORK_REQUIRED | review (unused component) |
+| GSLA-FRM-046 | sdu.association.registration | Form A — Association annual registration | Sports Development Unit | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; submit (UI-only); file selection metadata |
+| GSLA-FRM-047 | sdu.association.form-b | Form B — Funding application | Sports Development Unit | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; submit (UI-only); file selection metadata |
+| GSLA-FRM-048 | sdu.association.form-c | Form C — Results and outcomes | Sports Development Unit | MIXED | NEEDS_REVIEW | NOT_ASSESSED | draft autosave; submit (UI-only); file selection metadata |
+| GSLA-FRM-049 | sdu.league-create | League details | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | draft; save |
+| GSLA-FRM-050 | sdu.team-create | Team details | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | draft; save |
+| GSLA-FRM-051 | sdu.league-entry | League team entry | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | draft; save |
+| GSLA-FRM-052 | sdu.overview.logo | Sport logo upload | Sports Development Unit | BROWSER_LOCAL | NEEDS_REVIEW | NOT_ASSESSED | edit logo |
+| GSLA-FRM-053 | sdu.overview.committee | Sport overview committee editor | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
+| GSLA-FRM-054 | sdu.overview.league | Sport overview league quick-add | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
+| GSLA-FRM-055 | sdu.overview.team | Sport overview team quick-add | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
+| GSLA-FRM-056 | sdu.overview.coach | Sport overview coach quick-add | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | mock modal |
+| GSLA-FRM-057 | sdu.sport.participants | Participant details | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
+| GSLA-FRM-058 | sdu.sport.coaches | Coach details | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
+| GSLA-FRM-059 | sdu.sport.teams | Sport team details | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
+| GSLA-FRM-060 | sdu.sport.governance | Sport governance role | Sports Development Unit | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create mock; edit mock |
+| GSLA-FRM-061 | hr.leave | Leave request / manager review | Human Resources | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | create request; approve; reject |
+| GSLA-FRM-062 | hr.week-pack | Create timesheet week pack | Human Resources | SERVER_SERVICE | NEEDS_REVIEW | NOT_ASSESSED | create week |
+| GSLA-FRM-063 | hr.week-grid | Timesheet week grid | Human Resources | UI_ONLY | NEEDS_REVIEW | NOT_ASSESSED | edit demo cells; week route host |
+| GSLA-FRM-064 | hr.note | Employee HR note | Human Resources | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | note placeholder |
+| GSLA-FRM-065 | hr.document-upload | Employee document upload placeholder | Human Resources | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | upload placeholder |
+| GSLA-FRM-066 | health.check | Run system health checks | Health | SERVER_SERVICE | NEEDS_REVIEW | NOT_ASSESSED | refresh GET checks |
 
 ## Reconciliation decisions
 
