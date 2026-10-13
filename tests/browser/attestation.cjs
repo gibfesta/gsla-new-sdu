@@ -12,10 +12,11 @@ function classify(status,payload,expectedRole){
   if(payload.role!==expectedRole)return {status:'FAIL',reason:'Server-attested role does not match expected role'};
   return {status:'PASS',reason:'Server attests valid session and expected role'};
 }
-async function attest(context,origin,expectedRole){
+async function attest(context,origin,expectedRole,admissionSecret){
+  if(typeof admissionSecret!=='string'||admissionSecret.length<32)return {status:'BLOCKED',reason:'Private Preview admission is not provisioned'};
   let response;
   try{
-    response=await context.request.get(new URL(CONTRACT,origin).toString(),{timeout:12000,maxRedirects:0,failOnStatusCode:false});
+    response=await context.request.get(new URL(CONTRACT,origin).toString(),{timeout:12000,maxRedirects:0,failOnStatusCode:false,headers:{'X-GSLA-Test-Admission':admissionSecret}});
     if(response.headers()['location'])return {status:'BLOCKED',reason:'Attestation redirected unexpectedly'};
     if(response.headers()['cache-control']?.toLowerCase().includes('no-store')!==true)return {status:'BLOCKED',reason:'Attestation missing no-store'};
     const status=response.status();

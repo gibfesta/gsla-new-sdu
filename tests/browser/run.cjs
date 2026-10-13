@@ -90,7 +90,7 @@ async function run(){
      try{
        context=await browser.newContext({baseURL:origin,storageState:state||undefined,serviceWorkers:'block',acceptDownloads:false,ignoreHTTPSErrors:false});
        if(t.role!=='anonymous'){
-         const identity=await attest(context,origin,t.role);
+         const identity=await attest(context,origin,t.role,process.env.GSLA_TEST_ATTESTATION_SECRET);
          if(identity.status!=='PASS'){
            record(t,identity.status,identity.reason,null,Date.now()-start);
            continue;

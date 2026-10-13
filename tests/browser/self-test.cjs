@@ -34,3 +34,27 @@ for(const invalid of [null,{}, {...good,sessionValid:false},{...good,authenticat
 const secret='SYNTHETIC_SECRET_TOKEN_498172_DO_NOT_EMIT';
 for(const item of [classifyAttestation(401,{...good,token:secret},expected),classifyAttestation(200,{...good,role:'centre_manager',cookie:secret},expected)])assert.ok(!JSON.stringify(item).includes(secret),'attestation outputs must not leak credentials');
 console.log('PASS: attestation valid/wrong-role/expired/invalid/missing and synthetic secret redaction');
+
+(async()=>{
+ const {attest}=require('./attestation.cjs');
+ const secret='SYNTHETIC_PRIVATE_ADMISSION_abcdefghijklmnopqrstuvwxyz_1234';
+ const calls=[];
+ const ctx={request:{get:async(url,options)=>{
+   calls.push({url,options});
+   return {status:()=>200,headers:()=>({'cache-control':'private, no-store','content-type':'application/json'}),json:async()=>({...good})};
+ }}};
+ assert.equal((await attest(ctx,'https://preview.example','facilities_admin',null)).status,'BLOCKED');
+ assert.equal(calls.length,0,'no request without secret');
+ assert.equal((await attest(ctx,'https://preview.example','facilities_admin',secret)).status,'PASS');
+ assert.equal(calls.length,1);
+ assert.equal(calls[0].url,'https://preview.example/api/test/role-attestation');
+ assert.deepEqual(calls[0].options.headers,{'X-GSLA-Test-Admission':secret});
+ assert.ok(!JSON.stringify(classifyAttestation(200,good,expected)).includes(secret));
+ for(const [code,result] of [[401,'BLOCKED'],[403,'BLOCKED'],[404,'BLOCKED']]){
+  ctx.request.get=async()=>({status:()=>code,headers:()=>({'cache-control':'private, no-store'})});
+  assert.equal((await attest(ctx,'https://preview.example',expected,secret)).status,result);
+ }
+ ctx.request.get=async()=>({status:()=>200,headers:()=>({'cache-control':'private, no-store','content-type':'application/json'}),json:async()=>({...good,role:'centre_manager'})});
+ assert.equal((await attest(ctx,'https://preview.example',expected,secret)).status,'FAIL');
+ console.log('PASS private attestation header only, no request without admission, 401/403/404 BLOCKED and wrong-role FAIL');
+})().catch(()=>{process.exitCode=1;});
