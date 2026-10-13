@@ -146,6 +146,10 @@ The following are not yet approved and must not be inferred:
 
 ## Implementation rule once approved
 
+### Separate owner/system-control architecture reference
+
+The [M1-014 Owner Form Control proposal](architecture/OWNER-FORM-CONTROL.md), authorised for design by Issue #52 / Breeze M1-014, defines an independent owner-only metadata area outside normal GSLA departmental/business administration. Normal GSLA roles, including Organisation Administrator, do not gain owner control through their business roles. The temporary designated principal is held only in private server configuration; the future owner/system role remains subject to separate approval. This reference does not amend any existing v0.2 business-data/action rights, implement an owner gate, or certify enforcement. Architectural acceptance and specialist implementation remain outstanding.
+
 ### Facilities workflow implementation reference
 
 The [M1-009 Facilities approval architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md) is a proposed technical implementation of the approved New Facilities / Venues rules above. It is awaiting architectural acceptance; it does not amend this v0.2 permission policy or certify enforcement. Preparation, Organisation approval, continuing operational edits and Organisation archive approval are mapped there to states, API commands and specialist implementation requirements.

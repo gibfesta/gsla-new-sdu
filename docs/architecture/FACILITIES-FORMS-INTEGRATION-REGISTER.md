@@ -3,6 +3,10 @@
 Status: Implementation planning; data model and permissions require approval before migrations.
 Scope: Facilities first. HR module remains on hold.
 
+## Relationship to universal Owner Form Control
+
+[M1-014 architecture](OWNER-FORM-CONTROL.md) proposes a separate owner-only inventory of all form definitions/usages and connection evidence. This document remains the Facilities-specific implementation plan. The owner inventory will reference native catalogue IDs and this plan; it will not replace the browser catalogue, force persistence, change template assignments or grant GSLA users owner access. An intentionally unconnected form can be ready for its intended use. Source/browser/UI status is separate from live database verification. Owner Form Control is not implemented by this reference.
+
 ## Existing interfaces
 | Interface | Route | Source | Persistence | Next work |
 |---|---|---|---|---|
