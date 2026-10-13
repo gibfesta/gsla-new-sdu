@@ -21,7 +21,7 @@ function validate(): FormControlRegister {
         typeof form.operationalStatus !== "string" || typeof form.connectionStatus !== "string" ||
         !Array.isArray(form.locations) ||
         !form.locations.every(x => x && typeof x.route === "string" &&
-          x.route.startsWith("/") && !x.route.startsWith("//") &&
+          (x.route === "" || (x.route.startsWith("/") && !x.route.startsWith("//"))) &&
           typeof x.mode === "string" && typeof x.source === "string")) {
       throw new Error("Invalid form metadata");
     }

@@ -53,3 +53,7 @@ Compatibility redirects in `next.config.ts` keep prior bookmarks usable during m
 ## Owner Form Control architecture — review proposal
 
 [M1-014 Owner Form Control](architecture/OWNER-FORM-CONTROL.md) proposes `/owner/form-control` and a separate server-only Operational Owner capability. A versioned universal metadata register lists definitions/usages across all areas; connection, intended use, operational status and verification are independent. It does not require forms to use a database or grant GSLA roles access to owner control. [Discovery evidence](architecture/OWNER-FORM-CONTROL-DISCOVERY.md) covers the source baseline and limitations. Status: proposed 2026-10-13 against `7fb6bac`; not implemented, configured or deployed. The private designated account identifier is never stored in source/documentation.
+
+## M1-016 Form Control implementation submitted for review
+
+The owner register now has a [reviewed source inventory](form-control/MASTER-INVENTORY.md) and read-only List/Card/detail UI under `/owner/form-control`, behind the existing M1-015 server boundary. See the [M1-016 receipt](project-control/GSLA-M1-016-WORK-RECEIPT.md) for delivery state and verification limits. 66 source definitions include 23 Facilities defaults; 143 UI-source / 88 page-source dispositions and 29 planned-only route candidates are separate counts. Browser-local copies on other devices/origins remain explicitly unreconciled. No form connection, submission behaviour or domain permissions changed. M1-016 is not marked Done by the Frontend Developer.
