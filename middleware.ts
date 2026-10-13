@@ -13,10 +13,34 @@ export async function middleware(request: NextRequest) {
     pathname === "/callback";
   const isApi = pathname === "/api" || pathname.startsWith("/api/");
   const isOwner = pathname === "/owner" || pathname.startsWith("/owner/") || pathname.startsWith("/api/owner/");
+  // Validate deployment configuration before constructing the SSR client.
+  // A Preview with missing Supabase settings must fail closed, not throw at
+  // middleware startup. This is not an alternative authorisation path.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  let configValid = false;
+  try {
+    const url = new URL(supabaseUrl ?? "");
+    configValid = url.protocol === "https:" && !!url.hostname &&
+      typeof supabaseKey === "string" && supabaseKey.trim().length > 0;
+  } catch {
+    configValid = false;
+  }
+  if (!configValid) {
+    const headers = isOwner
+      ? { "Cache-Control": "private, no-store", "Vary": "Cookie" }
+      : { "Cache-Control": "no-store" };
+    return isApi
+      ? NextResponse.json({ error: "Service unavailable" }, { status: 503, headers })
+      : new NextResponse("Authentication service unavailable", {
+          status: 503,
+          headers: { ...headers, "Content-Type": "text/plain; charset=utf-8" },
+        });
+  }
   let response = NextResponse.next({ request });
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl!,
+    supabaseKey!,
     {
       cookies: {
         getAll() { return request.cookies.getAll(); },
