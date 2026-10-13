@@ -7,6 +7,7 @@ const path=require('node:path');
 const crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const catalogue=require('./catalogue.json');
+const {attest}=require('./attestation.cjs');
 const states=['PASS','FAIL','BLOCKED','NOT RUN'];
 const roles=['organisation_admin','facilities_admin','centre_manager','operational_owner'];
 const rootDir=path.resolve(__dirname,'../..');
@@ -28,6 +29,16 @@ const origin=parseOrigin(approvals.origin);
 const approvedOrigin=parseOrigin(approvals.approvedOrigin);
 const targetApproved=!!origin&&origin===approvedOrigin&&approvals.commit!=='unknown'&&approvals.deployment!=='unknown';
 const rows=[];
+async function verifyDeployment(){
+  const token=process.env.GSLA_TEST_VERCEL_API_TOKEN;
+  if(!targetApproved||!token||!/^dpl_[a-zA-Z0-9]+$/.test(approvals.deployment))return false;
+  try{
+    const r=await fetch('https://api.vercel.com/v13/deployments/'+approvals.deployment,{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(10000),redirect:'error'});
+    if(!r.ok)return false;
+    const info=await r.json();
+    return info.id===approvals.deployment&&info.readyState==='READY'&&info.meta?.githubCommitSha===approvals.commit&&info.meta?.githubOrg==='gibfesta'&&info.meta?.githubRepo==='gsla-new-sdu'&&origin==='https://'+info.url;
+  }catch{return false;}
+}
 function record(t,status,reason,actual=null,elapsedMs=0){
   rows.push({testId:t.id,title:t.title,purpose:t.why,procedure:['Create isolated Chromium context for role '+t.role,'Perform read-only '+t.kind+' on '+t.path,'Compare response and final path against predefined expectation'],expected:t.expected,actual,role:t.role,environment:{origin:origin&&approvedOrigin===origin?origin:'unapproved',commit:approvals.commit,deployment:approvals.deployment},evidence:{type:'sanitised-metadata-only',screenshots:false,traces:false},status,reason,durationMs:elapsedMs});
 }
@@ -58,12 +69,13 @@ function privateSessionFile(role){
 }
 async function run(){
  let browser=null;
+ const verified=await verifyDeployment();
  try{
-   if(targetApproved)browser=await chromium.launch({headless:true});
+   if(verified)browser=await chromium.launch({headless:true});
    for(const t of catalogue.tests){
      const start=Date.now();
      if(!t.safeReadOnly||t.kind==='notRun'){record(t,'NOT RUN','Write/destructive cases intentionally not enabled');continue;}
-     if(!targetApproved){record(t,'BLOCKED','Target not explicitly approved: require matching HTTPS approved origin, exact commit and deployment');continue;}
+     if(!verified){record(t,'BLOCKED','Deployment provenance not independently verified against Vercel API; exact origin, ready state, commit and project required');continue;}
      let state=null;
      if(t.role!=='anonymous'){
        if(!roles.includes(t.role)){record(t,'BLOCKED','Unknown role identifier');continue;}
@@ -75,6 +87,13 @@ async function run(){
      let context=null;
      try{
        context=await browser.newContext({baseURL:origin,storageState:state||undefined,serviceWorkers:'block',acceptDownloads:false,ignoreHTTPSErrors:false});
+       if(t.role!=='anonymous'){
+         const identity=await attest(context,origin,t.role);
+         if(identity.status!=='PASS'){
+           record(t,identity.status,identity.reason,null,Date.now()-start);
+           continue;
+         }
+       }
        const page=await context.newPage();
        await page.route('**/*',route=>{
          const req=route.request();
@@ -100,7 +119,7 @@ async function run(){
    for(const t of catalogue.tests)record(t,'BLOCKED','Chromium launch unavailable ('+safeText(e.name||'Error')+')');
  }finally{if(browser)await browser.close();}
  const summary=Object.fromEntries(states.map(s=>[s,rows.filter(r=>r.status===s).length]));
- const report={schemaVersion:1,runId,executedAt:new Date().toISOString(),tool:'Playwright Chromium (read-only)',source:'tests/browser/catalogue.json',environment:{origin:targetApproved?origin:'unapproved',commit:approvals.commit,deployment:approvals.deployment},summary,results:rows};
+ const report={schemaVersion:1,runId,executedAt:new Date().toISOString(),tool:'Playwright Chromium (read-only)',source:'tests/browser/catalogue.json',environment:{origin:verified?origin:'unapproved',commit:approvals.commit,deployment:approvals.deployment,provenanceVerified:verified},summary,results:rows};
  fs.mkdirSync(reportDir,{recursive:true,mode:0o700});
  const dest=path.join(reportDir,runId);
  fs.writeFileSync(dest+'.json',JSON.stringify(report,null,2)+'\n',{mode:0o600});
