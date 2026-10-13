@@ -13,6 +13,8 @@ import DepartmentPageFrame from "@/components/shared/DepartmentPageFrame";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const ownerArea = pathname === "/owner" || pathname.startsWith("/owner/");
+  if (ownerArea) return <>{children}</>;
   const standalonePage = ["/On-Hold-Pages/login", "/On-Hold-Pages/signup", "/On-Hold-Pages/profile", "/account", "/join"].includes(pathname);
   const noSidebar = ["/", "/organisation/home", "/organisation/health"].includes(pathname);
   const ownHeader = ["/organisation/home", "/organisation/health"].includes(pathname);
