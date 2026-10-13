@@ -1,0 +1,12 @@
+{
+  "name": "gsla-browser-audit",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "audit": "node run.cjs",
+    "self-test": "node self-test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}
