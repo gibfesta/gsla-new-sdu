@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Permanent test definitions. This catalogue is NOT execution evidence.",
+  "tests": [
+    {
+      "id": "GSLA-M1-004-AUTO-001",
+      "title": "Anonymous visitor cannot read Facilities API",
+      "why": "Someone who has not signed in must never obtain the Facilities records through a direct link.",
+      "method": "GET",
+      "path": "/api/facilities",
+      "role": "anonymous",
+      "expected": {
+        "status": 401
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-002",
+      "title": "Anonymous visitor cannot read an Owner register",
+      "why": "Private Owner form information must remain unavailable to someone who has not signed in.",
+      "method": "GET",
+      "path": "/api/owner/form-control",
+      "role": "anonymous",
+      "expected": {
+        "status": 401,
+        "cacheControl": "private, no-store",
+        "varyContains": "cookie"
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-003",
+      "title": "Anonymous visitor is redirected from Facilities pages",
+      "why": "Typing the Facilities page address must not bypass sign-in.",
+      "method": "GET",
+      "path": "/facilities/home",
+      "role": "anonymous",
+      "expected": {
+        "redirectTo": "/sign-in"
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-004",
+      "title": "Facilities Administrator reaches Facilities Home",
+      "why": "Authorised Facilities staff need access to their work area.",
+      "method": "GET",
+      "path": "/facilities/home",
+      "role": "facilities_admin",
+      "expected": {
+        "status": 200
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-005",
+      "title": "Facilities Administrator cannot enter Organisation Home",
+      "why": "Facilities access must not silently grant authority over the entire organisation.",
+      "method": "GET",
+      "path": "/organisation/home",
+      "role": "facilities_admin",
+      "expected": {
+        "deny": true
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-006",
+      "title": "Organisation Administrator reaches Organisation Home",
+      "why": "The approved Organisation role should reach its authorised control area.",
+      "method": "GET",
+      "path": "/organisation/home",
+      "role": "organisation_admin",
+      "expected": {
+        "status": 200
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-007",
+      "title": "Centre Manager cannot use generic Facilities API",
+      "why": "Venue-level access must not automatically allow whole-department data access.",
+      "method": "GET",
+      "path": "/api/facilities",
+      "role": "centre_manager",
+      "expected": {
+        "deny": true
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    },
+    {
+      "id": "GSLA-M1-004-AUTO-008",
+      "title": "Facilities Administrator may read current Facilities API",
+      "why": "Verify that approved Facilities role is recognised by the server, not just by menus.",
+      "method": "GET",
+      "path": "/api/facilities",
+      "role": "facilities_admin",
+      "expected": {
+        "status": 200
+      },
+      "risk": "high",
+      "safeReadOnly": true
+    }
+  ]
+}

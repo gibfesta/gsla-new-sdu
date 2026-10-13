@@ -19,3 +19,9 @@ pnpm-debug.log*
 
 
 /app/generated/prisma
+
+# Test artifacts and sensitive session state
+test-results/
+playwright-report/
+playwright/.auth/
+*.storage-state.json
