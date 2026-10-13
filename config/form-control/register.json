@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "0710f77f1fa0a544893087576ec2ef99054432be",
+  "coverageNote": "Initial reviewed metadata register is a seed only. Complete inventory and browser-local customisations await M1-016 reconciliation; do not claim completeness.",
+  "forms": []
+}
