@@ -30,6 +30,7 @@ Breeze is the operational project-control record. GitHub remains the permanent t
 - Authentication route source is grouped under `app/(auth)/`, which does **not** alter URLs. The Centre Manager awaiting-assignment URL remains `/auth/awaiting-assignment`.
 
 ## Current implementation status (verify periodically)
+- Owner Form Control has a [proposed M1-014 architecture](architecture/OWNER-FORM-CONTROL.md): universal form metadata inventory and separate private Operational Owner admission. It is not implemented/configured/deployed. Normal GSLA roles receive no owner-control right. Form usefulness/intentional unconnected state and persistence evidence are independent; current business forms remain unchanged.
 - Organisation Admin and Facilities Admin role-based routing, initial departmental access guards and Facilities API guards have been implemented. Shared account controls are available through `/account`. The banner avatar/name opens My Account, where users can review personal/account details, change password and sign out. Centre Managers can also open My Account from the awaiting-assignment screen. These require comprehensive negative/security tests before production accreditation.
 - Centre Managers can authenticate and reach an awaiting-venue page. Venue-scoped assignment/access remains future work until real facilities exist.
 - Facilities Directory has a Prisma-backed API and database table; create/edit/read operations still require full acceptance testing. A complete persistent forms system is **not yet live**.
@@ -93,6 +94,8 @@ For form-save failures: preserve browser draft data; verify API validation, sche
 For unsafe access: restrict exposure, document scope, test fixes, and assess data protection obligations before releasing.
 
 ## Change and decision history
+
+- 2026-10-13 — M1-014 Owner Form Control architecture and [source discovery evidence](architecture/OWNER-FORM-CONTROL-DISCOVERY.md) produced for review at `7fb6bac`. No personal designation, new role, form behaviour or database connection changed. [Work Receipt](project-control/GSLA-M1-014-WORK-RECEIPT.md) provides specialist evidence and the mandatory next-worker handoff.
 
 - 2026-10-12 — M1-009 approval architecture produced for review against `eb4dc64`; links added to the architecture/permission/forms references. No production behaviour or v0.2 business permission was changed. [Architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md) and [Software Architect receipt](project-control/GSLA-M1-009-WORK-RECEIPT.md) record scope and evidence.
 - 2026-10-11 — First handbook established as entry point; linked supporting registers and documented gaps. This is **not** a completed operational certification.

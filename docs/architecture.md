@@ -49,3 +49,7 @@ Compatibility redirects in `next.config.ts` keep prior bookmarks usable during m
 ## Facilities approval architecture — review proposal
 
 [GSLA-M1-009 — Facilities / Venues Approval Architecture](architecture/FACILITIES-APPROVAL-WORKFLOW.md) defines the proposed state/transition model, role authority under approved v0.2, post-approval edits, archive requests/decisions, audit, API commands, migration impact and specialist handoff. Status: architecture produced for review on 2026-10-12 against `eb4dc64`; not approved for implementation or deployed by this documentation change. Database schema/RLS/grants review belongs to Senior Database Engineer; implementation and runtime verification remain outstanding under controlled tasks including M1-004.
+
+## Owner Form Control architecture — review proposal
+
+[M1-014 Owner Form Control](architecture/OWNER-FORM-CONTROL.md) proposes `/owner/form-control` and a separate server-only Operational Owner capability. A versioned universal metadata register lists definitions/usages across all areas; connection, intended use, operational status and verification are independent. It does not require forms to use a database or grant GSLA roles access to owner control. [Discovery evidence](architecture/OWNER-FORM-CONTROL-DISCOVERY.md) covers the source baseline and limitations. Status: proposed 2026-10-13 against `7fb6bac`; not implemented, configured or deployed. The private designated account identifier is never stored in source/documentation.

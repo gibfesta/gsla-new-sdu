@@ -26,6 +26,10 @@ The current source establishes these broad boundaries:
 
 ## UI page registry
 
+### Planned owner routes — not included in current counts
+
+[M1-014 Owner Form Control](OWNER-FORM-CONTROL.md) proposes `/owner`, `/owner/form-control`, `/owner/form-control/[formId]` and owner-guarded read/detail/optional-export APIs under `/api/owner/form-control`. These are design contracts, not current/deployed routes. Admission is independent of normal GSLA role inheritance; page/layout and data endpoints must each enforce it. [Discovery evidence](OWNER-FORM-CONTROL-DISCOVERY.md) records the newer source-page baseline for inventory reconciliation; it does not certify deployed route counts or grant access to unlinked forms.
+
 ### Planned Facilities approval routes — not included in current counts
 
 The [M1-009 architecture](FACILITIES-APPROVAL-WORKFLOW.md) proposes an Organisation-only `/organisation/facility-approvals` review page and explicit Facilities initial-approval, archive-request, request-withdrawal, decision and history API endpoints. These are design contracts only, not current routes. The existing create/edit/archive page URLs remain. Update the deployed registry/counts only when implementation adds the routes and access tests provide evidence.
