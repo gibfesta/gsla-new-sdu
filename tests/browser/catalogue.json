@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Append-only permanent browser scenarios. Definitions are not execution evidence. Original AUTO-001 through AUTO-008 remain unchanged.",
+  "tests": [
+    {"id":"GSLA-M1-021-AUTO-009","title":"Anonymous browser is redirected from Organisation Home","why":"Direct navigation must not bypass sign-in.","role":"anonymous","kind":"pageRedirect","path":"/organisation/home","expected":{"redirectTo":"/sign-in"},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-010","title":"Anonymous browser is redirected from Facilities Home","why":"A pasted Facilities link must not grant access.","role":"anonymous","kind":"pageRedirect","path":"/facilities/home","expected":{"redirectTo":"/sign-in"},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-011","title":"Anonymous API request denied","why":"Browser-level API access requires authentication.","role":"anonymous","kind":"api","path":"/api/facilities","expected":{"status":401},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-012","title":"Anonymous Owner API denied and private","why":"Owner information must not escape authentication or private caching.","role":"anonymous","kind":"api","path":"/api/owner/form-control","expected":{"status":401,"cacheControl":"private, no-store","varyContains":"cookie"},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-013","title":"Facilities Administrator can reach Facilities Home","why":"Verify a positive route with an authorised isolated session.","role":"facilities_admin","kind":"pageAllow","path":"/facilities/home","expected":{"status":200},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-014","title":"Facilities Administrator cannot reach Organisation Home","why":"Department privileges must not become organisation-wide privileges.","role":"facilities_admin","kind":"pageDeny","path":"/organisation/home","expected":{"deny":true},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-015","title":"Organisation Administrator can reach Organisation Home","why":"Verify the approved organisation access boundary.","role":"organisation_admin","kind":"pageAllow","path":"/organisation/home","expected":{"status":200},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-016","title":"Centre Manager cannot read department-wide Facilities API","why":"Venue permissions must not be silently elevated.","role":"centre_manager","kind":"apiDeny","path":"/api/facilities","expected":{"deny":true},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-017","title":"Facilities Administrator can read permitted Facilities API","why":"Check actual server-side API access with a role session.","role":"facilities_admin","kind":"api","path":"/api/facilities","expected":{"status":200},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-018","title":"Operational Owner can reach Owner API","why":"Owner read access requires an explicitly provisioned and attested Owner session.","role":"operational_owner","kind":"api","path":"/api/owner/form-control","expected":{"status":200,"cacheControl":"private, no-store","varyContains":"cookie"},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-019","title":"Facilities Administrator cannot read Owner API","why":"Facility administration must not imply Operational Owner privileges.","role":"facilities_admin","kind":"apiDeny","path":"/api/owner/form-control","expected":{"deny":true},"safeReadOnly":true},
+    {"id":"GSLA-M1-021-AUTO-020","title":"No business-data mutation is attempted","why":"Reserved non-executing placeholder documents the write-test authorisation gate.","role":"anonymous","kind":"notRun","path":"/api/facilities","expected":{"notRun":true},"safeReadOnly":false}
+  ]
+}
