@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { checkOperationalOwner } from "@/lib/server/owner-access";
+import { redirect } from "next/navigation";
 import { findForm } from "@/lib/form-control/register.server";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export default async function FormControlDetail({params}:{params:Promise<{formId:string}>}) {
+  if (!(await checkOperationalOwner()).allowed) redirect("/access-denied");
   const form = findForm((await params).formId);
   if (!form) notFound();
   return <main className="mx-auto max-w-5xl p-6">
