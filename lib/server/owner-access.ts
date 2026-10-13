@@ -35,11 +35,12 @@ export async function requireOperationalOwner() {
     check.status === 401 ? "Authentication required" : "Access denied";
   return NextResponse.json({ error }, {
     status: check.status,
-    headers: { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" }
+    headers: { "Cache-Control": "private, no-store", "Vary": "Cookie", "X-Content-Type-Options": "nosniff" }
   });
 }
 
 export const ownerResponseHeaders = {
   "Cache-Control": "private, no-store",
+  "Vary": "Cookie",
   "X-Content-Type-Options": "nosniff"
 };
