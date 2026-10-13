@@ -30,17 +30,21 @@ export async function middleware(request: NextRequest) {
   );
 
   const { data: { user }, error } = await supabase.auth.getUser();
-  if (isOwner) {
-    response.headers.set("Cache-Control", "private, no-store");
-    response.headers.set("Vary", "Cookie");
-  }
-  if (!error && user) return response;
-  if (isPublicPage) return response;
-  if (isApi) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  const protectOwnerResponse = <T extends NextResponse>(result: T): T => {
+    if (isOwner) {
+      result.headers.set("Cache-Control", "private, no-store");
+      const vary = result.headers.get("Vary");
+      result.headers.set("Vary", vary ? (vary.split(",").some(value => value.trim().toLowerCase() === "cookie") ? vary : `${vary}, Cookie`) : "Cookie");
+    }
+    return result;
+  };
+  if (!error && user) return protectOwnerResponse(response);
+  if (isPublicPage) return protectOwnerResponse(response);
+  if (isApi) return protectOwnerResponse(NextResponse.json({ error: "Authentication required" }, { status: 401 }));
   const url = request.nextUrl.clone();
   url.pathname = pathname.startsWith("/On-Hold-Pages/") ? "/On-Hold-Pages/login" : "/sign-in";
   url.search = "";
-  return NextResponse.redirect(url);
+  return protectOwnerResponse(NextResponse.redirect(url));
 }
 
 export const config = {
