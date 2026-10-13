@@ -31,7 +31,7 @@ const rows=[];
 function record(t,status,reason,actual=null,elapsedMs=0){
   rows.push({testId:t.id,title:t.title,purpose:t.why,procedure:['Create isolated Chromium context for role '+t.role,'Perform read-only '+t.kind+' on '+t.path,'Compare response and final path against predefined expectation'],expected:t.expected,actual,role:t.role,environment:{origin:origin&&approvedOrigin===origin?origin:'unapproved',commit:approvals.commit,deployment:approvals.deployment},evidence:{type:'sanitised-metadata-only',screenshots:false,traces:false},status,reason,durationMs:elapsedMs});
 }
-function exactPath(u){try{const p=new URL(u);return p.origin===origin?p.pathname:'external-origin';}catch{return 'invalid';}}
+function exactPath(u){try{const p=new URL(u);return p.origin===origin?(['/sign-in','/access-denied','/organisation/home','/facilities/home','/api/facilities','/api/owner/form-control'].includes(p.pathname)?p.pathname:'other-path'):'external-origin';}catch{return 'invalid';}}
 function denyPage(obs){return obs.status===401||obs.status===403||obs.redirectPath==='/access-denied'||obs.redirectPath==='/sign-in'||obs.finalPath==='/access-denied'||obs.finalPath==='/sign-in';}
 function compare(t,obs){
  const e=t.expected;
@@ -91,7 +91,8 @@ async function run(){
          obs={status:response?.status()||0,finalPath:exactPath(page.url()),redirectPath:exactPath(page.url()),deploymentProtection:response?.headers()['x-vercel-mitigated']!=null};
        }
        const status=obs.status===503||obs.deploymentProtection?'BLOCKED':compare(t,obs)?'PASS':'FAIL';
-       record(t,status,status==='PASS'?'Expected read-only outcome observed':status==='BLOCKED'?'Application not reachable or deployment protection intercepted request':'Observed outcome differs from expectation',obs,Date.now()-start);
+       const sanitised={status:obs.status,finalPath:obs.finalPath,redirectPath:obs.redirectPath||null,cachePrivateNoStore:!!obs.cacheControl?.toLowerCase().includes('private, no-store'),varyCookie:!!obs.vary?.toLowerCase().split(',').map(x=>x.trim()).includes('cookie'),deploymentProtection:obs.deploymentProtection};
+       record(t,status,status==='PASS'?'Expected read-only outcome observed':status==='BLOCKED'?'Application not reachable or deployment protection intercepted request':'Observed outcome differs from expectation',sanitised,Date.now()-start);
      }catch(e){record(t,'BLOCKED','Browser or network prerequisite prevented a trustworthy observation ('+safeText(e.name||'Error')+')',null,Date.now()-start);}
      finally{if(context)await context.close();}
    }
