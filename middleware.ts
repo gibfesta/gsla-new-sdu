@@ -27,15 +27,15 @@ export async function middleware(request: NextRequest) {
     configValid = false;
   }
   if (!configValid) {
-    const headers = isOwner
-      ? { "Cache-Control": "private, no-store", "Vary": "Cookie" }
-      : { "Cache-Control": "no-store" };
-    return isApi
-      ? NextResponse.json({ error: "Service unavailable" }, { status: 503, headers })
+    const unavailable = isApi
+      ? NextResponse.json({ error: "Service unavailable" }, { status: 503 })
       : new NextResponse("Authentication service unavailable", {
           status: 503,
-          headers: { ...headers, "Content-Type": "text/plain; charset=utf-8" },
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
         });
+    unavailable.headers.set("Cache-Control", isOwner ? "private, no-store" : "no-store");
+    if (isOwner) unavailable.headers.set("Vary", "Cookie");
+    return unavailable;
   }
   let response = NextResponse.next({ request });
   const supabase = createServerClient(
