@@ -45,9 +45,21 @@ The specialist must:
 - state decisions or certifications they are **not** qualified or authorised to make;
 - route cross-discipline questions to the appropriate specialist;
 - avoid claiming implementation, verification or certification that was not performed;
-- return a Work Receipt containing a Specialist Role Compliance section.
+- return a formally titled **WORK RECEIPT — <Task ID>** containing a Specialist Role Compliance section.
+
+For QA and independent verification specialists, a verification report, findings note, test matrix, PASS/FAIL/BLOCKED verdict or handoff is supporting evidence only. It does **not** replace the formal Work Receipt.
 
 A specialist may implement adjacent mechanical changes only when they are necessary to complete the assigned specialist work and do not require another discipline's judgement.
+
+## Mandatory auditable specialist handoff
+
+Every specialist assignment must be auditable from the original Work Order through the evidence to the final or interim Work Receipt. The minimum trace is:
+
+**Task ID → Work Order → named specialist → specialist checks → evidence → WORK RECEIPT — <Task ID> → Project Controller verification**
+
+If execution becomes blocked or is placed on hold after work has started, the specialist must issue **INTERIM WORK RECEIPT — <Task ID>** before handoff.
+
+This applies equally to implementation and verification specialists.
 
 ## Mandatory Specialist Role Compliance section
 
