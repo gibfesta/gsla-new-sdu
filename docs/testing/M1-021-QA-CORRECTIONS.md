@@ -13,9 +13,7 @@ node --version
 git rev-parse HEAD
 node tests/browser/self-test.cjs
 cd tests/browser
-npm install --package-lock-only --ignore-scripts
-# Until a reviewed package-lock.json is committed, npm ci is BLOCKED
-npm ci
+npm ci --ignore-scripts --no-audit --no-fund
 npx playwright install chromium
 node run.cjs
 
@@ -35,7 +33,7 @@ A prior PR CI catalogue test is not a browser test. Any real pass requires appro
 
 ## Remaining gates
 1. Backend/server-side attestation implementation and security/QA approval; this PR intentionally does not add a new application API endpoint.
-2. Generation and review of npm package-lock.json using a network-enabled trusted environment; registry DNS was unavailable to implementer, so no lockfile is falsely claimed.
+2. Lockfile generated on secret-free GitHub Actions run 38471228326 and committed with integrity hashes. Reproducible npm ci + Chromium launch require fresh CI verification. Independent QA should verify lockfile provenance and supply-chain controls.
 3. Exact-checkout independent QA tests.
 4. Approved Preview read-only Chromium testing; Vercel API token and authorised target needed.
 5. Authenticated role execution with server-confirmed identity; credentialed Actions OFF.
