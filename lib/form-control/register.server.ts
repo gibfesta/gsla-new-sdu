@@ -27,7 +27,7 @@ function validate(): FormControlRegister {
     }
     seen.add(form.formId);
   }
-  return value as FormControlRegister;
+  return value as unknown as FormControlRegister;
 }
 export function loadFormRegister(): FormControlRegister { return validate(); }
 export function findForm(id: string): FormControlRecord | undefined {
