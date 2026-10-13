@@ -1,0 +1,26 @@
+name: GSLA test catalogue validation (untrusted PR)
+on:
+  pull_request:
+    paths:
+      - "tests/automated/**"
+      - "tests/browser/**"
+      - ".github/workflows/gsla-test-catalogue.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-catalogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate catalogue and PASS FAIL BLOCKED NOT RUN states
+        run: node tests/browser/self-test.cjs
+# No secrets, auth sessions, Preview bypass credentials, privileged contexts,
+# external app requests, artifact uploads, pull_request_target or deployment writes.
+# Credentialed Preview workflow requires separate authorisation and review.
