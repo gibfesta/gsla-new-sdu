@@ -12,6 +12,7 @@ export async function middleware(request: NextRequest) {
     ["/forgot-password", "/set-password", "/reset-password", "/On-Hold-Pages/login", "/On-Hold-Pages/signup"].includes(pathname) || pathname === "/access-denied" || pathname.startsWith("/auth/") ||
     pathname === "/callback";
   const isApi = pathname === "/api" || pathname.startsWith("/api/");
+  const isOwner = pathname === "/owner" || pathname.startsWith("/owner/") || pathname.startsWith("/api/owner/");
   let response = NextResponse.next({ request });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -29,6 +30,10 @@ export async function middleware(request: NextRequest) {
   );
 
   const { data: { user }, error } = await supabase.auth.getUser();
+  if (isOwner) {
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("Vary", "Cookie");
+  }
   if (!error && user) return response;
   if (isPublicPage) return response;
   if (isApi) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
