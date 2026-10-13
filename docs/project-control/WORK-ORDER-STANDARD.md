@@ -5,7 +5,7 @@ Owner: Project Controller
 
 ## Purpose
 
-A Work Order is the controlled instruction given to a specialist worker before substantial work begins.
+A Work Order is the controlled instruction given to any worker before controlled execution begins.
 
 ## Required format
 
@@ -55,13 +55,23 @@ Record compatibility, security, data preservation, migration or rollback require
 ### Specialist verification requirements
 When a specialist is assigned, define the specialist-specific evidence required to prove that the specialist actually performed the work. The approved role specification, or an explicit approved specialist scope, must be identified before execution begins.
 
+## Auditable trace rule
+
+Every controlled task that enters execution must have a formal **WORK ORDER — <Task ID>** before work starts. The Work Order is the beginning of the permanent execution trace and must identify the worker/role, objective, scope, boundaries, required evidence and expected Work Receipt.
+
+The required chain is:
+
+**Task ID → Work Order → execution/evidence → Work Receipt → Project Controller verification → status decision**
+
+Verification and QA assignments are controlled work and require their own Work Order and Work Receipt. A request such as “review”, “assess”, “verify” or “test” does not remove this requirement.
+
 ## Rules
 
 - One Work Order maps to one controlled Task ID.
 - Do not combine unrelated work to reduce issue count.
 - If new material work is discovered, return it to the Project Controller as a follow-up candidate.
 - The worker may clarify implementation detail but may not silently expand scope.
-- A Work Order is not complete until a Work Receipt is returned.
+- A Work Order is not complete until a formally titled **WORK RECEIPT — <Task ID>** is returned. If execution stops early, an **INTERIM WORK RECEIPT — <Task ID>** is required.
 - The required Work Receipt must end with: **What happens next**, **Plain-English explanation**, and **Copy/paste instructions for the next worker**.
 - Specialist attribution must be defined before or during execution, never invented retrospectively.
 - Specialist Work Orders must define role scope, specialist checks and authority boundaries.
