@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { checkOperationalOwner } from "@/lib/server/owner-access";
+import { redirect } from "next/navigation";
 import { loadFormRegister } from "@/lib/form-control/register.server";
 import SignOutButton from "@/components/auth/SignOutButton";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export default function FormControlPage() {
+export default async function FormControlPage() {
+  if (!(await checkOperationalOwner()).allowed) redirect("/access-denied");
   const register = loadFormRegister();
   return <main className="mx-auto max-w-5xl p-6">
     <header className="flex items-center justify-between gap-4">
