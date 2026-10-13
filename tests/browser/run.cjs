@@ -13,12 +13,14 @@ const roles=['organisation_admin','facilities_admin','centre_manager','operation
 const rootDir=path.resolve(__dirname,'../..');
 const reportDir=path.join(rootDir,'test-results/gsla-audit');
 const safeText=v=>String(v||'').replace(/[^a-zA-Z0-9._-]/g,'').slice(0,100);
+const safeCommit=v=>/^[a-f0-9]{40}$/i.test(v||'')?v:'unknown';
+const safeDeployment=v=>/^dpl_[a-zA-Z0-9]+$/.test(v||'')?v:'unknown';
 const runId='gsla-browser-'+new Date().toISOString().replace(/[.:]/g,'-')+'-'+crypto.randomBytes(3).toString('hex');
 const approvals={
   origin:process.env.GSLA_TEST_BASE_URL,
   approvedOrigin:process.env.GSLA_TEST_APPROVED_ORIGIN,
-  commit:safeText(process.env.GSLA_TEST_COMMIT)||'unknown',
-  deployment:safeText(process.env.GSLA_TEST_DEPLOYMENT)||'unknown',
+  commit:safeCommit(process.env.GSLA_TEST_COMMIT),
+  deployment:safeDeployment(process.env.GSLA_TEST_DEPLOYMENT),
   roleGate:process.env.GSLA_TEST_AUTHORIZED_ROLE_RUN==='YES_APPROVED_ROLE_TESTING',
 };
 function parseOrigin(raw){
