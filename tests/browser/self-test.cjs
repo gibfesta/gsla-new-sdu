@@ -23,3 +23,14 @@ assert.deepEqual([
 assert.equal(classify({executed:false,matched:true,blocked:true}),'BLOCKED','missing authenticated session cannot PASS');
 assert.equal(classify({executed:true,matched:false}),'FAIL','deliberate mismatch must FAIL');
 console.log('PASS: 8 original IDs remain stable; 12 new unique IDs; safe catalogue; all four result states');
+
+const {classify}=require('./attestation.cjs');
+const expected='facilities_admin';
+const good={schemaVersion:1,authority:'gsla-server-verified',authenticated:true,sessionValid:true,role:expected};
+assert.equal(classify(200,good,expected).status,'PASS');
+assert.equal(classify(200,{...good,role:'organisation_admin'},expected).status,'FAIL');
+for(const httpStatus of [401,403,500,503])assert.equal(classify(httpStatus,null,expected).status,'BLOCKED');
+for(const invalid of [null,{}, {...good,sessionValid:false},{...good,authenticated:false},{...good,role:'unknown'},{...good,authority:'client-asserted'}])assert.equal(classify(200,invalid,expected).status,'BLOCKED');
+const secret='SYNTHETIC_SECRET_TOKEN_498172_DO_NOT_EMIT';
+for(const item of [classify(401,{...good,token:secret},expected),classify(200,{...good,role:'centre_manager',cookie:secret},expected)])assert.ok(!JSON.stringify(item).includes(secret),'attestation outputs must not leak credentials');
+console.log('PASS: attestation valid/wrong-role/expired/invalid/missing and synthetic secret redaction');
