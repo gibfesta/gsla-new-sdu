@@ -99,6 +99,9 @@ The Project Controller has verified the completion criteria and evidence.
 13. Specialist titles are not evidence of specialist execution.
 14. A specialist may only be credited when their approved role scope, specialist checks and evidence are recorded.
 15. Retrospective specialist attribution is prohibited.
+16. Every controlled task that enters execution must have an auditable Work Order → evidence → Work Receipt → Project Controller verification chain.
+17. QA, independent verification, review, diagnosis and assessment are execution activities when assigned as controlled work; they require formal Work Orders and Work Receipts just like implementation work.
+18. Findings, verdicts, comments, screenshots, PR reviews or test summaries may support a Work Receipt but never replace it.
 
 ## Starting new work
 
@@ -120,7 +123,9 @@ The project owner does not need to manually format Breeze cards or linked GitHub
 
 ## Work Order flow
 
-REQUEST → ASSESS → TASK → ASSIGN → WORK ORDER → EXECUTION → WORK RECEIPT → VERIFY → CLOSE / FOLLOW-UP
+REQUEST → ASSESS → TASK → ASSIGN → WORK ORDER → EXECUTION / VERIFICATION → EVIDENCE → WORK RECEIPT → PROJECT CONTROLLER VERIFY → CLOSE / FOLLOW-UP
+
+This chain is the minimum auditable trace for every task that actually begins execution.
 
 See WORK-ORDER-STANDARD.md, WORK-RECEIPT-STANDARD.md and SPECIALIST-WORKER-VERIFICATION-STANDARD.md.
 
@@ -169,7 +174,7 @@ The specialist:
 - performs the specialist-specific checks defined in the Work Order;
 - respects authority boundaries and refers cross-discipline decisions to the correct specialist;
 - updates required documentation;
-- returns a Work Receipt containing Specialist Role Compliance;
+- returns a formally titled **WORK RECEIPT — <Task ID>** containing Specialist Role Compliance; a QA finding, verdict, review or handoff is not a substitute;
 - identifies limitations and follow-up work;
 - finishes the Work Receipt with: exact next step and owner, a plain-English explanation, and copy/paste-ready instructions for the next worker.
 
@@ -264,7 +269,7 @@ Work Receipts are created when execution produces evidence, not simply because a
 - Done requires both the final Work Receipt and a separate Project Controller Verification comment.
 - Every Work Receipt must tell the project owner exactly what happens next, explain the result in plain English, and provide ready-to-send instructions for the next worker.
 
-The Project Controller is responsible for enforcing these gates when moving Breeze cards between stages.
+The Project Controller is responsible for enforcing these gates when moving Breeze cards between stages. If a worker returns findings or a verdict without the required formal Work Receipt, the Project Controller must request the missing receipt before accepting the handoff.
 
 
 ## Expected Outcome vs Actual Outcome
