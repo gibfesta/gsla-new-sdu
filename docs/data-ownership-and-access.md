@@ -166,3 +166,8 @@ For every approved matrix entry, enforce read and write scope at the data bounda
 - Next step: resolve the remaining open Facilities items, then use the approved matrix to verify role boundaries and API/database authorisation.
 
 This repository is public. Keep personnel details, individual assignments, private records, credentials, and security-sensitive operational information out of this file.
+
+
+## GSLA-M1-010 implementation trace — 2026-10-12
+
+The database implementation proposal lives at [GSLA-M1-010 Facilities approval database contract](database/GSLA-M1-010-FACILITIES-APPROVAL-DATABASE-CONTRACT.md) and draft PR #49. This is **not** a business-policy amendment or proof of deployed enforcement. Canonical facility UUID, unverified-legacy safeguards, request evidence, history, migration gates and RLS/grant implications are described there. Full staging migration, application command enforcement, cutover and independent acceptance remain pending. The approved v0.2 permission matrix is unchanged.

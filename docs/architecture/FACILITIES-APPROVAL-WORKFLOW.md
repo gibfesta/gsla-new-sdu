@@ -266,3 +266,8 @@ Open implementation dependencies, not missing business grants: actual database/l
 ## Technical reference basis
 
 Reviewed 2026-10-12: [Next.js authentication / Route Handler and Server Action authorization](https://nextjs.org/docs/app/guides/authentication), [Prisma v6 transactions, idempotency and optimistic concurrency](https://www.prisma.io/docs/orm/v6/prisma-client/queries/transactions), [Supabase RLS and bypass considerations](https://supabase.com/docs/guides/database/postgres/row-level-security). These inform enforcement boundaries; they are not evidence of correct GSLA production configuration.
+
+
+## GSLA-M1-010 implementation trace — 2026-10-12
+
+The database implementation proposal lives at [GSLA-M1-010 Facilities approval database contract](../database/GSLA-M1-010-FACILITIES-APPROVAL-DATABASE-CONTRACT.md) and draft PR #49. This is **not** a business-policy amendment or proof of deployed enforcement. Canonical facility UUID, unverified-legacy safeguards, request evidence, history, migration gates and RLS/grant implications are described there. Full staging migration, application command enforcement, cutover and independent acceptance remain pending. The approved v0.2 permission matrix is unchanged.

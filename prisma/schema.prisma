@@ -10,7 +10,7 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Facilities_Table {
-  id            String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name          String   @default("required")
   type          String   @default("default:Other")
   status        String   @default("default:Operational")
@@ -31,8 +31,92 @@ model Facilities_Table {
   created__at   DateTime @map("created _at") @db.Timestamp(6)
   updated_at    DateTime @db.Timestamp(6)
 
-  @@id([id, name, type, status, address, contact_email, contact_phone, notes, created__at, updated_at])
+  approval_state             String   @default("DRAFT")
+  lifecycle_state            String   @default("ACTIVE")
+  record_version             Int      @default(1)
+  content_version            Int      @default(1)
+  approved_content_version   Int?
+  pending_request_id         String?  @db.Uuid
+  initial_approval_request_id String? @db.Uuid
+  archived_at                DateTime? @db.Timestamptz(6)
+  archived_by                String?  @db.Uuid
+  migration_origin           String?
+  requests                   facility_requests[] @relation("FacilityToRequests")
+  revisions                  facility_revisions[]
+  audit_events               facility_audit_events[]
+  pending_request            facility_requests? @relation("FacilityPendingRequest", fields: [id, pending_request_id], references: [facility_id, id], onDelete: NoAction, onUpdate: NoAction)
+  initial_approval_request   facility_requests? @relation("FacilityInitialRequest", fields: [id, initial_approval_request_id], references: [facility_id, id], onDelete: NoAction, onUpdate: NoAction)
   @@map("Facilities Table")
+}
+
+
+/// Append-only request snapshot; decisions may transition PENDING -> one terminal state.
+model facility_requests {
+  id                        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id               String   @db.Uuid
+  kind                      String
+  state                     String   @default("PENDING")
+  request_version           Int      @default(1)
+  submitted_content_version Int
+  snapshot                  Json     @db.JsonB
+  validation_version        String
+  submitted_by              String   @db.Uuid
+  submitted_at              DateTime @default(now()) @db.Timestamptz(6)
+  submission_reason         String?
+  decided_by                String?  @db.Uuid
+  decided_at                DateTime? @db.Timestamptz(6)
+  decision_reason           String?
+  policy_version            String   @default("v0.2")
+  command_id                String   @unique @db.Uuid
+  facility                  Facilities_Table @relation("FacilityToRequests",fields:[facility_id], references:[id], onDelete: Restrict)
+  as_pending                Facilities_Table[] @relation("FacilityPendingRequest")
+  as_initial_approval       Facilities_Table[] @relation("FacilityInitialRequest")
+  audit_events              facility_audit_events[]
+  @@unique([facility_id,id])
+  @@unique([facility_id,id,kind])
+  @@index([state,kind,submitted_at])
+  @@index([facility_id,submitted_at(sort: Desc)])
+}
+
+/// Immutable information snapshot per content version.
+model facility_revisions {
+  id              String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id     String @db.Uuid
+  content_version Int
+  information     Json @db.JsonB
+  actor_id        String? @db.Uuid
+  actor_role      String?
+  recorded_at     DateTime @default(now()) @db.Timestamptz(6)
+  command_id      String @unique @db.Uuid
+  source          String @default("COMMAND")
+  facility        Facilities_Table @relation(fields:[facility_id],references:[id],onDelete: Restrict)
+  audit_events    facility_audit_events[]
+  @@unique([facility_id,content_version])
+  @@index([facility_id,recorded_at(sort: Desc)])
+}
+
+/// Append-only business event; actor references deliberately survive account offboarding.
+model facility_audit_events {
+  id              String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id     String @db.Uuid
+  request_id      String? @db.Uuid
+  revision_id     String? @db.Uuid
+  action          String
+  before_state    Json? @db.JsonB
+  after_state     Json @db.JsonB
+  record_version  Int
+  content_version Int
+  actor_id        String? @db.Uuid
+  actor_role      String?
+  reason          String?
+  policy_version  String @default("v0.2")
+  validation_version String?
+  command_id      String @unique @db.Uuid
+  occurred_at     DateTime @default(now()) @db.Timestamptz(6)
+  facility        Facilities_Table @relation(fields:[facility_id],references:[id],onDelete: Restrict)
+  request         facility_requests? @relation(fields:[facility_id,request_id],references:[facility_id,id],onDelete: Restrict)
+  revision        facility_revisions? @relation(fields:[revision_id],references:[id],onDelete: Restrict)
+  @@index([facility_id,occurred_at(sort: Desc)])
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -222,7 +306,7 @@ model volunteer_roles {
 //
 // HR Timesheets (Saturday → Saturday)
 // NOTE: We store facility_id as a UUID string without a Prisma relation for now,
-// because Facilities_Table does not have a simple primary key in the current schema.
+// historically; Facilities_Table now has canonical UUID primary key. Existing pack data is unchanged.
 //
 
 enum TimesheetWeekStatus {
