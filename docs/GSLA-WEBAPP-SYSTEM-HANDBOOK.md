@@ -108,3 +108,7 @@ For unsafe access: restrict exposure, document scope, test fixes, and assess dat
 
 ## Handover acceptance criteria
 A replacement maintainer can install/run the project, locate every deployed route and API, explain actual permissions, identify source-of-truth data, deploy and roll back safely, understand the current controlled work queue, and diagnose common failures using documented procedures. If any item is unknown, track it as a gap instead of inventing details.
+
+## M1-016 Form Control implementation submitted for review
+
+The owner register now has a [reviewed source inventory](form-control/MASTER-INVENTORY.md) and read-only List/Card/detail UI under `/owner/form-control`, behind the existing M1-015 server boundary. See the [M1-016 receipt](project-control/GSLA-M1-016-WORK-RECEIPT.md) for delivery state and verification limits. 66 source definitions include 23 Facilities defaults; 143 UI-source / 88 page-source dispositions and 29 planned-only route candidates are separate counts. Browser-local copies on other devices/origins remain explicitly unreconciled. No form connection, submission behaviour or domain permissions changed. M1-016 is not marked Done by the Frontend Developer.

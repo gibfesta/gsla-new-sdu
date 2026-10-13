@@ -1,3 +1,14 @@
+export type FormLocation = {
+  route: string;
+  mode: string;
+  source: string;
+  connectionStatus?: string;
+  apiConnection?: string;
+  databaseConnection?: string;
+  evidence?: string;
+  readiness?: string;
+};
+export type PassiveField = { label: string; type: string; required: boolean };
 export type FormControlRecord = {
   formId: string;
   displayName: string;
@@ -5,12 +16,31 @@ export type FormControlRecord = {
   kind: string;
   operationalStatus: string;
   connectionStatus: string;
-  locations: Array<{ route: string; mode: string; source: string }>;
+  locations: FormLocation[];
   notes?: string;
+  intendedUse?: string;
+  readiness?: string;
+  existence?: string;
+  verification?: string;
+  evidenceState?: string;
+  fields?: PassiveField[];
+  nativeTemplateId?: string;
+  templateVersion?: number;
+  sourceFiles?: string[];
+  sourceCommit?: string;
+  reviewedAt?: string;
+  permissionContext?: string;
 };
+export type SourceReview = { source: string; route: string | null; formIds: string[]; disposition: string; reason: string; importsReviewed: string[]; sourceHash: string; reviewedAt: string; sourceCommit: string; directMarkerCandidate: boolean };
 export type FormControlRegister = {
   schemaVersion: number;
   sourceCommit: string;
   coverageNote: string;
   forms: FormControlRecord[];
+  reviewedAt?: string;
+  areas?: string[];
+  sourceLedger?: SourceReview[];
+  plannedCandidates?: Array<{source: string; route: string; status: string; notes: string}>;
+  excludedAuxiliaryControls?: Array<{source: string; reason: string}>;
+  definitionEvidence?: Array<{source: string; sourceHash: string}>;
 };
