@@ -19,6 +19,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - name: Generate public dependency lock metadata for review
+        working-directory: tests/browser
+        run: |
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          echo GSLA_LOCK_BEGIN
+          cat package-lock.json
+          echo GSLA_LOCK_END
       - name: Validate catalogue and PASS FAIL BLOCKED NOT RUN states
         run: node tests/browser/self-test.cjs
 # No secrets, auth sessions, Preview bypass credentials, privileged contexts,
