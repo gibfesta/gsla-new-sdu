@@ -19,13 +19,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Generate public dependency lock metadata for review
+      - name: Install locked browser dependencies
+        working-directory: tests/browser
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate Chromium installation
         working-directory: tests/browser
         run: |
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-          echo GSLA_LOCK_BEGIN
-          cat package-lock.json
-          echo GSLA_LOCK_END
+          npx playwright install --with-deps chromium
+          node -e "const { chromium } = require('playwright'); chromium.launch({headless:true}).then(b => b.close()).then(() => console.log('PASS Chromium launch')).catch(() => process.exit(1))"
       - name: Validate catalogue and PASS FAIL BLOCKED NOT RUN states
         run: node tests/browser/self-test.cjs
 # No secrets, auth sessions, Preview bypass credentials, privileged contexts,
