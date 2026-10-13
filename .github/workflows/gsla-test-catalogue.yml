@@ -59,7 +59,9 @@ jobs:
         run: npx prisma generate
       - name: TypeScript type check
         run: npx tsc --noEmit
-      - name: ESLint check (existing repository issues tracked separately)
+      - name: ESLint test infrastructure (required)
+        run: npx eslint tests/browser tests/automated
+      - name: Repository-wide lint debt (informational)
         continue-on-error: true
         run: npm run lint
       - name: Production build
