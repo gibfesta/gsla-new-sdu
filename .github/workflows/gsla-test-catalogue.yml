@@ -29,6 +29,8 @@ jobs:
           node -e "const { chromium } = require('playwright'); chromium.launch({headless:true}).then(b => b.close()).then(() => console.log('PASS Chromium launch')).catch(() => process.exit(1))"
       - name: Validate catalogue and PASS FAIL BLOCKED NOT RUN states
         run: node tests/browser/self-test.cjs
+      - name: Validate restricted anonymous Trusted Sources result logic (no secrets)
+        run: node tests/browser/trusted-oidc-self-test.cjs
       - name: Assert blocked-run evidence is redacted
         working-directory: tests/browser
         run: |
