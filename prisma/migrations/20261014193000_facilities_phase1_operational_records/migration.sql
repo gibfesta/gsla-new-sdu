@@ -146,8 +146,10 @@ BEGIN
  IF NOT COALESCE(eligible,false) THEN
    RAISE EXCEPTION 'New operational records require an approved active facility';
  END IF;
- IF TG_TABLE_NAME='facility_events' AND NEW.state <> 'Draft' THEN
-   RAISE EXCEPTION 'New events must be created as Draft; approval is a separate command';
+ IF TG_TABLE_NAME='facility_events' THEN
+   IF NEW.state <> 'Draft' THEN
+     RAISE EXCEPTION 'New events must be created as Draft; approval is a separate command';
+   END IF;
  END IF;
  RETURN NEW;
 END $eligibility$;
