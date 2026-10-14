@@ -3,7 +3,7 @@
 **Specialist:** OM-EMP-014 Senior Database Engineer
 **Status:** successful staging schema and selected integrity checks; **not approved for main database rollout or full acceptance**.
 **Connected main:** GSLA WebApp — Development `bbpikpmffwbzhxdoughh` (read-only verification, no schema modification).
-**Isolated staging branch:** `gsla-phase1-db-acceptance` / ref `tvkqoijrxnyjdbxxhckl`, created with previously acknowledged $0.01344/hour branching cost. Only synthetic test data used. Branch intended for deletion after evidence capture.
+**Isolated staging branch:** `gsla-phase1-db-acceptance` / ref `tvkqoijrxnyjdbxxhckl`, created with previously acknowledged $0.01344/hour branching cost. Only synthetic test data used. **Branch deleted successfully** using Supabase branch deletion after evidence capture, to stop further hourly runtime charges; actual invoiced amount not verified.
 **GitHub:** merged PR #49 (M1-010); draft PR #71 (generic submissions); draft PR #72 (structured Events/Issues/AM+PM Handovers).
 
 ## Reproducible test reconstruction
@@ -71,3 +71,6 @@ Frontend (M2-001): connect real Create/Edit Facility, Events, Issues, AM/PM Hand
 QA: independent authenticated acceptance on the exact Vercel Preview and associated database deployment after coordination.
 
 **Main database remains unmodified by this test run.**
+
+## Supabase advisors
+Security advisor: 8 INFO findings `rls_enabled_no_policy` for the new workflow/domain tables; these are intentional fail-closed server-only tables with grants revoked (not evidence of unrestricted access). Performance advisor: 16 INFO unindexed-foreign-key findings across old/new tables, plus unused-index notices in empty staging; review covering indexes against real query plans before wider rollout. See https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys .
