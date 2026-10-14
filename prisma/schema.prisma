@@ -44,6 +44,10 @@ model Facilities_Table {
   requests                   facility_requests[] @relation("FacilityToRequests")
   revisions                  facility_revisions[]
   audit_events               facility_audit_events[]
+  operational_events          facility_events[]
+  operational_issues          facility_issues[]
+  operational_handovers       facility_handovers[]
+  operational_audit           facility_operational_audit[]
   pending_request            facility_requests? @relation("FacilityPendingRequest", fields: [id, pending_request_id], references: [facility_id, id], onDelete: NoAction, onUpdate: NoAction)
   initial_approval_request   facility_requests? @relation("FacilityInitialRequest", fields: [id, initial_approval_request_id], references: [facility_id, id], onDelete: NoAction, onUpdate: NoAction)
   @@map("Facilities Table")
@@ -401,4 +405,90 @@ model timesheet_audit_logs {
 
   @@index([week_pack_id, created_at])
   @@map("timesheet_audit_logs")
+}
+
+
+model facility_events {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id String @db.Uuid
+  name String
+  category String
+  location String
+  organiser String
+  lead_organiser_name String @default("")
+  lead_organiser_email String @default("")
+  lead_organiser_phone String @default("")
+  summary String @default("")
+  prep_start DateTime @db.Timestamptz(6)
+  doors_open DateTime @db.Timestamptz(6)
+  event_start DateTime @db.Timestamptz(6)
+  event_end DateTime @db.Timestamptz(6)
+  dismantle_complete DateTime @db.Timestamptz(6)
+  state String @default("Draft")
+  details Json @default("{}") @db.JsonB
+  record_version Int @default(1)
+  created_by String @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_by String @db.Uuid
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  facility Facilities_Table @relation(fields:[facility_id],references:[id],onDelete:Restrict)
+  @@unique([facility_id,id])
+  @@index([facility_id,event_start,event_end])
+  @@index([state,created_at(sort: Desc)])
+}
+model facility_issues {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id String @db.Uuid
+  title String
+  category String
+  location String
+  description String
+  priority String
+  immediate_action String @default("")
+  state String @default("New")
+  evidence Json @default("{}") @db.JsonB
+  record_version Int @default(1)
+  reported_by String @db.Uuid
+  reported_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_by String @db.Uuid
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  facility Facilities_Table @relation(fields:[facility_id],references:[id],onDelete:Restrict)
+  @@unique([facility_id,id])
+  @@index([facility_id,state,priority,reported_at(sort: Desc)])
+}
+model facility_handovers {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id String @db.Uuid
+  duty_date DateTime @db.Date
+  period String
+  shift_summary String
+  risks String @default("")
+  actions_required String @default("")
+  manager_message String @default("")
+  incoming_shift_acknowledged Boolean @default(false)
+  submitted_by String @db.Uuid
+  submitted_at DateTime @default(now()) @db.Timestamptz(6)
+  record_version Int @default(1)
+  updated_by String @db.Uuid
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  facility Facilities_Table @relation(fields:[facility_id],references:[id],onDelete:Restrict)
+  @@unique([facility_id,duty_date,period],name:"facility_one_daily_handover")
+  @@unique([facility_id,id])
+  @@index([facility_id,duty_date(sort: Desc),period])
+}
+model facility_operational_audit {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facility_id String @db.Uuid
+  record_kind String
+  record_id String @db.Uuid
+  action String
+  record_version Int
+  before_data Json? @db.JsonB
+  after_data Json @db.JsonB
+  actor_id String @db.Uuid
+  effective_role String
+  command_id String @unique @db.Uuid
+  occurred_at DateTime @default(now()) @db.Timestamptz(6)
+  facility Facilities_Table @relation(fields:[facility_id],references:[id],onDelete:Restrict)
+  @@index([facility_id,occurred_at(sort: Desc)])
 }
