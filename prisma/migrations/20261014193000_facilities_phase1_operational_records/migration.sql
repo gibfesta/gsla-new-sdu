@@ -130,7 +130,7 @@ REVOKE ALL ON public.facility_events,public.facility_issues,
 -- New operational work must only be linked to approved and active venues.
 -- FOR SHARE serializes eligibility check against concurrent lifecycle updates.
 CREATE FUNCTION public.facility_operational_eligibility_guard() RETURNS trigger
-LANGUAGE plpgsql SET search_path=pg_catalog AS $
+LANGUAGE plpgsql SET search_path=pg_catalog AS $eligibility$
 DECLARE eligible boolean;
 BEGIN
  IF TG_OP='UPDATE' THEN
@@ -150,7 +150,7 @@ BEGIN
    RAISE EXCEPTION 'New events must be created as Draft; approval is a separate command';
  END IF;
  RETURN NEW;
-END $;
+END $eligibility$;
 CREATE TRIGGER facility_event_eligibility
 BEFORE INSERT OR UPDATE OF facility_id ON public.facility_events
 FOR EACH ROW EXECUTE FUNCTION public.facility_operational_eligibility_guard();
