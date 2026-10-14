@@ -59,3 +59,35 @@ export function formLiveLabel(form: FormControlRecord): string {
  const status=formLiveState(form);
  return status==="live"?"Live — verified":status==="connected"?"Connected in code — not live-verified":status==="not-live"?"Not live":"Unverified / needs review";
 }
+
+export type ConnectionType = "DATABASE"|"API"|"BROWSER"|"MOCK"|"PLANNED"|"MIXED"|"UNKNOWN";
+export const connectionTypeLabels: Record<ConnectionType,string> = {
+ DATABASE:"Database connected", API:"API / server connected", BROWSER:"Browser only",
+ MOCK:"Screen / mock only", PLANNED:"Planned / not implemented",
+ MIXED:"Mixed / multiple connections", UNKNOWN:"Not verified"
+};
+function locationConnection(status:string|undefined):ConnectionType {
+ switch(status) {
+  case "DATABASE_PERSISTED":return "DATABASE";
+  case "SERVER_SERVICE":return "API";
+  case "BROWSER_LOCAL":return "BROWSER";
+  case "UI_ONLY":return "MOCK";
+  case "MIXED":return "MIXED";
+  default:return "UNKNOWN";
+ }
+}
+export function formConnectionType(form:FormControlRecord):ConnectionType {
+ if(form.operationalStatus==="PLANNED" || form.existence==="planned")return "PLANNED";
+ if(form.evidenceState==="STALE" || form.evidenceState==="REMOVED")return "UNKNOWN";
+ const types=new Set(form.locations.map(loc=>locationConnection(loc.connectionStatus||form.connectionStatus)));
+ // If one location is unknown, refrain from confidently classifying the whole form.
+ if(types.has("UNKNOWN"))return "UNKNOWN";
+ if(types.size>1 || types.has("MIXED"))return "MIXED";
+ return types.values().next().value || locationConnection(form.connectionStatus);
+}
+export function formConnectionLabel(form:FormControlRecord):string {
+ return connectionTypeLabels[formConnectionType(form)];
+}
+export function locationConnectionLabel(status:string|undefined):string {
+ return connectionTypeLabels[locationConnection(status)];
+}
