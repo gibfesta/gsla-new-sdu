@@ -24,8 +24,8 @@ function formLiveState(form: Register["forms"][number]): "live"|"connected"|"not
  if (form.operationalStatus==="REMOVED" || form.operationalStatus==="PLANNED" || form.operationalStatus==="DEPRECATED" ||
      form.connectionStatus==="UI_ONLY" || form.connectionStatus==="BROWSER_LOCAL") return "not-live";
  if (form.evidenceState==="STALE" || form.evidenceState==="REMOVED") return "unknown";
- // Evidence must explicitly certify runtime persistence; this registry contains
- // only source reviews at present. Do not infer 'Live' from DATABASE_PERSISTED.
+ if (form.liveVerification?.status==="VERIFIED" && form.liveVerification.saveAndRetrieve===true && form.liveVerification.roleChecks===true && form.liveVerification.environment && form.liveVerification.verifiedAt && form.liveVerification.evidenceReference && form.connectionStatus==="DATABASE_PERSISTED" && form.evidenceState==="CURRENT") return "live";
+ // Do not infer Live from DATABASE_PERSISTED without runtime verification.
  if (form.connectionStatus==="DATABASE_PERSISTED" || form.connectionStatus==="MIXED" || form.connectionStatus==="SERVER_SERVICE") return "connected";
  return "unknown";
 }
