@@ -21,7 +21,7 @@ export default function FacilityFormPreviewer({ facilityId, defaultTab = "handov
  const scope = facilityId || venueId;
  return <div className="space-y-6 text-slate-900">
   <VenueBanner title={facilityId ? "Facility forms" : "Form Previewer"} description="See how the forms look and try their fields. Templates and venue assignments are managed in Forms & Procedures." eyebrow={facilityId ? "Venue forms" : "Venue form preview"}/>
-  <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">Preview only · answers save in this browser. No work order is issued and no report is sent.</p>
+  <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">Venue forms with a saved Facility ID submit to Supabase. Unassigned preview forms remain browser-only. Approval and operational actions require their dedicated workflows.</p>
   {notice && <p role="alert" className="text-sm text-rose-700">{notice}</p>}
   {<div className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-3">{!facilityId && <label className="text-sm font-semibold">Venue<select className={workflowInput} value={venueId} onChange={e => setVenueId(e.target.value)}><option value="all">All catalogue forms</option>{data.previewVenues.map(venue => <option key={venue.id} value={venue.id}>{venue.name}</option>)}{[...new Map(data.forms.flatMap(f => f.assignments.map(a => [a.venueId,a.venueName] as const))).entries()].filter(([id]) => !data.previewVenues.some(v => v.id === id)).map(([id,name]) => <option key={id} value={id}>{name}</option>)}</select></label>}<label className="text-sm font-semibold">Day (optional)<input type="date" className={workflowInput} value={date} onChange={e => setDate(e.target.value)}/></label><label className="text-sm font-semibold">Event (optional)<input className={workflowInput} value={event} onChange={e => setEvent(e.target.value)} placeholder="Filter extra assignments by event"/></label></div>}
   {!facilityId && <nav className="flex flex-wrap gap-2" aria-label="Preview forms">{tabs.map(([value,label]) => <Link key={value} href={`?tab=${value}`} className={`rounded-xl px-4 py-2 text-sm font-semibold ${tab === value && !params.get("form") ? "bg-[#0C2F57] text-white" : "border border-slate-200 bg-white text-slate-700"}`}>{label}</Link>)}</nav>}
@@ -37,9 +37,30 @@ export function FormPreviewCard({form,scope}:{form:CatalogueForm;scope:string}) 
  const [answers,setAnswers] = useVenueDesignState(scope,"catalogue-form-" + form.id + "-v" + form.version,examples(form));
  const [meta,setMeta] = useVenueDesignState(scope,"catalogue-meta-" + form.id,{ actor:"",date:"",notes:"",recipient:"" });
  const notice = useVenueDesignNotice(scope); const [message,setMessage] = useState("");
+ const [submitting,setSubmitting] = useState(false);
+ const linkedFacility = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(scope);
+ async function submitForm(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const problem = validateCompletion(form, answers);
+  if (problem) { setMessage(problem); return; }
+  if (!linkedFacility) { setMessage("Preview saved in this browser. No report was submitted."); return; }
+  setSubmitting(true); setMessage("");
+  try {
+   const response = await fetch("/api/facility-form-submissions", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ facilityId: scope, formId: form.id, formVersion: form.version,
+      payload: { answers, meta } })
+   });
+   const result = await response.json();
+   if (!response.ok) throw new Error(result.error || "Submission failed");
+   setMessage("Saved to Supabase. Submission reference: " + result.id);
+  } catch (error) {
+   setMessage(error instanceof Error ? error.message : "Submission failed. No database save confirmed.");
+  } finally { setSubmitting(false); }
+ }
  const checks = form.fields.filter(field => field.type === "checkbox");
- return <form className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={e => { e.preventDefault(); const problem = validateCompletion(form,answers); setMessage(problem || "Preview saved in this browser."); }}>
-  <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-lg font-bold text-slate-900">{form.title}</h2><p className="mt-1 text-sm text-slate-500">{KIND_LABELS[form.kind]} · v{form.version} · {form.frequency}</p></div><button type="submit" className={workflowButton}>Save preview</button></div>
+ return <form className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={submitForm}>
+  <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-lg font-bold text-slate-900">{form.title}</h2><p className="mt-1 text-sm text-slate-500">{KIND_LABELS[form.kind]} · v{form.version} · {form.frequency}</p></div><button type="submit" className={workflowButton} disabled={submitting}>{submitting ? "Saving…" : linkedFacility ? "Save to Supabase" : "Save preview"}</button></div>
   <p className="mt-4 whitespace-pre-wrap text-sm text-slate-600">{form.instructions}</p>
   {!!checks.length && <p className="mt-4 text-xs font-semibold text-slate-500">{checks.filter(field => answers[field.id] === true).length}/{checks.length} checks complete</p>}
   {!!form.documents?.length && <WorkflowAttachments label="Reference documents" value={form.documents} readOnly/>}
