@@ -126,4 +126,39 @@ ALTER TABLE public.facility_handovers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.facility_operational_audit ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.facility_events,public.facility_issues,
  public.facility_handovers,public.facility_operational_audit FROM PUBLIC,anon,authenticated;
+
+-- New operational work must only be linked to approved and active venues.
+-- FOR SHARE serializes eligibility check against concurrent lifecycle updates.
+CREATE FUNCTION public.facility_operational_eligibility_guard() RETURNS trigger
+LANGUAGE plpgsql SET search_path=pg_catalog AS $
+DECLARE eligible boolean;
+BEGIN
+ IF TG_OP='UPDATE' THEN
+   IF NEW.facility_id IS DISTINCT FROM OLD.facility_id THEN
+      RAISE EXCEPTION 'Operational record facility identity is immutable';
+   END IF;
+   RETURN NEW;
+ END IF;
+ SELECT (approval_state='APPROVED' AND lifecycle_state='ACTIVE')
+ INTO eligible
+ FROM public."Facilities Table"
+ WHERE id=NEW.facility_id FOR SHARE;
+ IF NOT COALESCE(eligible,false) THEN
+   RAISE EXCEPTION 'New operational records require an approved active facility';
+ END IF;
+ IF TG_TABLE_NAME='facility_events' AND NEW.state <> 'Draft' THEN
+   RAISE EXCEPTION 'New events must be created as Draft; approval is a separate command';
+ END IF;
+ RETURN NEW;
+END $;
+CREATE TRIGGER facility_event_eligibility
+BEFORE INSERT OR UPDATE OF facility_id ON public.facility_events
+FOR EACH ROW EXECUTE FUNCTION public.facility_operational_eligibility_guard();
+CREATE TRIGGER facility_issue_eligibility
+BEFORE INSERT OR UPDATE OF facility_id ON public.facility_issues
+FOR EACH ROW EXECUTE FUNCTION public.facility_operational_eligibility_guard();
+CREATE TRIGGER facility_handover_eligibility
+BEFORE INSERT OR UPDATE OF facility_id ON public.facility_handovers
+FOR EACH ROW EXECUTE FUNCTION public.facility_operational_eligibility_guard();
+
 COMMIT;
