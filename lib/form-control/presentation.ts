@@ -45,3 +45,17 @@ export function extractLocalCandidates(raw: string | null, key: string, sourceId
     return {key: key + ":" + index, nativeId:item.id, title:item.title, version:Number.isSafeInteger(item.version) ? item.version as number : null, fieldCount:fields.length, fields, comparison:sourceIds.includes(item.id) ? "Source ID found — local version/edits still require review" : "Custom ID — not yet reconciled"};
   });
 }
+
+export function formLiveState(form: FormControlRecord): "live"|"connected"|"not-live"|"unknown" {
+ if (["REMOVED","PLANNED","DEPRECATED"].includes(form.operationalStatus) || ["UI_ONLY","BROWSER_LOCAL"].includes(form.connectionStatus)) return "not-live";
+ if (form.evidenceState==="STALE" || form.evidenceState==="REMOVED") return "unknown";
+ if (form.liveVerification?.status==="VERIFIED" && form.liveVerification.saveAndRetrieve===true && form.liveVerification.roleChecks===true &&
+     form.liveVerification.environment && form.liveVerification.verifiedAt && form.liveVerification.evidenceReference &&
+     form.connectionStatus==="DATABASE_PERSISTED" && form.evidenceState==="CURRENT") return "live";
+ if (["DATABASE_PERSISTED","MIXED","SERVER_SERVICE"].includes(form.connectionStatus)) return "connected";
+ return "unknown";
+}
+export function formLiveLabel(form: FormControlRecord): string {
+ const status=formLiveState(form);
+ return status==="live"?"Live — verified":status==="connected"?"Connected in code — not live-verified":status==="not-live"?"Not live":"Unverified / needs review";
+}
