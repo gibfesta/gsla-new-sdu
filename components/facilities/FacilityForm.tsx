@@ -40,6 +40,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const [loadFailed, setLoadFailed] = useState(false);
   const [loading, setLoading] = useState(Boolean(facilityId));
   const [savedId, setSavedId] = useState<string | null>(null);
+  const [recordVersion, setRecordVersion] = useState<number | null>(null);
 
   // Form fields (full page)
   const [name, setName] = useState("");
@@ -74,6 +75,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
           throw new Error(record.error || "Unable to load facility");
         }
         setSavedId(record.id);
+        setRecordVersion(Number.isSafeInteger(record.record_version) ? record.record_version : null);
         setName(record.name);
         setType(record.type);
         setStatus(record.status);
@@ -111,6 +113,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
     try { schedule = parseFacilitySchedule(openingSchedule); }
     catch (error) { setError(error instanceof Error ? error.message : "Invalid opening schedule."); return; }
 
+    if (savedId && recordVersion === null) { setError("Facility version is unavailable. Reload before editing."); return; }
     setSaving(true);
     setError(null);
 
@@ -119,6 +122,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         method: savedId ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...(savedId ? { expectedVersion: recordVersion } : {}),
           name: name.trim(),
           type,
           status,
@@ -126,14 +130,12 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
           description: description.trim(),
           contact_email: contactEmail.trim() || null,
           contact_phone: contactPhone.trim() || null,
-          ...(savedId ? {
           centre_manager_name: centreManagerName.trim(),
           centre_manager_title: centreManagerTitle.trim(),
           centre_manager_email: centreManagerEmail.trim(),
           centre_manager_phone: centreManagerPhone.trim(),
           facilities_manager_name: facilitiesManagerName.trim(),
           facilities_manager_email: facilitiesManagerEmail.trim(),
-          } : {}),
           supported_activities: supportedActivities,
           notes: notes.trim(),
           opening_schedule: schedule,
