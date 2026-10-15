@@ -28,6 +28,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
      SELECT id,approval_state,lifecycle_state,record_version,content_version,pending_request_id
      FROM public."Facilities Table" WHERE id=${id}::uuid FOR UPDATE
    `;
+   // A repeated HTTP request must not create a second approval request.
+   // A command UUID is bound to the original facility and submitting actor.
+   const prior = await tx.facility_requests.findUnique({ where: { command_id: commandId } });
+   if (prior) {
+     if (prior.facility_id !== id || prior.submitted_by !== access.user!.id || prior.kind !== "INITIAL_APPROVAL")
+       return { status:409, error:"Command ID already belongs to another submission" };
+     return { status:200, requestId:prior.id, state:prior.state==="PENDING"?"PENDING_APPROVAL":prior.state };
+   }
    const facility = facilities[0];
    if (!facility) return { status:404, error:"Facility not found" };
    if (facility.record_version !== expectedVersion) return { status:409, error:"Facility has changed. Reload before submitting." };
@@ -60,7 +68,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
    });
    return { status:201, requestId:decision.id, state:"PENDING_APPROVAL" };
   });
-  return NextResponse.json(result.status===201?{requestId:result.requestId,state:result.state}:{error:result.error},{status:result.status,headers});
+  return NextResponse.json((result.status===201||result.status===200)?{requestId:result.requestId,state:result.state}:{error:result.error},{status:result.status,headers});
  } catch (error) {
   console.error("Submit Facility for approval failed",error);
   return NextResponse.json({error:"Could not submit Facility for approval"},{status:500,headers});
