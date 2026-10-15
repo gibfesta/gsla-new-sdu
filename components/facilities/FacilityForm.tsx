@@ -161,7 +161,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
     }
   }
 
-  async function runApprovalAction(action: "submit" | "APPROVED" | "REJECTED" | "RETURNED") {
+  async function runApprovalAction(action: "submit" | "withdraw" | "APPROVED" | "REJECTED" | "RETURNED") {
     if (!savedId || recordVersion === null) { setError("Save or reload the Facility before changing approval."); return; }
     const reason = action === "REJECTED" || action === "RETURNED"
       ? window.prompt("Enter the reason for this decision:") : "";
@@ -169,10 +169,11 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
     setSaving(true); setError(null); setWorkflowMessage("");
     try {
       const response = await fetch(action === "submit"
-        ? `/api/facilities/${savedId}/submit` : `/api/facilities/${savedId}/decision`, {
+        ? `/api/facilities/${savedId}/submit` : action === "withdraw" ? `/api/facilities/${savedId}/withdraw` : `/api/facilities/${savedId}/decision`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(action === "submit"
           ? { expectedVersion: recordVersion, commandId: crypto.randomUUID() }
+          : action === "withdraw" ? { expectedVersion: recordVersion, requestId: pendingRequestId }
           : { expectedVersion: recordVersion, requestId: pendingRequestId, decision: action, reason }),
       });
       const outcome = await response.json();
@@ -226,6 +227,7 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         <div className="mt-3 flex flex-wrap gap-2">
           {approvalState === "DRAFT" && <button type="button" disabled={saving} onClick={() => runApprovalAction("submit")} className="rounded-lg bg-[#0C2F57] px-3 py-2 text-sm font-semibold text-white disabled:opacity-50">Submit for approval</button>}
           {approvalState === "PENDING_APPROVAL" && pendingRequestId && <>
+            <button type="button" disabled={saving} onClick={() => runApprovalAction("withdraw")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Withdraw submission</button>
             <button type="button" disabled={saving} onClick={() => runApprovalAction("APPROVED")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Approve (Organisation only)</button>
             <button type="button" disabled={saving} onClick={() => runApprovalAction("RETURNED")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Return for changes</button>
             <button type="button" disabled={saving} onClick={() => runApprovalAction("REJECTED")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Reject</button>
