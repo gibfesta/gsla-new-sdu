@@ -12,8 +12,9 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
  let body:unknown;try{body=await request.json()}catch{return NextResponse.json({error:"Invalid JSON"},{status:400,headers})}
  if(!body||typeof body!=="object"||Array.isArray(body))return NextResponse.json({error:"Invalid request"},{status:400,headers});
  const b=body as Record<string,unknown>;
- if(!Number.isSafeInteger(b.expectedVersion)|| (b.expectedVersion as number)<1 ||typeof b.commandId!=="string"||!uuid.test(b.commandId)||typeof b.reason!=="string"||!b.reason.trim())
+ if(!Number.isSafeInteger(b.expectedVersion)|| (b.expectedVersion as number)<1 ||typeof b.commandId!=="string"||!uuid.test(b.commandId)||typeof b.reason!=="string"||!reason.trim())
  return NextResponse.json({error:"Expected version, command UUID and reason required"},{status:400,headers});
+ const reason=b.reason as string;
  try{
  const result=await prisma.$transaction(async tx=>{
   const rows=await tx.$queryRaw<Array<{id:string;approval_state:string;lifecycle_state:string;record_version:number;content_version:number;pending_request_id:string|null}>>`
@@ -28,7 +29,7 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
   const req=await tx.facility_requests.create({data:{
    facility_id:id,kind:"ARCHIVE",state:"PENDING",submitted_content_version:f.content_version,
    snapshot:JSON.parse(JSON.stringify(snapshot)),validation_version:"phase1-v1",
-   submitted_by:access.user!.id,submission_reason:b.reason.trim(),command_id:b.commandId as string
+   submitted_by:access.user!.id,submission_reason:reason.trim(),command_id:b.commandId as string
   }});
   await tx.facilities_Table.update({where:{id},data:{pending_request_id:req.id,record_version:{increment:1}}});
   await tx.facility_audit_events.create({data:{
@@ -36,7 +37,7 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
    after_state:{approvalState:"APPROVED",lifecycleState:"ACTIVE",requestId:req.id},
    record_version:f.record_version+1,content_version:f.content_version,
    actor_id:access.user!.id,actor_role:access.roles.includes("organisation_admin")?"organisation_admin":"facilities_admin",
-   command_id:crypto.randomUUID(),reason:b.reason.trim()
+   command_id:crypto.randomUUID(),reason:reason.trim()
   }});
   return {status:201,requestId:req.id};
  });
