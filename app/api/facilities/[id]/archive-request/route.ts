@@ -12,7 +12,7 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
  let body:unknown;try{body=await request.json()}catch{return NextResponse.json({error:"Invalid JSON"},{status:400,headers})}
  if(!body||typeof body!=="object"||Array.isArray(body))return NextResponse.json({error:"Invalid request"},{status:400,headers});
  const b=body as Record<string,unknown>;
- if(!Number.isSafeInteger(b.expectedVersion)|| (b.expectedVersion as number)<1 ||typeof b.commandId!=="string"||!uuid.test(b.commandId)||typeof b.reason!=="string"||!reason.trim())
+ if(!Number.isSafeInteger(b.expectedVersion)|| (b.expectedVersion as number)<1 ||typeof b.commandId!=="string"||!uuid.test(b.commandId)||typeof b.reason!=="string"||!(b.reason as string).trim())
  return NextResponse.json({error:"Expected version, command UUID and reason required"},{status:400,headers});
  const reason=b.reason as string;
  try{
