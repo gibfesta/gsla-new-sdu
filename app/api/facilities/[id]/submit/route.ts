@@ -43,6 +43,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return { status:409, error:"Facility is not an available draft" };
    const snapshot = await tx.facilities_Table.findUnique({ where:{ id } });
    if (!snapshot) return { status:404, error:"Facility not found" };
+   if (!snapshot.name.trim() || !snapshot.address.trim() || !["Operational","Limited","Closed"].includes(snapshot.status))
+    return { status:422, error:"Complete Facility name, address and valid operational status before submission" };
    const decision = await tx.facility_requests.create({
     data:{
      facility_id:id,kind:"INITIAL_APPROVAL",state:"PENDING",
