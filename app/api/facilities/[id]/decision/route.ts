@@ -37,6 +37,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
    if(!pending || pending.facility_id!==id || pending.kind!=="INITIAL_APPROVAL" || pending.state!=="PENDING" ||
       pending.submitted_content_version!==f.content_version)
     return {status:409,error:"Request is no longer eligible for decision"};
+   if (b.decision==="APPROVED") {
+    const current = await tx.facilities_Table.findUnique({ where:{id} });
+    if (!current || !current.name.trim() || !current.address.trim() || !["Operational","Limited","Closed"].includes(current.status))
+     return {status:422,error:"Facility information is incomplete for approval"};
+   }
    const approved=b.decision==="APPROVED";
    const nextState=approved?"APPROVED":b.decision==="REJECTED"?"REJECTED":"CHANGES_REQUESTED";
    await tx.facility_requests.update({
