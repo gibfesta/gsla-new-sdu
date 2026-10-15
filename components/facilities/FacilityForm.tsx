@@ -41,6 +41,9 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
   const [loading, setLoading] = useState(Boolean(facilityId));
   const [savedId, setSavedId] = useState<string | null>(null);
   const [recordVersion, setRecordVersion] = useState<number | null>(null);
+  const [approvalState, setApprovalState] = useState<string>("DRAFT");
+  const [pendingRequestId, setPendingRequestId] = useState<string | null>(null);
+  const [workflowMessage, setWorkflowMessage] = useState("");
 
   // Form fields (full page)
   const [name, setName] = useState("");
@@ -76,6 +79,8 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         }
         setSavedId(record.id);
         setRecordVersion(Number.isSafeInteger(record.record_version) ? record.record_version : null);
+        setApprovalState(record.approval_state || "DRAFT");
+        setPendingRequestId(record.pending_request_id || null);
         setName(record.name);
         setType(record.type);
         setStatus(record.status);
@@ -156,6 +161,34 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
     }
   }
 
+  async function runApprovalAction(action: "submit" | "APPROVED" | "REJECTED" | "RETURNED") {
+    if (!savedId || recordVersion === null) { setError("Save or reload the Facility before changing approval."); return; }
+    const reason = action === "REJECTED" || action === "RETURNED"
+      ? window.prompt("Enter the reason for this decision:") : "";
+    if ((action === "REJECTED" || action === "RETURNED") && !reason?.trim()) return;
+    setSaving(true); setError(null); setWorkflowMessage("");
+    try {
+      const response = await fetch(action === "submit"
+        ? `/api/facilities/${savedId}/submit` : `/api/facilities/${savedId}/decision`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(action === "submit"
+          ? { expectedVersion: recordVersion, commandId: crypto.randomUUID() }
+          : { expectedVersion: recordVersion, requestId: pendingRequestId, decision: action, reason }),
+      });
+      const outcome = await response.json();
+      if (!response.ok) throw new Error(outcome.error || "Approval action failed");
+      const refreshed = await fetch(`/api/facilities/${savedId}`, { cache: "no-store" });
+      if (!refreshed.ok) throw new Error("Action saved, but refresh failed. Reload this Facility.");
+      const updated = await refreshed.json();
+      setApprovalState(updated.approval_state);
+      setPendingRequestId(updated.pending_request_id ?? null);
+      setRecordVersion(updated.record_version);
+      setWorkflowMessage("Approval workflow updated: " + updated.approval_state);
+      router.refresh();
+    } catch (error) { setError(error instanceof Error ? error.message : "Approval action failed"); }
+    finally { setSaving(false); }
+  }
+
   if (loading) return <p className="p-6" role="status">Loading facility...</p>;
 
   return (
@@ -187,6 +220,19 @@ export default function FacilityForm({ facilityId }: { facilityId?: string }) {
         </button>
       </div>
 
+      {savedId && <section className="mb-4 rounded-xl border border-slate-200 bg-white p-4" aria-label="Facility approval workflow">
+        <p className="text-sm font-semibold">Approval status: {approvalState}</p>
+        <p className="mt-1 text-xs text-slate-500">Submission requires an authorised administrator; final decisions require Organisation Administrator permissions.</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {approvalState === "DRAFT" && <button type="button" disabled={saving} onClick={() => runApprovalAction("submit")} className="rounded-lg bg-[#0C2F57] px-3 py-2 text-sm font-semibold text-white disabled:opacity-50">Submit for approval</button>}
+          {approvalState === "PENDING_APPROVAL" && pendingRequestId && <>
+            <button type="button" disabled={saving} onClick={() => runApprovalAction("APPROVED")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Approve (Organisation only)</button>
+            <button type="button" disabled={saving} onClick={() => runApprovalAction("RETURNED")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Return for changes</button>
+            <button type="button" disabled={saving} onClick={() => runApprovalAction("REJECTED")} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-50">Reject</button>
+          </>}
+        </div>
+        {workflowMessage && <p role="status" className="mt-2 text-sm">{workflowMessage}</p>}
+      </section>}
       <Card>
         <CardContent className="p-6">
           {error ? (
