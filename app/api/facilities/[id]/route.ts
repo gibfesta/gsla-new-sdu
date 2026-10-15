@@ -60,7 +60,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       if (!current) return { error: "Facility not found", status: 404 };
       if (current.record_version !== body.expectedVersion)
         return { error: "Facility changed; reload before editing", status: 409 };
-      if (current.lifecycle_state !== "ACTIVE" || !["DRAFT","CHANGES_REQUESTED","REJECTED","APPROVED"].includes(current.approval_state))
+      if (!["ACTIVE","ARCHIVED"].includes(current.lifecycle_state) ||
+          (current.lifecycle_state === "ARCHIVED" && current.approval_state !== "APPROVED") ||
+          !["DRAFT","CHANGES_REQUESTED","REJECTED","APPROVED"].includes(current.approval_state))
         return { error: "Facility cannot be edited in its current state", status: 409 };
       const updated = await tx.facilities_Table.update({
         where: { id: facility.id },
