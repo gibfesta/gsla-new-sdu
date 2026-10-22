@@ -4938,6 +4938,139 @@
       "sourceFiles": [
         "app/organisation/health/page.tsx"
       ]
+    },
+    {
+      "formId": "facilities.workload-task",
+      "ownerFormId": "GSLA-FRM-067",
+      "displayName": "Shared Workload Task Assignment / Edit",
+      "area": "Facilities",
+      "kind": "record-editor",
+      "operationalStatus": "PLANNED",
+      "connectionStatus": "BROWSER_LOCAL",
+      "locations": [
+        {
+          "route": "/facilities/shared-workload-control",
+          "mode": "assign sample task",
+          "source": "components/facilities/workload/TaskDialog.tsx",
+          "connectionStatus": "BROWSER_LOCAL",
+          "apiConnection": "None; sample task store only",
+          "databaseConnection": "None",
+          "evidence": "useWorkload writes only gsla-shared-workload-sample-v1; no live event, issue, handover or employee record is changed.",
+          "readiness": "Ready for sample workspace review only"
+        },
+        {
+          "route": "/facilities/shared-workload-control",
+          "mode": "edit / reassign sample task",
+          "source": "components/facilities/workload/TaskDialog.tsx",
+          "connectionStatus": "BROWSER_LOCAL",
+          "apiConnection": "None; sample task store only",
+          "databaseConnection": "None",
+          "evidence": "useWorkload writes only gsla-shared-workload-sample-v1; no live event, issue, handover or employee record is changed.",
+          "readiness": "Ready for sample workspace review only"
+        },
+        {
+          "route": "/facilities/shared-workload-control",
+          "mode": "update sample task status",
+          "source": "components/facilities/workload/SharedWorkloadControl.tsx",
+          "connectionStatus": "BROWSER_LOCAL",
+          "apiConnection": "None; sample task store only",
+          "databaseConnection": "None",
+          "evidence": "useWorkload writes only gsla-shared-workload-sample-v1; no live event, issue, handover or employee record is changed.",
+          "readiness": "Ready for sample workspace review only"
+        },
+        {
+          "route": "/facilities/shared-workload-control/managers/[managerId]",
+          "mode": "assign sample task",
+          "source": "components/facilities/workload/TaskDialog.tsx",
+          "connectionStatus": "BROWSER_LOCAL",
+          "apiConnection": "None; sample task store only",
+          "databaseConnection": "None",
+          "evidence": "useWorkload writes only gsla-shared-workload-sample-v1; no live event, issue, handover or employee record is changed.",
+          "readiness": "Ready for sample workspace review only"
+        },
+        {
+          "route": "/facilities/shared-workload-control/managers/[managerId]",
+          "mode": "edit / reassign sample task",
+          "source": "components/facilities/workload/TaskDialog.tsx",
+          "connectionStatus": "BROWSER_LOCAL",
+          "apiConnection": "None; sample task store only",
+          "databaseConnection": "None",
+          "evidence": "useWorkload writes only gsla-shared-workload-sample-v1; no live event, issue, handover or employee record is changed.",
+          "readiness": "Ready for sample workspace review only"
+        },
+        {
+          "route": "/facilities/shared-workload-control/managers/[managerId]",
+          "mode": "update sample task status",
+          "source": "components/facilities/workload/SharedWorkloadControl.tsx",
+          "connectionStatus": "BROWSER_LOCAL",
+          "apiConnection": "None; sample task store only",
+          "databaseConnection": "None",
+          "evidence": "useWorkload writes only gsla-shared-workload-sample-v1; no live event, issue, handover or employee record is changed.",
+          "readiness": "Ready for sample workspace review only"
+        }
+      ],
+      "readiness": "READY",
+      "intendedUse": "Browser-local sample workload planning and design review; not shared operational use.",
+      "existence": "implemented",
+      "verification": "Source and isolated component/store tests; authenticated Preview review pending",
+      "evidenceState": "CURRENT",
+      "notes": "New shared create/edit renderer, with inline status usages. Fictitious sample managers and tasks. Not a new venue template or one form per task. Shared persistence/staff integration is separate work.",
+      "fields": [
+        {
+          "label": "Task name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "label": "Assigned manager",
+          "type": "select",
+          "required": true
+        },
+        {
+          "label": "Due date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "label": "Task type",
+          "type": "select",
+          "required": true
+        },
+        {
+          "label": "Priority",
+          "type": "select",
+          "required": true
+        },
+        {
+          "label": "Status",
+          "type": "select",
+          "required": true
+        },
+        {
+          "label": "Standard responsibility",
+          "type": "select",
+          "required": false
+        },
+        {
+          "label": "Notes",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "label": "Completion / evidence note",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "sourceFiles": [
+        "components/facilities/workload/TaskDialog.tsx",
+        "components/facilities/workload/SharedWorkloadControl.tsx",
+        "components/facilities/workload/useWorkload.ts",
+        "lib/sharedWorkload.ts"
+      ],
+      "sourceCommit": "Shared Workload Control working tree on accepted 3f5e853",
+      "reviewedAt": "2026-10-22",
+      "permissionContext": "Existing Facilities department server layout permits Organisation / Facilities administrators only; no new role or CM access."
     }
   ],
   "sourceLedger": [
@@ -6683,9 +6816,9 @@
       "disposition": "information only",
       "reason": "Information/navigation/presentation only; no independent data-entry or form submission handler found.",
       "importsReviewed": [],
-      "sourceHash": "044d4604a43d5da0d9ebab469989e2c99e48e78b0382d22e5f35c2f8e28f0c6c",
-      "reviewedAt": "2026-10-13",
-      "sourceCommit": "175354cafe27c7c810de5493d23ade7baae2d743",
+      "sourceHash": "6080e986704f1ce62769c7fec853ffe29091911082abc619b32d1bb85db95362",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Shared Workload Control working tree on 3f5e853",
       "directMarkerCandidate": false
     },
     {
@@ -6851,9 +6984,9 @@
         "lib/facilityFormCatalogue.ts",
         "lib/facilityWorkflows.ts"
       ],
-      "sourceHash": "815de8a23f4e4a113079735769a5deb6d9145003b4b1b3f34b334e7018f71788",
-      "reviewedAt": "2026-10-13",
-      "sourceCommit": "175354cafe27c7c810de5493d23ade7baae2d743",
+      "sourceHash": "c6e970b97c3994a394f95eeaaf1353dd285baacfae724ef2fcc9178922e73a4a",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Accepted PRs 75/76 on 3f5e853; ID display only, no new form identity",
       "directMarkerCandidate": true
     },
     {
@@ -7289,6 +7422,102 @@
       "reviewedAt": "2026-10-13",
       "sourceCommit": "working-tree:GSLA-M1-016",
       "directMarkerCandidate": false
+    },
+    {
+      "source": "app/facilities/shared-workload-control/page.tsx",
+      "route": "/facilities/shared-workload-control",
+      "formIds": [
+        "facilities.workload-task"
+      ],
+      "disposition": "form usage",
+      "reason": "Route wrapper; month input validated; shared task controller.",
+      "importsReviewed": [
+        "next",
+        "@/components/facilities/workload/SharedWorkloadControl",
+        "@/lib/sharedWorkload"
+      ],
+      "sourceHash": "b04831f32af59bfe89dcf38358749e1c169ec8649f1448bbacd9d28d0a66a2af",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Shared Workload Control working tree on 3f5e853",
+      "directMarkerCandidate": false
+    },
+    {
+      "source": "app/facilities/shared-workload-control/managers/[managerId]/page.tsx",
+      "route": "/facilities/shared-workload-control/managers/[managerId]",
+      "formIds": [
+        "facilities.workload-task"
+      ],
+      "disposition": "form usage",
+      "reason": "Manager route allowlist / notFound; reuses shared controller and definition.",
+      "importsReviewed": [
+        "next/navigation",
+        "@/components/facilities/workload/SharedWorkloadControl",
+        "@/lib/sharedWorkload"
+      ],
+      "sourceHash": "20bdfebed0b1ca5ee1a5fe24eff498dd4a9f90fe7d1ef2d93f7c6e5bb4e80336",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Shared Workload Control working tree on 3f5e853",
+      "directMarkerCandidate": false
+    },
+    {
+      "source": "components/facilities/workload/TaskDialog.tsx",
+      "route": null,
+      "formIds": [
+        "facilities.workload-task"
+      ],
+      "disposition": "form usage",
+      "reason": "One shared task assignment/edit form; native dialog, local save handler.",
+      "importsReviewed": [
+        "react",
+        "@/lib/sharedWorkload",
+        "./useWorkload",
+        "./WorkloadViews"
+      ],
+      "sourceHash": "19e4101d7cc226a7dede22774b6041f96383521e2602c6881bc414f2f43dbdd9",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Shared Workload Control working tree on 3f5e853",
+      "directMarkerCandidate": true
+    },
+    {
+      "source": "components/facilities/workload/SharedWorkloadControl.tsx",
+      "route": null,
+      "formIds": [
+        "facilities.workload-task"
+      ],
+      "disposition": "form usage",
+      "reason": "Task form orchestration and inline status usages; filters/navigation are auxiliary controls.",
+      "importsReviewed": [
+        "next/link",
+        "react",
+        "lucide-react",
+        "@/components/facilities/FacilitiesDepartmentBanner",
+        "@/lib/sharedWorkload",
+        "./useWorkload",
+        "./WorkloadViews",
+        "./TaskDialog"
+      ],
+      "sourceHash": "18de4fb2a852557e671fc55af6e3d5df8fc2cbc3848d757c83f3e22203ed07d6",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Shared Workload Control working tree on 3f5e853",
+      "directMarkerCandidate": false
+    },
+    {
+      "source": "components/facilities/workload/WorkloadViews.tsx",
+      "route": null,
+      "formIds": [
+        "facilities.workload-task"
+      ],
+      "disposition": "shared display / auxiliary controls",
+      "reason": "Read-only summaries/charts/tables plus delegated status actions; no independent form definition.",
+      "importsReviewed": [
+        "next/link",
+        "lucide-react",
+        "@/lib/sharedWorkload"
+      ],
+      "sourceHash": "580b1b9137194088f7f8f65bf20791fa2994aa6dfc875b46ec4eebcde5c78111",
+      "reviewedAt": "2026-10-22",
+      "sourceCommit": "Shared Workload Control working tree on 3f5e853",
+      "directMarkerCandidate": false
     }
   ],
   "plannedCandidates": [
@@ -7527,6 +7756,10 @@
     {
       "source": "components/facilities/FacilityFormBlueprint.tsx",
       "reason": "Unused informational field-list blueprint. Not mounted or editable; catalogue definitions represent current fields."
+    },
+    {
+      "source": "components/facilities/workload/WorkloadViews.tsx",
+      "reason": "Workload charts, month/venue/manager/search/status/type/priority filters and List/Card controls are auxiliary. Task assignment/edit/status usages map to facilities.workload-task (GSLA-FRM-067). No extra definition per manager, tab or task."
     }
   ],
   "definitionEvidence": [
@@ -7688,7 +7921,7 @@
     },
     {
       "source": "components/facilities/FormsAndProcedures.tsx",
-      "sourceHash": "815de8a23f4e4a113079735769a5deb6d9145003b4b1b3f34b334e7018f71788"
+      "sourceHash": "c6e970b97c3994a394f95eeaaf1353dd285baacfae724ef2fcc9178922e73a4a"
     },
     {
       "source": "components/facilities/SavedFacilityInformation.tsx",
@@ -7717,6 +7950,14 @@
     {
       "source": "lib/facilityWorkflows.ts",
       "sourceHash": "f20e8fb60ef77ed4becec9a1f6bebc108fcc4ba1ecca92da1054bff068fd45b7"
+    },
+    {
+      "source": "components/facilities/workload/useWorkload.ts",
+      "sourceHash": "c5dd3d491c897fab0e5e44eba8d00a4c43b819a8b55ccac66a91125c0238e03a"
+    },
+    {
+      "source": "lib/sharedWorkload.ts",
+      "sourceHash": "5913588bc8daac3f22e57c5c6be22b01b2e70e953ccc2d743f52cbb2a3a931b9"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "highWatermark": 66,
+  "highWatermark": 67,
   "assignments": [
     {
       "ownerFormId": "GSLA-FRM-001",
@@ -331,6 +331,11 @@
       "ownerFormId": "GSLA-FRM-066",
       "formId": "health.check",
       "assignedAt": "2026-10-13"
+    },
+    {
+      "ownerFormId": "GSLA-FRM-067",
+      "formId": "facilities.workload-task",
+      "assignedAt": "2026-10-22"
     }
   ]
 }

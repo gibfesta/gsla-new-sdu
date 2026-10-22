@@ -4,7 +4,7 @@ Generated from `config/form-control/register.json`; do not edit these exports in
 
 Reviewed baseline: `175354cafe27c7c810de5493d23ade7baae2d743`. Source/handler evidence reviewed 2026-10-13 as Frontend Developer. Owner UI sources in the ledger are marked M1-016 working tree; final delivery commit is recorded in the Work Receipt.
 
-**66 distinct source definitions; 23 Facilities source defaults included. 143 UI sources / 88 page sources accounted for. 29 README-only route candidates are separate, not form totals.**
+**67 distinct source definitions; 23 Facilities source defaults included. 148 UI sources / 90 page sources accounted for. 29 README-only route candidates are separate, not form totals.**
 
 Browser-local copies/customisations/deletions on other devices/origins are **not reconciled**. The register's explicit local-candidate section must remain visible. No full operational-readiness or live-saving certification is claimed.
 
@@ -13,7 +13,7 @@ Browser-local copies/customisations/deletions on other devices/origins are **not
 | Area | Distinct definitions |
 |---|---:|
 | Organisation | 6 |
-| Facilities | 32 |
+| Facilities | 33 |
 | Sports Development Unit | 15 |
 | Human Resources | 5 |
 | Finance | 0 |
@@ -93,6 +93,7 @@ Browser-local copies/customisations/deletions on other devices/origins are **not
 | hr.note | Employee HR note | Human Resources | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | note placeholder |
 | hr.document-upload | Employee document upload placeholder | Human Resources | UI_ONLY | NEEDS_REVIEW | WORK_REQUIRED | upload placeholder |
 | health.check | Run system health checks | Health | SERVER_SERVICE | NEEDS_REVIEW | NOT_ASSESSED | refresh GET checks |
+| facilities.workload-task | Shared Workload Task Assignment / Edit | Facilities | BROWSER_LOCAL | PLANNED | READY | assign sample task; edit / reassign sample task; update sample task status; assign sample task; edit / reassign sample task; update sample task status |
 
 ## Reconciliation decisions
 
@@ -124,6 +125,7 @@ Browser-local copies/customisations/deletions on other devices/origins are **not
 | components/facilities/FacilityScheduleEditor.tsx | Nested facility schedule/closure fields saved by FacilityForm; not a separate definition. |
 | app/organisation/system/reminders/page.tsx | Search plus immediate Mark done demo action, no data-entry/editor. Create Reminder has no handler/form. |
 | components/facilities/FacilityFormBlueprint.tsx | Unused informational field-list blueprint. Not mounted or editable; catalogue definitions represent current fields. |
+| components/facilities/workload/WorkloadViews.tsx | Workload charts, month/venue/manager/search/status/type/priority filters and List/Card controls are auxiliary. Task assignment/edit/status usages map to facilities.workload-task (GSLA-FRM-067). No extra definition per manager, tab or task. |
 
 Other information-only pages, redirects, display components, generic UI wrappers and owner inspection controls have explicit individual dispositions in source-review.csv. Placeholder form-shaped entry sections are included; simple navigation, search/filter selection and immediate action buttons without an entry form are excluded with reasons.
 
