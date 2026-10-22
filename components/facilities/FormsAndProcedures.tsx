@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import EventEditor from "./EventEditor";
+import { facilityFormId } from "@/lib/facilityFormIds";
 import { LayoutGrid, List } from "lucide-react";
 import { FormPreviewCard } from "./FacilityFormPreviewer";
 import FacilitiesDepartmentBanner from "./FacilitiesDepartmentBanner";
@@ -23,6 +24,7 @@ export default function FormsAndProcedures() {
  const venues = facilities.map(venue => ({ id: venue.id, name: venue.name }));
  function save(form: CatalogueForm) { saveCatalogue({ ...data, forms: data.forms.some(item => item.id === form.id) ? data.forms.map(item => item.id === form.id ? form : item) : [...data.forms, form] }); setMessage("Form saved in this browser."); }
  function create() { setEditor({ id: crypto.randomUUID(), kind: "work-order", title: "", instructions: "", category: "", frequency: "One-off / event", venue: "All venues", owner: "Head of Facilities", version: 1, reviewDate: "", dueDate: "", active: true, source: "Custom facilities form", standard: false, assignments: [], fields: [{ id: crypto.randomUUID(), label: "Work required", type: "textarea", required: true, help: "", options: [] }] }); }
+ function formActions(form: CatalogueForm) { return <div className="flex flex-wrap gap-2"><button type="button" className={outline} onClick={() => setEditor(form)}>Edit</button><button type="button" className={outline} onClick={() => setAssigning(form)}>Assign</button><button type="button" className={outline} onClick={() => setPreviewing(form)}>Preview</button><button type="button" className={outline + " text-rose-700"} onClick={() => { saveCatalogue({ ...data, forms: data.forms.filter(item => item.id !== form.id) }); setDeleted(form); setMessage("Form removed from the catalogue and venue assignments."); }}>Delete</button></div>; }
  return <div className="space-y-6 text-slate-900">
   <FacilitiesDepartmentBanner title="Forms & Procedures" description="Create, edit and organise the forms used across your facilities. Assign additional work to particular venues, dates and events."/>
   {notice && <p role="alert" className="text-sm text-rose-700">{notice}</p>}{message && <p role="status" className="rounded-xl bg-slate-50 p-3 text-sm">{message}</p>}
@@ -40,12 +42,14 @@ export default function FormsAndProcedures() {
     if (!forms.length) return null;
     return <section key={section} aria-labelledby={`forms-${section}`} className="space-y-3">
      <h2 id={`forms-${section}`} className="text-lg font-bold text-[#0C2F57]">{FORM_SECTION_LABELS[section]}</h2>
-     <div className={view === "cards" ? "grid gap-3 xl:grid-cols-2" : "overflow-hidden rounded-xl border border-slate-200 bg-white divide-y divide-slate-200"}>
-      {forms.map(form => <article key={form.id} className={view === "list" ? "flex flex-wrap items-center justify-between gap-3 px-4 py-3" : "rounded-xl border border-slate-200 bg-white p-4"}>
-       <h3 className={"text-sm font-semibold text-slate-900 " + (view === "list" ? "min-w-0 flex-1" : "")}>{form.title}</h3>
-       <div className={`flex flex-wrap gap-2 ${view === "cards" ? "mt-4" : ""}`}><button type="button" className={outline} onClick={() => setEditor(form)}>Edit</button><button type="button" className={outline} onClick={() => setAssigning(form)}>Assign</button><button type="button" className={outline} onClick={() => setPreviewing(form)}>Preview</button><button type="button" className={outline + " text-rose-700"} onClick={() => { saveCatalogue({ ...data, forms: data.forms.filter(item => item.id !== form.id) }); setDeleted(form); setMessage("Form removed from the catalogue and venue assignments."); }}>Delete</button></div>
-      </article>)}
-     </div>
+     {view === "list" ? <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white"><table className="gsla-data-table w-full min-w-[720px] text-left text-sm">
+      <caption className="sr-only">{FORM_SECTION_LABELS[section]} forms</caption>
+      <thead><tr><th scope="col" className="px-4 py-3">Form name</th><th scope="col" className="w-40 whitespace-nowrap px-4 py-3">Form ID</th><th scope="col" className="px-4 py-3">Actions</th></tr></thead>
+      <tbody>{forms.map(form => <tr key={form.id}><th scope="row" className="px-4 py-3 font-semibold text-slate-900">{form.title}</th><td className="px-4 py-3"><FormId catalogueId={form.id}/></td><td className="px-4 py-3">{formActions(form)}</td></tr>)}</tbody>
+     </table></div> : <div className="grid gap-3 xl:grid-cols-2">{forms.map(form => <article key={form.id} className="rounded-xl border border-slate-200 bg-white p-4">
+      <h3 className="text-sm font-semibold text-slate-900">{form.title}</h3><div className="mt-2"><span className="mr-2 text-xs text-slate-500">Form ID</span><FormId catalogueId={form.id}/></div>
+      <div className="mt-4">{formActions(form)}</div>
+     </article>)}</div>}
     </section>;
    })}</div>
   </>}
@@ -62,4 +66,9 @@ function AssignmentEditor({ form, events, venues, loading, venueError, onCancel,
   <div className="grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">Day / start date<input type="date" className={workflowInput} value={date} onChange={e => setDate(e.target.value)}/></label><label className="text-sm font-semibold">End date (optional)<input type="date" className={workflowInput} value={endDate} onChange={e => setEndDate(e.target.value)}/></label><label className="text-sm font-semibold sm:col-span-2">Event (optional)<input list="assignment-events" className={workflowInput} value={event} onChange={e => setEvent(e.target.value)} placeholder="Select a saved event or enter an event name"/><datalist id="assignment-events">{events.map(item => <option key={item.id} value={item.name}/>)}</datalist></label></div>
   {error && <p role="alert" className="text-sm text-rose-700">{error}</p>}<button type="submit" className={workflowButton}>Save assignments</button>
  </form>;
+}
+
+function FormId({ catalogueId }: { catalogueId: string }) {
+ const id = facilityFormId(catalogueId);
+ return id ? <span className="whitespace-nowrap font-mono text-xs text-[#0C2F57]">{id}</span> : <span className="text-xs text-slate-500"><span className="block">Not registered</span><span className="break-all font-mono" title="Local catalogue ID">{catalogueId}</span></span>;
 }
