@@ -22,3 +22,13 @@ Forms show their permanent number beside their name, making them easier to ident
 
 ## Copy/paste instructions for the next worker
 Review feat/facilities-catalogue-form-id. Confirm Form name / Form ID / Actions order on /facilities/forms-and-procedures, standard GSLA-FRM-001–023 assignments, Card parity and unknown-custom fallback. Preserve all existing storage/actions and IDs. Verify CI/Preview and use the approved merge/release process; do not conflate source checks with signed-in runtime acceptance.
+
+## Owner layout correction — 22 October 2026
+
+WORK ORDER / WORK RECEIPT — FACILITIES-FORM-ID-FIRST. Frontend Developer; explicit owner instruction: move Form ID before Form name. Result: List order is Form ID / Form name / Actions; Cards show ID above the name. Existing IDs, callbacks and table styling preserved. Scoped ESLint and diff check passed. No persistence/permission change or production deployment.
+
+What happens next: review and merge the correction PR.
+
+Plain-English explanation: the reference number comes first, followed by the name.
+
+Copy/paste instructions for the next worker: verify leftmost Form ID header and row cells, Card ID before title, and unchanged action buttons; use the normal merge/release process.
