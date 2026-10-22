@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import {
   ArrowLeft, BarChart3, Building2, CalendarCheck2, CalendarDays,
   ClipboardCheck, FileText, LayoutDashboard, ShieldCheck, UserRoundCog,
-  UsersRound, Wrench, type LucideIcon,
+  UsersRound, Wrench, ListChecks, type LucideIcon,
 } from "lucide-react";
 
 type Item = { label: string; href: string; icon: LucideIcon };
@@ -21,6 +21,7 @@ const groups: { title: string; items: Item[] }[] = [
   { title: "Planning & Events", items: [
     { label: "Shared Calendar", href: "/facilities/shared-calendar", icon: CalendarDays },
     { label: "Events Control", href: "/facilities/events-control", icon: CalendarCheck2 },
+    { label: "Shared Workload Control", href: "/facilities/shared-workload-control", icon: ListChecks },
   ] },
   { title: "Venue Oversight", items: [
     { label: "Maintenance & Issues", href: "/facilities/maintenance-&-issues", icon: Wrench },

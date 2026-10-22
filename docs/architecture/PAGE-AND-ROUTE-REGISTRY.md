@@ -219,3 +219,12 @@ This registry is now exhaustive for current `app/**/page.tsx` and `app/**/route.
 ## M1-016 Form Control implementation submitted for review
 
 The owner register now has a [reviewed source inventory](../form-control/MASTER-INVENTORY.md) and read-only List/Card/detail UI under `/owner/form-control`, behind the existing M1-015 server boundary. See the [M1-016 receipt](../project-control/GSLA-M1-016-WORK-RECEIPT.md) for delivery state and verification limits. 66 source definitions include 23 Facilities defaults; 143 UI-source / 88 page-source dispositions and 29 planned-only route candidates are separate counts. Browser-local copies on other devices/origins remain explicitly unreconciled. No form connection, submission behaviour or domain permissions changed. M1-016 is not marked Done by the Frontend Developer.
+
+## Shared Workload Control — 22 October 2026
+
+| Route | Purpose | Boundary / state |
+|---|---|---|
+| `/facilities/shared-workload-control` | Overview, managers, required duties, tasks and management analysis | Existing Facilities department server layout; sample browser-local workspace |
+| `/facilities/shared-workload-control/managers/[managerId]` | Manager workload, tasks, duties, events, issues, handovers and reports | Same department boundary; sample-manager allowlist, unknown IDs return notFound |
+
+Navigation: Facilities → Planning & Events → Shared Workload Control. Optional validated `month=YYYY-MM` preserves the selected period on manager links and Back. Manager pages stay inside the department shell; these are not Centre Manager venue pages. Task editor GSLA-FRM-067 / facilities.workload-task is one shared definition across create/edit/reassignment/status usages. See [implementation receipt](../changes/SHARED-WORKLOAD-CONTROL.md). No live employee/event/issue/handover records or permissions are changed. Earlier inventory totals above are historical snapshots; generated current inventory includes this scoped addition.
