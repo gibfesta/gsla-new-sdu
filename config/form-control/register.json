@@ -6984,9 +6984,9 @@
         "lib/facilityFormCatalogue.ts",
         "lib/facilityWorkflows.ts"
       ],
-      "sourceHash": "273a3c7b56ba29bdee682ca4ab19059261d11558d60b5754d8c002955ddaccea",
+      "sourceHash": "654b48281e0ee96defc10ba2e747bfa71c8c5fe0d154d07ff842159dfec1783c",
       "reviewedAt": "2026-10-23",
-      "sourceCommit": "Actions alignment working tree on accepted 42db3ff; layout only",
+      "sourceCommit": "Operational status display on accepted 5db1a728; no form behaviour changes",
       "directMarkerCandidate": true
     },
     {
@@ -7921,7 +7921,7 @@
     },
     {
       "source": "components/facilities/FormsAndProcedures.tsx",
-      "sourceHash": "273a3c7b56ba29bdee682ca4ab19059261d11558d60b5754d8c002955ddaccea"
+      "sourceHash": "654b48281e0ee96defc10ba2e747bfa71c8c5fe0d154d07ff842159dfec1783c"
     },
     {
       "source": "components/facilities/SavedFacilityInformation.tsx",
