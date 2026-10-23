@@ -42,10 +42,11 @@ export default function FormsAndProcedures() {
     if (!forms.length) return null;
     return <section key={section} aria-labelledby={`forms-${section}`} className="space-y-3">
      <h2 id={`forms-${section}`} className="text-lg font-bold text-[#0C2F57]">{FORM_SECTION_LABELS[section]}</h2>
-     {view === "list" ? <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white"><table className="gsla-data-table w-full min-w-[720px] text-left text-sm">
+     {view === "list" ? <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white"><table className="gsla-data-table w-full min-w-[720px] table-fixed text-left text-sm">
       <caption className="sr-only">{FORM_SECTION_LABELS[section]} forms</caption>
+      <colgroup><col className="w-40"/><col/><col className="w-[23rem]"/></colgroup>
       <thead><tr><th scope="col" className="w-40 whitespace-nowrap px-4 py-3">Form ID</th><th scope="col" className="px-4 py-3">Form name</th><th scope="col" className="px-4 py-3">Actions</th></tr></thead>
-      <tbody>{forms.map(form => <tr key={form.id}><td className="px-4 py-3"><FormId catalogueId={form.id}/></td><th scope="row" className="px-4 py-3 font-semibold text-slate-900">{form.title}</th><td className="px-4 py-3">{formActions(form)}</td></tr>)}</tbody>
+      <tbody>{forms.map(form => <tr key={form.id}><td className="px-4 py-3"><FormId catalogueId={form.id}/></td><th scope="row" className="break-words px-4 py-3 font-semibold text-slate-900">{form.title}</th><td className="px-4 py-3">{formActions(form)}</td></tr>)}</tbody>
      </table></div> : <div className="grid gap-3 xl:grid-cols-2">{forms.map(form => <article key={form.id} className="rounded-xl border border-slate-200 bg-white p-4">
       <div className="mb-2"><span className="mr-2 text-xs text-slate-500">Form ID</span><FormId catalogueId={form.id}/></div><h3 className="text-sm font-semibold text-slate-900">{form.title}</h3>
       <div className="mt-4">{formActions(form)}</div>

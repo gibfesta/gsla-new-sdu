@@ -32,3 +32,13 @@ What happens next: review and merge the correction PR.
 Plain-English explanation: the reference number comes first, followed by the name.
 
 Copy/paste instructions for the next worker: verify leftmost Form ID header and row cells, Card ID before title, and unchanged action buttons; use the normal merge/release process.
+
+## Actions alignment correction — 23 October 2026
+
+WORK ORDER / WORK RECEIPT — FACILITIES-FORM-ACTIONS-ALIGNMENT. Frontend Developer, authorised by owner screenshot/request. Independent auto-sized category tables caused different Actions offsets. All catalogue List tables now share fixed layout and identical columns: Form ID 10rem, Form name remaining space, Actions 23rem. Long names wrap; narrow screens retain horizontal scrolling. Cards, IDs and action handlers unchanged. Source fingerprints/derived source ledger reconciled; no new form identity. Verification: scoped ESLint, strict inventory drift and diff checks. No live visual-browser result or production deployment claimed.
+
+What happens next: review and merge the alignment PR.
+
+Plain-English explanation: every section uses the same column widths, so all action buttons start at the same position.
+
+Copy/paste instructions for the next worker: review /facilities/forms-and-procedures at desktop and narrow widths. Confirm Actions headers/buttons align across every category, long names wrap, horizontal scrolling remains available and Card mode is unchanged. Use the approved merge/release process.
