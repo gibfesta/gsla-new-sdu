@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import EventEditor from "./EventEditor";
+import { facilityFormOperationalStatus } from "@/lib/facilityFormOperationalStatus";
 import { facilityFormId } from "@/lib/facilityFormIds";
 import { LayoutGrid, List } from "lucide-react";
 import { FormPreviewCard } from "./FacilityFormPreviewer";
@@ -42,14 +43,14 @@ export default function FormsAndProcedures() {
     if (!forms.length) return null;
     return <section key={section} aria-labelledby={`forms-${section}`} className="space-y-3">
      <h2 id={`forms-${section}`} className="text-lg font-bold text-[#0C2F57]">{FORM_SECTION_LABELS[section]}</h2>
-     {view === "list" ? <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white"><table className="gsla-data-table w-full min-w-[720px] table-fixed text-left text-sm">
+     {view === "list" ? <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white"><table className="gsla-data-table w-full min-w-[880px] table-fixed text-left text-sm">
       <caption className="sr-only">{FORM_SECTION_LABELS[section]} forms</caption>
-      <colgroup><col className="w-40"/><col/><col className="w-[23rem]"/></colgroup>
-      <thead><tr><th scope="col" className="w-40 whitespace-nowrap px-4 py-3">Form ID</th><th scope="col" className="px-4 py-3">Form name</th><th scope="col" className="px-4 py-3">Actions</th></tr></thead>
-      <tbody>{forms.map(form => <tr key={form.id}><td className="px-4 py-3"><FormId catalogueId={form.id}/></td><th scope="row" className="break-words px-4 py-3 font-semibold text-slate-900">{form.title}</th><td className="px-4 py-3">{formActions(form)}</td></tr>)}</tbody>
+      <colgroup><col className="w-40"/><col/><col className="w-40"/><col className="w-[23rem]"/></colgroup>
+      <thead><tr><th scope="col" className="w-40 whitespace-nowrap px-4 py-3">Form ID</th><th scope="col" className="px-4 py-3">Form name</th><th scope="col" className="px-4 py-3">Operational</th><th scope="col" className="px-4 py-3">Actions</th></tr></thead>
+      <tbody>{forms.map(form => <tr key={form.id}><td className="px-4 py-3"><FormId catalogueId={form.id}/></td><th scope="row" className="break-words px-4 py-3 font-semibold text-slate-900">{form.title}</th><td className="px-4 py-3"><OperationalStatus catalogueId={form.id}/></td><td className="px-4 py-3">{formActions(form)}</td></tr>)}</tbody>
      </table></div> : <div className="grid gap-3 xl:grid-cols-2">{forms.map(form => <article key={form.id} className="rounded-xl border border-slate-200 bg-white p-4">
       <div className="mb-2"><span className="mr-2 text-xs text-slate-500">Form ID</span><FormId catalogueId={form.id}/></div><h3 className="text-sm font-semibold text-slate-900">{form.title}</h3>
-      <div className="mt-4">{formActions(form)}</div>
+      <div className="mt-3"><OperationalStatus catalogueId={form.id}/></div><div className="mt-4">{formActions(form)}</div>
      </article>)}</div>}
     </section>;
    })}</div>
@@ -72,4 +73,14 @@ function AssignmentEditor({ form, events, venues, loading, venueError, onCancel,
 function FormId({ catalogueId }: { catalogueId: string }) {
  const id = facilityFormId(catalogueId);
  return id ? <span className="whitespace-nowrap font-mono text-xs text-[#0C2F57]">{id}</span> : <span className="text-xs text-slate-500"><span className="block">Not registered</span><span className="break-all font-mono" title="Local catalogue ID">{catalogueId}</span></span>;
+}
+
+function OperationalStatus({ catalogueId }: { catalogueId: string }) {
+ const status = facilityFormOperationalStatus(catalogueId);
+ const appearance = {
+  live: { symbol: "✓", label: "Live", colour: "bg-green-700" },
+  "not-live": { symbol: "✕", label: "Not live", colour: "bg-red-700" },
+  "not-verified": { symbol: "?", label: "Not verified", colour: "bg-slate-600" },
+ }[status.state];
+ return <span title={status.evidence} className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-semibold text-slate-700"><span aria-hidden="true" className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs text-white ${appearance.colour}`}>{appearance.symbol}</span>{appearance.label}</span>;
 }
