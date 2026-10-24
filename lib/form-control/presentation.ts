@@ -45,3 +45,49 @@ export function extractLocalCandidates(raw: string | null, key: string, sourceId
     return {key: key + ":" + index, nativeId:item.id, title:item.title, version:Number.isSafeInteger(item.version) ? item.version as number : null, fieldCount:fields.length, fields, comparison:sourceIds.includes(item.id) ? "Source ID found — local version/edits still require review" : "Custom ID — not yet reconciled"};
   });
 }
+
+export function formLiveState(form: FormControlRecord): "live"|"connected"|"not-live"|"unknown" {
+ if (["REMOVED","PLANNED","DEPRECATED"].includes(form.operationalStatus) || ["UI_ONLY","BROWSER_LOCAL"].includes(form.connectionStatus)) return "not-live";
+ if (form.evidenceState==="STALE" || form.evidenceState==="REMOVED") return "unknown";
+ if (form.liveVerification?.status==="VERIFIED" && form.liveVerification.saveAndRetrieve===true && form.liveVerification.roleChecks===true &&
+     form.liveVerification.environment && form.liveVerification.verifiedAt && form.liveVerification.evidenceReference &&
+     form.connectionStatus==="DATABASE_PERSISTED" && form.evidenceState==="CURRENT") return "live";
+ if (["DATABASE_PERSISTED","MIXED","SERVER_SERVICE"].includes(form.connectionStatus)) return "connected";
+ return "unknown";
+}
+export function formLiveLabel(form: FormControlRecord): string {
+ const status=formLiveState(form);
+ return status==="live"?"Live — verified":status==="connected"?"Connected in code — not live-verified":status==="not-live"?"Not live":"Unverified / needs review";
+}
+
+export type ConnectionType = "DATABASE"|"API"|"BROWSER"|"MOCK"|"PLANNED"|"MIXED"|"UNKNOWN";
+export const connectionTypeLabels: Record<ConnectionType,string> = {
+ DATABASE:"Database connected", API:"API / server connected", BROWSER:"Browser only",
+ MOCK:"Screen / mock only", PLANNED:"Planned / not implemented",
+ MIXED:"Mixed / multiple connections", UNKNOWN:"Not verified"
+};
+function locationConnection(status:string|undefined):ConnectionType {
+ switch(status) {
+  case "DATABASE_PERSISTED":return "DATABASE";
+  case "SERVER_SERVICE":return "API";
+  case "BROWSER_LOCAL":return "BROWSER";
+  case "UI_ONLY":return "MOCK";
+  case "MIXED":return "MIXED";
+  default:return "UNKNOWN";
+ }
+}
+export function formConnectionType(form:FormControlRecord):ConnectionType {
+ if(form.operationalStatus==="PLANNED" || form.existence==="planned")return "PLANNED";
+ if(form.evidenceState==="STALE" || form.evidenceState==="REMOVED")return "UNKNOWN";
+ const types=new Set(form.locations.map(loc=>locationConnection(loc.connectionStatus||form.connectionStatus)));
+ // If one location is unknown, refrain from confidently classifying the whole form.
+ if(types.has("UNKNOWN"))return "UNKNOWN";
+ if(types.size>1 || types.has("MIXED"))return "MIXED";
+ return types.values().next().value || locationConnection(form.connectionStatus);
+}
+export function formConnectionLabel(form:FormControlRecord):string {
+ return connectionTypeLabels[formConnectionType(form)];
+}
+export function locationConnectionLabel(status:string|undefined):string {
+ return connectionTypeLabels[locationConnection(status)];
+}

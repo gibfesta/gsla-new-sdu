@@ -11,6 +11,7 @@ export type FormLocation = {
 export type PassiveField = { label: string; type: string; required: boolean };
 export type FormControlRecord = {
   formId: string;
+  liveVerification?: { status: "VERIFIED"; environment: string; verifiedAt: string; evidenceReference: string; saveAndRetrieve: true; roleChecks: true };
   displayName: string;
   area: string;
   kind: string;
